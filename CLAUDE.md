@@ -94,4 +94,5 @@ Topic rules in `.claude/rules/` (architecture, animation & audio, testing) load 
 - Episode `characters` and location `residents` are lists of **URLs**; extract the id from the URL end.
 - Sensors do not work on most emulators/simulators: test shake and tilt on a real phone.
 - Fragment shaders must be listed under `flutter: shaders:` in `pubspec.yaml`.
+- iOS minimum version is **15.0** (`platform :ios, '15.0'` in `ios/Podfile`, matches Flutter's default). Raise it only if a plugin requires it, and update both the Podfile and the Xcode deployment target.
 - Characters and images belong to Adult Swim: this is a non-commercial fan project (README must say so). Do not prepare store release.

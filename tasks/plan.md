@@ -4,6 +4,19 @@ Status: **approved** (2026-11-11)
 Sources: `docs/SPEC.md` (approved), `docs/PROJECT.md` §5 Week 1, `CLAUDE.md`, `.claude/rules/*`, `rm-game-mechanics` [GM].
 Toolchain found on this machine: Flutter 3.47.6 stable, Dart 3.13.5.
 
+## Where we left off (2026-11-11, end of session)
+- **Last completed task:** T2 Dependencies and lints (committed). One check is open: see "APK build" in the T2 notes.
+- **Next task:** T3 Color, motion and spacing tokens (+ contrast test). T7 (fixtures) can also start, since it only needs T1.
+- **Before continuing on the new computer:**
+  1. `flutter pub get`, then `cd ios && pod install` (shell needs `LANG=en_US.UTF-8` / `LC_ALL=en_US.UTF-8`, see T2 notes).
+  2. `flutter analyze --fatal-infos` and `flutter test`.
+  3. Re-verify `flutter build apk --debug` (open item from T2).
+- **Open notes:**
+  - Reference Android device: TBD. Device and iOS Simulator checks pending (Checkpoint A).
+  - iOS Simulator install hang from T1 (see Known issue), retry at Checkpoint C.
+  - Hive init path: `hive_ce` alone needs a directory; `hive_ce_flutter` or `path_provider` is not in the approved list. Decide before T12.
+  - To check on device (collected): T1 app opens on Android device and iOS Simulator. T2 none (no UI change).
+
 ## Devices
 - **Reference Android device:** TBD (no device connected yet). All performance checks run on it once chosen.
 - **iOS:** a real iPhone is only available at the end of Week 2 and in Week 4. In Week 1 (and Week 3), iOS checks mean: `flutter build ios --no-codesign` succeeds and the app opens on the iOS Simulator with correct UI. Sensor, haptic and performance checks on iOS move to the Week 2 end and Week 4 device sessions.
@@ -318,6 +331,14 @@ T1 create ─┬─ T2 deps/lints ─┬─ T3 color+motion tokens ── T4 fon
 ### T1 (2026-11-11)
 - Android: `flutter build apk --debug` OK. Not yet run on a device: `flutter devices` found no Android device or emulator.
 - iOS: `flutter build ios --no-codesign` OK and `flutter build ios --simulator` OK. **Simulator install not verified.**
+
+### T2 (2026-11-11)
+- Packages added at current stable versions (see `pubspec.yaml`); `cupertino_icons` removed (Material Icons only). No `dependency_overrides`.
+- `analysis_options.yaml`: `flutter_lints` + strict-casts / strict-inference / strict-raw-types, `avoid_print: error`, const and single-quote rules; `*.g.dart` excluded.
+- `flutter pub get`: OK. `flutter analyze --fatal-infos`: no issues (223 s). `flutter test`: 1/1 passed.
+- `pod install`: OK (4 pods). It failed first with `Encoding::CompatibilityError` because the shell had no UTF-8 locale; fixed by `LANG`/`LC_ALL=en_US.UTF-8` (now in the owner's `~/.zshrc`). `ios/Podfile` sets `platform :ios, '15.0'`. Remaining CocoaPods warning about the Profile base configuration is the known, harmless Flutter one.
+- **APK build: to be re-verified at home.** The first `flutter build apk --debug` ran 20+ min (first Gradle build with native plugins) and was stopped when the session ended. Afterwards `./gradlew assembleDebug` (with `JAVA_HOME` = Android Studio JBR) finished `BUILD SUCCESSFUL in 56s`, but `flutter build apk --debug` itself was stopped again before finishing. Note: `./gradlew` from a plain shell fails with "Unable to locate a Java Runtime" because `JAVA_HOME` is not set; `flutter` finds the JBR on its own.
+- `lib/` folder skeleton: not created on purpose (empty folders are not committed; each folder gets its first file in a later task).
 
 ### Known issue: iOS Simulator install hangs (retry at Checkpoint C)
 - The iPhone 17 simulator boots (`simctl bootstatus`: booted), but `xcrun simctl install` hung for 8+ minutes and `simctl launch` timed out.
