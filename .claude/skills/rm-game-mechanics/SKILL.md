@@ -130,6 +130,23 @@ Difficulty tier = number of wins / 3 (max 4). Opponent rarities by tier:
 - Legendary → play the legendary cinematic (red portal, music change, silhouette reveal).
 - Pity (stretch): no Epic+ in 10 pulls → next is Epic+. No Legendary in 50 pulls → next is Legendary.
 
+### 7.1 First portals (no duplicates)
+- While `player.portalsOpened < 3`, a portal never gives a duplicate.
+- Rarity is rolled with the normal table above; the character is picked uniformly from the characters of that rarity the player does **not** own.
+- `portalsOpened` increases by 1 after every portal (all portals, not only the first 3).
+- Result: every new player owns 3 distinct cards after spending the starting 300 coins, so a deck can always be built.
+
+### 7.2 Demo overrides (hidden demo mode)
+- Unlock: 7 taps on the version label in Settings within 3 s. Stored as `player.demoUnlocked`; "Demo modunu kapat" sets it back to false.
+- **+1000 coin:** goes through `Economy` with reason `demo`, like every other coin change.
+- **Next portal Legendary:** arms a one-shot flag `player.forceNextLegendary`. The next portal skips the rarity roll and uses Legendary (the character pick and §7.1 / §7.3 still apply). The flag is cleared when that portal's result is saved.
+- The portal still costs 100 coins. Demo mode changes nothing else (no stat, battle or reward changes).
+
+### 7.3 Empty pool fallback
+- Applies whenever a rule needs an unowned character of a rarity (§7.1) and none is left.
+- Step down one rarity at a time (Legendary → Epic → Rare → Common) until a rarity has an unowned character; pick uniformly from it.
+- If the player owns every character, the portal gives a normal (duplicate) result from the originally rolled rarity.
+
 ---
 
 ## 8. Economy
