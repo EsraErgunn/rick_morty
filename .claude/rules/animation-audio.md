@@ -47,6 +47,9 @@ Respect the `hapticsEnabled` setting.
 
 ## Sensors
 - `ShakeDetector`: `userAccelerometerEventStream`, magnitude threshold ≈ 15 m/s², needs 2 peaks within 500 ms, cooldown 1.5 s after a trigger.
-- `TiltStream` (holo effect): `accelerometerEventStream` (gravity gives device orientation), low-pass filter (α ≈ 0.15), clamp to [-1, 1].
+- `TiltStream` (holo effect + card 3D tilt): `accelerometerEventStream` (gravity gives device orientation), low-pass filter (α ≈ 0.15), clamp to [-1, 1]. It is the **only** tilt sensor subscription in the app.
+- Card 3D tilt, light, shadow and parallax use `flutter_tilt` with its own sensors **off** (`TiltConfig(enableGestureSensors: false)`). A `TiltController` is fed from `TiltStream` (`controller.move(position:)`, mapping [-1, 1] to the widget size). Touch drag stays on in flutter_tilt (the drag fallback).
+- `holo.frag`'s `uTilt` reads the tilt from `Tilt.onGestureMove` (`TiltDataModel.areaProgress`), so touch and sensor input drive the 3D tilt and the holo with the same value. If `onGestureMove` does not fire for controller input, feed `uTilt` from `TiltStream` for sensors and from `onGestureMove` for touch. Never open a second sensor subscription for the holo.
+- Set `Tilt(fps: 60)` (the package default is 120) to save battery. Dispose the `TiltController` with the page.
 - Pause sensor subscriptions when the screen is not visible or the app is in background (battery).
 - Always offer a fallback: a button to open the portal and drag-to-tilt on the card (for emulators and accessibility).
