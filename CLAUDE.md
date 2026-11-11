@@ -74,7 +74,7 @@ Topic rules in `.claude/rules/` (architecture, animation & audio, testing) load 
 ## Workflow
 - Use the **agent-skills** plugin for the engineering cycle: spec → plan → build → test → review.
   New feature = short spec + plan first, wait for my approval, then build in small steps.
-- Use **frontend-design** / **ux-ui-agent-skills** for screen design and UI polish decisions.
+- Use **frontend-design** for screen design and UI polish decisions.
 - Work in roadmap order (`docs/PROJECT.md`). Do not start stretch goals before the MVP is done.
 - Do not add packages that are not listed above without asking; explain why.
 - Before saying a task is done: `flutter analyze` + `flutter test` pass, and you tell me what to check on a real device (animations, sound, sensors).
