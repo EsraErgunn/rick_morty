@@ -1,0 +1,52 @@
+---
+paths:
+  - "lib/**/presentation/**"
+  - "lib/core/widgets/**"
+  - "lib/core/audio/**"
+  - "lib/core/haptics/**"
+  - "lib/core/sensors/**"
+  - "shaders/**"
+---
+
+# Animation, Audio, Haptics & Sensors Rules
+
+Animations and sound are a **graded requirement**. Every interaction needs feedback: visual + sound + (where it fits) haptic.
+
+## Animation
+- Durations and curves come from `AppMotion` tokens (`app/theme/motion.dart`): `fast 150ms`, `normal 300ms`, `slow 600ms`, `cinematic 1500ms+`; curves `easeOutBack` (pop-in), `easeInOutCubic` (moves), `elasticOut` (rewards).
+- Prefer `flutter_animate` for UI sequences; use `AnimationController` when the animation is driven by state or gestures; use `CustomPainter` / fragment shaders for the portal and holo effects.
+- Dispose every controller, ticker and stream subscription.
+- Keep 60 fps: wrap heavy animated areas in `RepaintBoundary`; never rebuild the whole screen per frame; avoid `Opacity` over large subtrees (use `FadeTransition`).
+- Respect reduced motion: if `MediaQuery.disableAnimations` is true, shorten or skip non-essential animations.
+- Card flip: rotate on the Y axis with perspective (`Matrix4..setEntry(3, 2, 0.001)`), switch faces at 90°.
+
+## Shaders
+- `shaders/portal.frag`: uniforms `uTime`, `uSize`, `uIntensity` (0 idle → 1 opening), `uColor` (green normal, red legendary).
+- `shaders/holo.frag`: uniforms `uSize`, `uTilt` (x, y), `uStrength` (by rarity: common 0, rare 0.35, epic 0.65, legendary 1.0).
+- Load once (`FragmentProgram.fromAsset`) and cache; never load in `build`.
+- Provide a simple non-shader fallback if loading fails.
+
+## Audio
+- All sound goes through `AudioService` (`core/audio`). Widgets never create players.
+- SFX use a pool (low latency, overlapping allowed); music uses one looping player with fade in/out between tracks.
+- Respect settings: `soundEnabled`, `musicEnabled`, volumes. Pause music when the app goes to background, resume on return.
+- Asset names (`assets/audio/sfx/`): `portal_charge`, `portal_open`, `card_flip`, `rare_reveal`, `legendary_reveal`, `hit`, `crit_hit`, `super_effective`, `faint`, `victory`, `defeat`, `button_tap`, `coin`.
+- Music (`assets/audio/music/`): `menu_loop`, `battle_loop`, `legendary_sting`.
+- Keep `assets/audio/CREDITS.md` with source and license for every file (Pixabay / Freesound).
+
+## Haptics (`HapticsService`)
+| Moment | Haptic |
+|---|---|
+| Button tap | `selectionClick` |
+| Card flip | `lightImpact` |
+| Hit | `mediumImpact` |
+| Crit / super effective / portal open | `heavyImpact` |
+| Legendary reveal | sequence: heavy → 80 ms → heavy → 120 ms → heavy |
+
+Respect the `hapticsEnabled` setting.
+
+## Sensors
+- `ShakeDetector`: `userAccelerometerEventStream`, magnitude threshold ≈ 15 m/s², needs 2 peaks within 500 ms, cooldown 1.5 s after a trigger.
+- `TiltStream` (holo effect): `accelerometerEventStream` (gravity gives device orientation), low-pass filter (α ≈ 0.15), clamp to [-1, 1].
+- Pause sensor subscriptions when the screen is not visible or the app is in background (battery).
+- Always offer a fallback: a button to open the portal and drag-to-tilt on the card (for emulators and accessibility).
