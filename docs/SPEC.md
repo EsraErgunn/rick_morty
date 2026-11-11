@@ -86,7 +86,7 @@ Every screen has: a loading state, an empty state (if it shows a list), an error
 - **AC6** Shake is ignored while a portal is already charging/opening/revealing, and during the 1.5 s cooldown.
 - **AC7** Sensor subscriptions pause when the screen is not visible or the app is in background.
 - **AC8** Coins are deducted and the card is persisted **before** the animation starts (killing the app mid-animation never loses a card or refunds coins).
-- **AC9** First visit only (D4): while `player.shakeHintSeen` is false, the idle portal shows the hint "Telefonu salla!" with a hand icon (lucide `hand`, vector, no emoji) that rocks left and right. The hint hides as soon as a portal opens (by shake or button); `shakeHintSeen` is then saved as true, and the hint never appears again, including after an app restart. "İlerlemeyi sıfırla" resets it.
+- **AC9** First visit only (D4): while `player.shakeHintSeen` is false, the idle portal shows the hint "Telefonu salla!" with a hand icon (Material Icons, vector, no emoji; no lucide package) that rocks left and right. If the Material hand icon does not match the thick ink-outline style (§5), only this icon is drawn with a `CustomPainter`. The hint hides as soon as a portal opens (by shake or button); `shakeHintSeen` is then saved as true, and the hint never appears again, including after an app restart. "İlerlemeyi sıfırla" resets it.
 
 ### 2.4 Collection (`features/collection`)
 - **AC1** Grid of owned cards (3 columns on phone), each a `GameCard` front with its rarity frame.

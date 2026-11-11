@@ -5,7 +5,7 @@ Sources: `docs/SPEC.md` (approved), `docs/PROJECT.md` §5 Week 1, `CLAUDE.md`, `
 Toolchain found on this machine: Flutter 3.47.6 stable, Dart 3.13.5.
 
 ## Devices
-- **Reference Android device:** <TELEFON MODELİN> (to be filled in by the owner). All performance checks run on it.
+- **Reference Android device:** TBD (no device connected yet). All performance checks run on it once chosen.
 - **iOS:** a real iPhone is only available at the end of Week 2 and in Week 4. In Week 1 (and Week 3), iOS checks mean: `flutter build ios --no-codesign` succeeds and the app opens on the iOS Simulator with correct UI. Sensor, haptic and performance checks on iOS move to the Week 2 end and Week 4 device sessions.
 
 ## Overview
@@ -110,6 +110,7 @@ T1 create ─┬─ T2 deps/lints ─┬─ T3 color+motion tokens ── T4 fon
 ### Checkpoint A (after T1 to T6)
 - [ ] `flutter analyze --fatal-infos` clean, `flutter test` green
 - [ ] App runs on the reference Android device and the iOS Simulator: dark themed placeholder screens, Turkish text, fonts correct
+  - pending: no device connected (Android device and iOS Simulator run of T1 not verified; build-only so far)
 - [ ] Contrast and glyph results written into SPEC
 - [ ] Review with you before continuing
 
@@ -312,11 +313,24 @@ T1 create ─┬─ T2 deps/lints ─┬─ T3 color+motion tokens ── T4 fon
 - T10 and T19 need only T2.
 - Everything else follows the dependency graph.
 
+## Progress notes
+
+### T1 (2026-11-11)
+- Android: `flutter build apk --debug` OK. Not yet run on a device: `flutter devices` found no Android device or emulator.
+- iOS: `flutter build ios --no-codesign` OK and `flutter build ios --simulator` OK. **Simulator install not verified.**
+
+### Known issue: iOS Simulator install hangs (retry at Checkpoint C)
+- The iPhone 17 simulator boots (`simctl bootstatus`: booted), but `xcrun simctl install` hung for 8+ minutes and `simctl launch` timed out.
+- `open -a Simulator` failed: "Unable to find application named 'Simulator'". The Xcode / CoreSimulator setup may be incomplete.
+- At Checkpoint C, check `xcode-select -p`, run `xcrun simctl list runtimes`, open Simulator from Xcode (Xcode > Open Developer Tool > Simulator), then retry `flutter run -d <simulator>`.
+- Until then, iOS checks in this plan mean "build OK"; UI checks run on the Android device.
+
 ## Decisions (2026-11-11)
 1. Packages approved and listed in `CLAUDE.md`: `fpdart`, `flutter_localizations`, `intl`, `build_runner`, `hive_ce_generator`, `flutter_lints`, `bloc_test`, `mocktail`.
 2. Reference Android device: see Devices. iOS real-device tests only at Week 2 end and Week 4.
 3. Card lab route approved, `kDebugMode` only.
+4. Icons: Material Icons; no lucide package. The shake-hint hand is drawn with `CustomPainter` only if the Material icon does not fit the bold-outline style (SPEC §2.3 AC9).
+5. Until a device is connected, task verification = `flutter analyze --fatal-infos` + `flutter test` (+ `flutter build apk --debug` when relevant). Device-only checks are collected per task under "To check on device".
 
 ## Open questions
-- Reference Android device model (placeholder in Devices).
-- Icon source for the shake hint and UI icons (SPEC §2.3 AC9 names lucide; waiting for the owner's decision).
+- Reference Android device model (TBD in Devices).
