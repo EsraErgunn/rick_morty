@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:portalcards/app/theme/motion.dart';
+import 'package:portalcards/core/widgets/portal/portal_view.dart';
 import 'package:portalcards/core/widgets/portal_loader.dart';
+import 'package:portalcards/core/widgets/shader_cache.dart';
 
 /// Hosts a [PortalLoader] whose `active` flag the test can flip.
 class _Host extends StatefulWidget {
@@ -140,5 +142,22 @@ void main() {
     await tester.pump(AppMotion.loaderShowDelay);
     await tester.pumpWidget(const SizedBox());
     // A leaked ticker or pending timer fails the test framework here.
+  });
+
+  testWidgets('with a shader cache the inside is the PortalView (D8)', (
+    tester,
+  ) async {
+    final cache = ShaderCache(loader: (_) => Future.error(StateError('x')));
+    await cache.load();
+    await tester.pumpWidget(
+      Directionality(
+        textDirection: TextDirection.ltr,
+        child: PortalLoader(active: true, shaders: cache),
+      ),
+    );
+    await tester.pump(AppMotion.loaderShowDelay);
+    await tester.pump();
+    expect(find.byType(PortalView), findsOneWidget);
+    await tester.pumpWidget(const SizedBox());
   });
 }

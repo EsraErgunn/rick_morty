@@ -126,6 +126,7 @@ Future<void> configureDependencies({
       () => createRouter(
         syncRepository: getIt(),
         initialLocation: initialLocation,
+        shaders: getIt(),
         menuPage: (context) => BlocProvider(
           create: (_) => MenuBloc(
             MenuRepositoryImpl(

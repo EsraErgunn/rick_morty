@@ -5,6 +5,7 @@ import '../../../../app/theme/motion.dart';
 import '../../../../app/theme/spacing.dart';
 import '../../../../app/theme/typography.dart';
 import '../../../../core/widgets/portal_loader.dart';
+import '../../../../core/widgets/shader_cache.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../bloc/sync_bloc.dart';
 import '../bloc/sync_event.dart';
@@ -14,10 +15,13 @@ import '../widgets/sync_status_view.dart';
 /// First screen: syncs the API (or skips if synced), then calls [onDone]
 /// (the router opens the menu). Expects a [SyncBloc] above it.
 class SplashPage extends StatefulWidget {
-  const SplashPage({required this.onDone, super.key});
+  const SplashPage({required this.onDone, this.shaders, super.key});
 
   /// Called once sync succeeded and the loader has settled.
   final VoidCallback onDone;
+
+  /// Portal shader for the loader (null = spiral painter).
+  final ShaderCache? shaders;
 
   /// Portal brightness while a failure is shown (SPEC §4.1).
   static const double dimIntensity = 0.05;
@@ -62,6 +66,7 @@ class _SplashPageState extends State<SplashPage> {
                             ? SplashPage.dimIntensity
                             : 1,
                         onSettled: widget.onDone,
+                        shaders: widget.shaders,
                       ),
                       const SizedBox(height: AppSpacing.xl),
                       AnimatedSwitcher(

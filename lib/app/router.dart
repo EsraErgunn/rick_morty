@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 import '../core/cards/game_card_data.dart';
+import '../core/widgets/shader_cache.dart';
 import '../features/sync/domain/sync_repository.dart';
 import '../features/sync/presentation/bloc/sync_bloc.dart';
 import '../features/sync/presentation/bloc/sync_event.dart';
@@ -51,6 +52,7 @@ GoRouter createRouter({
   WidgetBuilder? collectionPage,
   Widget Function(BuildContext context, int id)? cardDetailPage,
   WidgetBuilder? portalPage,
+  ShaderCache? shaders,
   WidgetBuilder? menuPage,
   bool debugRoutes = kDebugMode,
   String initialLocation = AppRoutes.splash,
@@ -63,7 +65,10 @@ GoRouter createRouter({
         path: AppRoutes.splash,
         builder: (context, state) => BlocProvider(
           create: (_) => SyncBloc(syncRepository)..add(const SyncStarted()),
-          child: SplashPage(onDone: () => context.go(AppRoutes.menu)),
+          child: SplashPage(
+            onDone: () => context.go(AppRoutes.menu),
+            shaders: shaders,
+          ),
         ),
       ),
       GoRoute(

@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import '../../app/theme/motion.dart';
 import '../../app/theme/spacing.dart';
 import 'portal/portal_spiral_painter.dart';
+import 'portal/portal_view.dart';
+import 'shader_cache.dart';
 
 /// The waiting portal: opens from a point (scale 0 → 1, `popIn`), then
 /// spins while [active].
@@ -15,14 +17,15 @@ import 'portal/portal_spiral_painter.dart';
 /// (or immediately if it never appeared) after [active] became false.
 /// With reduced motion it only fades.
 ///
-/// Week 1 draws a spiral with [CustomPainter]. Week 2 replaces the inside
-/// with `portal.frag`; this public API stays the same.
+/// The inside is the `portal.frag` vortex ([PortalView], SPEC D8) when
+/// [shaders] is given, otherwise the spiral painter (fallback and tests).
 class PortalLoader extends StatefulWidget {
   const PortalLoader({
     required this.active,
     this.intensity = 1,
     this.onSettled,
     this.size = AppSizes.splashPortal,
+    this.shaders,
     super.key,
   });
 
@@ -32,6 +35,9 @@ class PortalLoader extends StatefulWidget {
   final double intensity;
   final VoidCallback? onSettled;
   final double size;
+
+  /// Shader cache for the vortex; null = spiral painter.
+  final ShaderCache? shaders;
 
   @override
   State<PortalLoader> createState() => _PortalLoaderState();
@@ -135,18 +141,24 @@ class _PortalLoaderState extends State<PortalLoader>
 
   @override
   Widget build(BuildContext context) {
-    final painted = RepaintBoundary(
-      child: AnimatedBuilder(
-        animation: _spin,
-        builder: (context, _) => CustomPaint(
-          size: Size.square(widget.size),
-          painter: PortalSpiralPainter(
-            turn: _spin.value,
-            intensity: widget.intensity.clamp(0, 1),
-          ),
-        ),
-      ),
-    );
+    final cache = widget.shaders;
+    final Widget painted = cache != null
+        ? SizedBox.square(
+            dimension: widget.size,
+            child: PortalView(shaders: cache, intensity: widget.intensity),
+          )
+        : RepaintBoundary(
+            child: AnimatedBuilder(
+              animation: _spin,
+              builder: (context, _) => CustomPaint(
+                size: Size.square(widget.size),
+                painter: PortalSpiralPainter(
+                  turn: _spin.value,
+                  intensity: widget.intensity.clamp(0, 1),
+                ),
+              ),
+            ),
+          );
 
     final Widget content = !_visible
         ? const SizedBox.shrink()
