@@ -87,6 +87,11 @@ flutter:
   # For details regarding adding assets from package dependencies, see
   # https://flutter.dev/to/asset-from-package
 
+  # Procedurally generated sounds (tools/audio, SPEC §4.11).
+  assets:
+    - assets/audio/sfx/
+    - assets/audio/music/
+
   # Fragment shaders (animation rules).
   shaders:
     - shaders/holo.frag

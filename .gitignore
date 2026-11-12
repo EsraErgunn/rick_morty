@@ -45,3 +45,4 @@ key.properties
 # Misc
 app.*.map.json
 *.log
+__pycache__/

@@ -1,0 +1,176 @@
+# Portal Cards sound generator: the single config (SPEC §4.11, D5).
+# Change a value, run `python tools/audio/generate.py`, listen again.
+# Same seed + same config = byte-identical files.
+
+version = "1.0.0"
+seed = 4242
+
+[output]
+sfx_dir = "assets/audio/sfx"
+music_dir = "assets/audio/music"
+credits = "assets/audio/CREDITS.md"
+max_total_mb = 8.0
+
+[rates]
+sfx = 44100
+# 22050 now; set to 32000 if the music sounds muffled (owner decision).
+music = 22050
+
+[levels]
+sfx_peak_db = -3.0
+# Music: match loudness (RMS) so menu -> battle -> sting do not jump in
+# volume; the peak never goes above music_peak_db.
+music_peak_db = -1.0
+music_rms_db = -15.0
+
+# --- SFX (one table per file; durations in seconds, frequencies in Hz) -------
+
+[sfx.portal_charge]
+duration = 1.3
+noise_from = 300.0
+noise_to = 3200.0
+whoop_from = 110.0
+whoop_to = 620.0
+
+[sfx.portal_open]
+duration = 1.7
+zap_from = 1900.0
+zap_to = 70.0
+zap_time = 0.35
+boom_from = 70.0
+boom_to = 34.0
+sparkles = 14
+
+[sfx.card_flip]
+duration = 0.24
+low = 1800.0
+high = 6500.0
+
+[sfx.rare_reveal]
+duration = 1.1
+notes = ["E5", "G#5", "B5", "E6"]
+step = 0.07
+
+[sfx.legendary_reveal]
+duration = 2.6
+chord = ["D3", "A3", "D4", "F#4", "A4", "E5"]
+swell = 1.1
+
+[sfx.hit]
+duration = 0.32
+thump_from = 190.0
+thump_to = 48.0
+
+[sfx.crit_hit]
+duration = 0.65
+ring = 520.0
+
+[sfx.super_effective]
+duration = 0.62
+notes = ["A4", "D5", "A5"]
+step = 0.12
+
+[sfx.faint]
+duration = 0.95
+from = 620.0
+to = 110.0
+wobble = 9.0
+
+[sfx.victory]
+duration = 1.9
+# (note, start beat, length beats) at 150 BPM, original motif
+tempo = 150
+notes = [["G4", 0.0, 0.5], ["C5", 0.5, 0.5], ["E5", 1.0, 0.5], ["G5", 1.5, 2.5],
+         ["E4", 1.5, 2.5], ["C4", 1.5, 2.5]]
+
+[sfx.defeat]
+duration = 1.7
+tempo = 96
+notes = [["E4", 0.0, 0.75], ["D4", 0.75, 0.75], ["C4", 1.5, 0.75], ["B3", 2.25, 1.5]]
+
+[sfx.button_tap]
+duration = 0.06
+freq = 1850.0
+
+[sfx.coin]
+duration = 0.36
+first = "B5"
+second = "E6"
+gap = 0.07
+
+[sfx.genius_crit]
+duration = 0.95
+ring = 520.0
+stab = ["A5", "C#6", "E6"]
+
+[sfx.meeseeks_poof]
+duration = 0.45
+pop_from = 420.0
+pop_to = 180.0
+
+# --- Music ---------------------------------------------------------------------
+# Notes: "NAME:beats" in order, "r:beats" = rest. Chords: one per bar.
+
+[music.battle_loop]
+bpm = 136
+bars = 16
+loop = true
+chords = ["E2:m", "C2:M", "D2:M", "B1:m",
+          "E2:m", "C2:M", "A1:m", "B1:M",
+          "C2:M", "D2:M", "E2:m", "E2:m",
+          "A1:m", "C2:M", "D2:M", "B1:M"]
+bass_steps = [0, 0, 12, 0, 0, 12, 0, 7]
+melody = [
+  "B4:1", "E5:0.5", "G5:0.5", "F#5:1", "E5:1",
+  "G5:1.5", "E5:0.5", "C5:1", "r:1",
+  "A5:1", "F#5:0.5", "D5:0.5", "E5:1", "F#5:1",
+  "D5:2", "B4:1", "r:1",
+  "B4:0.5", "B4:0.5", "E5:1", "G5:0.5", "A5:0.5", "B5:1",
+  "C6:1", "B5:0.5", "A5:0.5", "G5:1", "E5:1",
+  "A5:1.5", "G5:0.5", "E5:1", "C5:1",
+  "D#5:2", "F#5:1", "B4:1",
+  "E5:1", "G5:1", "C6:1.5", "B5:0.5",
+  "A5:1", "F#5:1", "D6:1.5", "C6:0.5",
+  "B5:2", "G5:1", "E5:1",
+  "r:2", "E5:0.5", "F#5:0.5", "G5:0.5", "A5:0.5",
+  "C6:1", "B5:1", "A5:1", "E5:1",
+  "G5:1.5", "E5:0.5", "C5:1", "E5:1",
+  "F#5:1", "A5:1", "D6:1", "F#5:1",
+  "D#5:1", "F#5:1", "B5:1.5", "r:0.5",
+]
+fill_bars = [8, 16]
+
+[music.menu_loop]
+bpm = 90
+bars = 16
+loop = true
+# One chord per two bars (voicings written out, original progression).
+chords = [
+  ["D3", "F3", "A3", "C4", "E4"], ["D3", "F3", "A3", "C4", "E4"],
+  ["Bb2", "D3", "F3", "A3"], ["Bb2", "D3", "F3", "A3"],
+  ["G2", "Bb2", "D3", "F3", "A3"], ["G2", "Bb2", "D3", "F3", "A3"],
+  ["A2", "D3", "E3", "G3"], ["A2", "D3", "E3", "G3"],
+  ["D3", "F3", "A3", "C4", "E4"], ["D3", "F3", "A3", "C4", "E4"],
+  ["F2", "A2", "C3", "E3"], ["F2", "A2", "C3", "E3"],
+  ["G2", "Bb2", "D3", "F3", "A3"], ["G2", "Bb2", "D3", "F3", "A3"],
+  ["A2", "C#3", "E3", "G3"], ["A2", "C#3", "E3", "G3"],
+]
+melody = [
+  "r:2", "A4:2", "D5:3", "E5:1",
+  "F5:4", "E5:2", "D5:2",
+  "D5:3", "Bb4:1", "C5:2", "D5:2",
+  "E5:6", "r:2",
+  "A5:3", "G5:1", "F5:2", "E5:2",
+  "C5:2", "F5:2", "A5:4",
+  "G5:3", "F5:1", "D5:2", "Bb4:2",
+  "C#5:4", "E5:2", "r:2",
+]
+glide = 0.12
+vibrato_hz = 5.6
+vibrato_depth = 0.35
+sparkles = 18
+
+[music.legendary_sting]
+duration = 4.0
+chord = ["D3", "A3", "D4", "F#4", "A4", "E5"]
+fanfare = [["A4", 0.0], ["D5", 0.18], ["F#5", 0.36], ["A5", 0.54]]
