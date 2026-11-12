@@ -761,3 +761,9 @@ T44 deck builder ───────┴─────────────
 
 ## Open questions
 - Reference Android device model (TBD in Devices).
+
+## Week 3 status (delivery mode, 2026-11-12)
+- Done: T38–T41, T42 (base ATK 20 → 40, `docs/balance.md`), T43, T44 deck builder, T45 BattleBloc, T46 battle screen + replay, T48 (menu "Savaş", portal "Savaşa git", tier on the pre-battle screen were already wired; the coin count-up is on the result screen, the menu shows the new balance on return).
+- T47: callouts and sounds are in (DAHİ! + `genius_crit`, "Görev tamam!" + `meeseeks_poof` + heal number, signature-name callouts); the smoke-puff visual for Mr. Meeseeks is not done.
+- Decisions Q1–Q5 were applied as proposed (not explicitly approved yet).
+- Emulator (Windows host with Avast HTTPS scanning): the API sync fails with `HandshakeException`; with data seeded from the host the app still stops drawing after the splash (swiftshader GPU). Full UI flow must be checked on a real phone.
