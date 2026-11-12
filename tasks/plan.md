@@ -217,13 +217,31 @@ T1 create ─┬─ T2 deps/lints ─┬─ T3 color+motion tokens ── T4 fon
 **Size:** M
 
 ### Task 15: Sync bloc and splash page
-**Description:** `SyncBloc` (`SyncStarted`, `SyncRetryRequested`) and `SplashPage` with a progress bar, the error message + "Tekrar dene", and navigation to the main menu placeholder when done. Static portal art for now (shader in Week 2).
+**Description:** `SyncBloc` (`SyncStarted`, `SyncRetryRequested`) and `SplashPage` with the `PortalLoader`, a progress bar with percentage, the error message + "Tekrar dene", and navigation to the main menu placeholder when done.
+**PortalLoader** (`lib/core/widgets/portal_loader.dart`, added 2026-11-12 by the owner; matches SPEC §4.1 "portal swirls in from a point"):
+- Opens from a point: scale 0 → 1 with `AppMotion.popIn` (`easeOutBack`) over `AppMotion.slow`, then keeps rotating while waiting.
+- Week 1: a green spiral drawn with `CustomPainter` (`portal`, `portalHot`, `ink` outline). Week 2 swaps the inside for `portal.frag`; the widget's public API (constructor, `visible`/`intensity`) does not change.
+- Anti-flicker: if loading finishes in < 300 ms the loader is never shown; once shown it stays at least 600 ms. Both values are `AppMotion` tokens.
+- Reduced motion (`MediaQuery.disableAnimations`): no scale or rotation, only a fade in/out.
+- Controllers disposed; wrapped in `RepaintBoundary`.
 **Acceptance criteria:**
 - [ ] States: `initial → loading(progress) → success` or `failure`; retry resumes (SPEC §2.1 AC3).
+- [ ] Splash shows sync progress as a bar **and a percentage** (plus `downloaded / total`).
+- [ ] PortalLoader: hidden for loads < 300 ms, visible ≥ 600 ms once shown, fade only with reduced motion (widget tests with fake time).
 - [ ] Already-synced launch reaches the main menu in ≤ 2 s on the reference device (AC5).
-**Verification:** `bloc_test` per event; widget test for the error state; device: first launch on Wi-Fi to the end, then airplane mode + relaunch reaches the menu; turning Wi-Fi off mid-sync shows retry and resumes.
+**Verification:** `bloc_test` per event; widget tests for the error state and the loader timing rules; device: first launch on Wi-Fi to the end, then airplane mode + relaunch reaches the menu; turning Wi-Fi off mid-sync shows retry and resumes.
 **Dependencies:** T6, T14
-**Files:** `lib/features/sync/presentation/bloc/sync_bloc.dart`, `sync_event.dart`, `sync_state.dart`, `lib/features/sync/presentation/pages/splash_page.dart`, `test/features/sync/sync_bloc_test.dart`
+**Files:** `lib/features/sync/presentation/bloc/sync_bloc.dart`, `sync_event.dart`, `sync_state.dart`, `lib/features/sync/presentation/pages/splash_page.dart`, `lib/core/widgets/portal_loader.dart`, `lib/app/theme/motion.dart`, `test/features/sync/sync_bloc_test.dart`, `test/core/widgets/portal_loader_test.dart`
+
+### Task 15b: Background image precache (added 2026-11-12 by the owner)
+**Description:** After a completed sync, warm the disk cache of character images in the background so collection and portal screens show art offline. It never blocks the splash or the navigation to the menu.
+**Acceptance criteria:**
+- [ ] Starts after `SyncBloc` reaches success (and on later launches if not finished); the menu opens without waiting for it.
+- [ ] Downloads to the `cached_network_image` disk cache only (no decoding of ~800 images into memory), a few at a time (concurrency ≤ 4), stops when the app goes to background, resumes later; failures are skipped and retried on the next launch.
+- [ ] Uses only approved packages; if it needs `flutter_cache_manager` as a direct dependency, ask first.
+**Verification:** unit test with a fake downloader (concurrency limit, skip on error, resume); device: after first sync, airplane mode → collection shows art (once T17 exists).
+**Dependencies:** T15
+**Size:** S
 **Size:** M
 
 ### Checkpoint B (after T7 to T15)
