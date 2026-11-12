@@ -129,6 +129,7 @@ Every screen has: a loading state, an empty state (if it shows a list), an error
 - **AC2** Version label; 7 taps within 3 s open the demo panel (D2). A third row "Demo modunu kapat" hides it again.
 - **AC3** "İlerlemeyi sıfırla" (destructive style, confirm dialog in destructive style too) resets player state but keeps synced API data.
 - **AC4** Fan-project disclaimer text and audio credits link (from `assets/audio/CREDITS.md`).
+- **AC5** "Tüm görselleri çevrimdışı için indir" (§3 Images): starts a background download of all character images (≤ 4 parallel), shows progress `%X` and `downloaded / total`, a "Durdur" action cancels it, starting again resumes; the row shows "İndirildi" when every image is cached.
 
 ---
 
@@ -163,7 +164,10 @@ Key rules:
 - **Derived data is never stored twice.** Rarity, type and stats are computed from the stored character by `core/game` on load. A rarity pool index (`Map<Rarity, List<int>>`) is built once at startup and held in memory (DI singleton).
 - **Write-before-animate.** Portal and battle results are persisted first, then the Bloc emits the state that triggers animation (AC 2.3.8, 2.7.5).
 - **Economy is the only writer of coins**; every change carries a reason (`portal`, `duplicate`, `victory`, `defeat`, `draw`, `album`, `demo`) and is logged with `AppLogger` in debug.
-- **Images:** never prefetched in bulk (bandwidth). Owned cards are cached when first revealed; opponent and album art may fall back to an ink silhouette offline.
+- **Images** (changed 2026-11-12, owner decision): no automatic bulk prefetch (bandwidth; no connection-type detection, no new package).
+  - *Automatic, in the background, never blocking a screen:* art of owned cards, the active deck, and the next album page (the first incomplete page) is warmed into the `cached_network_image` disk cache.
+  - *On request:* Settings → "Tüm görselleri çevrimdışı için indir" downloads every character image to the disk cache, at most 4 in parallel, shows `%X` and `downloaded / total`, can be cancelled, and resumes where it stopped (already cached files are skipped).
+  - Anything not cached falls back to an ink silhouette offline (opponents, album art).
 - **Battle:** `BattleBloc` holds `BattleState` from `core/game`; on `PlayerActionChosen` it calls `battleEngine.resolvePlayerTurn` then `resolveAiTurn` with the injected `Random`, then emits `replaying(events)`; the page consumes events one by one and dispatches `ReplayFinished`.
 
 ---

@@ -6,7 +6,7 @@ Toolchain: Flutter 3.47.6 stable, Dart 3.13.5 (Mac and Windows machine).
 
 ## Where we left off (2026-11-12, Windows machine)
 - **Completed:** T1 to T15. Checkpoints A approved. Phase 3 (T10 to T15) done; Checkpoint B review pending (device checks open).
-- **Next task:** T15b only after the owner resolves its conflict with SPEC §3 (see T15b notes); otherwise T16 Card factory + rarity pool.
+- **Next task:** T16 Card factory + rarity pool (Phase 4). T15b decided (variant b) and moved to the Settings screen task (Week 2).
 - **Commits:** no `Co-Authored-By` lines (owner request 2026-11-12).
 - **Open notes:**
   - Reference Android device: TBD. Device and iOS Simulator checks pending (Checkpoint A).
@@ -232,16 +232,16 @@ T1 create ─┬─ T2 deps/lints ─┬─ T3 color+motion tokens ── T4 fon
 **Dependencies:** T6, T14
 **Files:** `lib/features/sync/presentation/bloc/sync_bloc.dart`, `sync_event.dart`, `sync_state.dart`, `lib/features/sync/presentation/pages/splash_page.dart`, `lib/core/widgets/portal_loader.dart`, `lib/app/theme/motion.dart`, `test/features/sync/sync_bloc_test.dart`, `test/core/widgets/portal_loader_test.dart`
 
-### Task 15b: Background image precache (added 2026-11-12 by the owner)
-**Description:** After a completed sync, warm the disk cache of character images in the background so collection and portal screens show art offline. It never blocks the splash or the navigation to the menu.
+### Task 15b: Image precache (owner decision 2026-11-12: variant b; **build together with the Settings screen task**, Week 2)
+**Description:** SPEC §3 Images + §2.9 AC5. No new package, no connection-type detection.
+- *Automatic:* warm the `cached_network_image` disk cache for owned cards, the active deck and the next album page; runs in the background after the menu opens and after a portal/deck/album change; never blocks a screen.
+- *Settings button* "Tüm görselleri çevrimdışı için indir": user-started, background, at most 4 parallel downloads, progress `%X` + `downloaded / total`, cancellable ("Durdur"), resumes (cached files skipped).
 **Acceptance criteria:**
-- [ ] Starts after `SyncBloc` reaches success (and on later launches if not finished); the menu opens without waiting for it.
-- [ ] Downloads to the `cached_network_image` disk cache only (no decoding of ~800 images into memory), a few at a time (concurrency ≤ 4), stops when the app goes to background, resumes later; failures are skipped and retried on the next launch.
-- [ ] Uses only approved packages; if it needs `flutter_cache_manager` as a direct dependency, ask first.
-**Verification:** unit test with a fake downloader (concurrency limit, skip on error, resume); device: after first sync, airplane mode → collection shows art (once T17 exists).
-**Dependencies:** T15
-**Size:** S
-**Open (2026-11-12):** conflicts with SPEC §3 "Images: never prefetched in bulk (bandwidth). Owned cards are cached when first revealed." All 826 avatars are roughly 10 to 15 MB. Not started; owner decides: change SPEC §3, limit it (e.g. Wi-Fi only, or owned + deck + next album page), or drop it. No new package is needed (`CachedNetworkImageProvider.defaultCacheManager.downloadFile`).
+- [ ] Downloads go to the disk cache only (`CachedNetworkImageProvider.defaultCacheManager.downloadFile`), no image decoding into memory.
+- [ ] Concurrency ≤ 4; cancel stops new downloads at once; restart skips cached files; failures are skipped and counted, never crash.
+- [ ] Automatic warm-up covers exactly owned + deck + next album page ids.
+**Verification:** unit tests with a fake downloader (concurrency limit, cancel, resume, failure); device: run the full download, airplane mode, collection and album show art.
+**Dependencies:** T15, Settings screen (Week 2), album (Week 3 for "next album page")
 **Size:** M
 
 ### Checkpoint B (after T7 to T15)
