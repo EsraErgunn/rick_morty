@@ -110,7 +110,11 @@ class CardFront extends StatelessWidget {
                             key: ValueKey('art-empty'),
                             color: AppColors.ink,
                           )
-                        : CardArt(url: data.imageUrl, name: data.name),
+                        : CardArt(
+                            url: data.imageUrl,
+                            name: data.name,
+                            rarity: data.rarity,
+                          ),
                   ),
                   const Divider(
                     height: AppOutline.thin,

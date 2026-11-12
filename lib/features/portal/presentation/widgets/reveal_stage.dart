@@ -246,7 +246,11 @@ class RevealStage extends StatelessWidget {
         alignment: Alignment.bottomCenter,
         child: ClipRect(
           key: const ValueKey('featured-drop'),
-          child: CardArt(url: card.imageUrl, name: card.name),
+          child: CardArt(
+            url: card.imageUrl,
+            name: card.name,
+            rarity: card.rarity,
+          ),
         ),
       ),
     );

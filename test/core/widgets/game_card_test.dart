@@ -92,13 +92,32 @@ void main() {
     expect(find.text('Sıradan'), findsOneWidget);
   });
 
-  testWidgets('image error shows the ink silhouette with the name', (
+  testWidgets('image error shows the initial on the rarity color + name', (
     tester,
   ) async {
-    CardArt.debugArtBuilder = (url, name) => InkSilhouette(name: name);
+    CardArt.debugArtBuilder = (url, name) =>
+        InitialArt(name: name, rarity: fixtureCard(23).rarity);
     await _pumpCard(tester, 23);
-    expect(find.byKey(const ValueKey('ink-silhouette')), findsOneWidget);
-    expect(find.text('Arcade Alien'), findsNWidgets(2)); // plate + silhouette
+    expect(find.byKey(const ValueKey('art-initial')), findsOneWidget);
+    expect(find.text('Arcade Alien'), findsNWidgets(2)); // plate + art
+    expect(find.text('A'), findsOneWidget);
+    final disc = tester.widget<DecoratedBox>(
+      find
+          .descendant(
+            of: find.byKey(const ValueKey('art-initial')),
+            matching: find.byType(DecoratedBox),
+          )
+          .first,
+    );
+    expect(
+      (disc.decoration as BoxDecoration).color,
+      RarityStyle.of(fixtureCard(23).rarity).color,
+    );
+  });
+
+  test('initial: first letter, upper case; empty name → ?', () {
+    expect(InitialArt.initialOf('rick Sanchez'), 'R');
+    expect(InitialArt.initialOf('  '), '?');
   });
 
   testWidgets('scales to any width at 5:7', (tester) async {
