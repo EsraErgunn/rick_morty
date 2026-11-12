@@ -14,6 +14,7 @@ import '../bloc/deck_bloc.dart';
 import '../bloc/deck_event.dart';
 import '../bloc/deck_state.dart';
 import '../widgets/deck_slots.dart';
+import '../../../../core/widgets/app_back_button.dart';
 
 /// Deck builder (SPEC §2.6, §4.6). Expects a [DeckBloc] above it.
 class DeckPage extends StatelessWidget {
@@ -36,7 +37,10 @@ class DeckPage extends StatelessWidget {
         DeckChange.none => null,
       },
       builder: (context, state) => Scaffold(
-        appBar: AppBar(title: Text(l10n.deckTitle)),
+        appBar: AppBar(
+          leading: AppBackButton(onFeedback: feedback.tap),
+          title: Text(l10n.deckTitle),
+        ),
         body: state.owned.isEmpty
             ? Center(
                 child: Text(

@@ -12,6 +12,7 @@ import '../bloc/battle_state.dart';
 import '../widgets/battle_result_view.dart';
 import '../widgets/battle_stage.dart';
 import '../widgets/pre_battle_view.dart';
+import '../../../../core/widgets/app_back_button.dart';
 
 /// Battle (SPEC §2.7, §4.7). Expects a [BattleBloc] above it.
 class BattlePage extends StatefulWidget {
@@ -89,10 +90,9 @@ class _BattlePageState extends State<BattlePage> {
         child: Scaffold(
           appBar: AppBar(
             title: Text(l10n.battleTitle),
-            leading: IconButton(
+            leading: AppBackButton(
               key: const ValueKey('battle-leave'),
-              tooltip: l10n.battleLeave,
-              icon: const Icon(Icons.close),
+              onFeedback: widget.feedback.select,
               onPressed: () => _confirmLeave(context),
             ),
             actions: [

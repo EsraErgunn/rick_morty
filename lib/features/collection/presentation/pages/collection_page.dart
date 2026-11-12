@@ -11,6 +11,7 @@ import '../bloc/collection_event.dart';
 import '../bloc/collection_state.dart';
 import '../widgets/collection_grid.dart';
 import '../widgets/filter_bar.dart';
+import '../../../../core/widgets/app_back_button.dart';
 
 /// Collection (SPEC §2.4, §4.4, §5.6). Expects a [CollectionBloc] above it.
 class CollectionPage extends StatelessWidget {
@@ -39,6 +40,7 @@ class CollectionPage extends StatelessWidget {
         final visible = state.visible;
         return Scaffold(
           appBar: AppBar(
+            leading: AppBackButton(onFeedback: feedback.tap),
             title: Text(l10n.collectionTitle),
             actions: [
               Center(

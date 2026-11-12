@@ -652,5 +652,9 @@
   "battleLeave": "Savaştan çık",
   "@battleLeave": {
     "description": "Leave button tooltip."
+  },
+  "backTooltip": "Geri",
+  "@backTooltip": {
+    "description": "Back button tooltip."
   }
 }

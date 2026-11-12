@@ -91,6 +91,9 @@ abstract final class AppSizes {
   static const double battleFaintTilt = 0.12;
   static const double hpBar = 8;
 
+  /// Minimum touch target (Material / accessibility).
+  static const double minTouch = 48;
+
   static const double iconSmall = 20;
   static const double iconLarge = 40;
 }

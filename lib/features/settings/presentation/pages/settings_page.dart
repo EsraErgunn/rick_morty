@@ -17,6 +17,7 @@ import '../bloc/settings_bloc.dart';
 import '../bloc/settings_event.dart';
 import '../bloc/settings_state.dart';
 import '../widgets/demo_panel.dart';
+import '../../../../core/widgets/app_back_button.dart';
 
 /// Settings (SPEC §2.9, §4.9). Expects a [SettingsBloc] above it.
 /// [extra] is a slot for more rows (image download, plan T36).
@@ -104,7 +105,10 @@ class SettingsPage extends StatelessWidget {
           }
 
           return Scaffold(
-            appBar: AppBar(title: Text(l10n.settingsTitle)),
+            appBar: AppBar(
+              leading: AppBackButton(onFeedback: feedback.tap),
+              title: Text(l10n.settingsTitle),
+            ),
             body: ListView(
               padding: const EdgeInsets.symmetric(vertical: AppSpacing.sm),
               children: [

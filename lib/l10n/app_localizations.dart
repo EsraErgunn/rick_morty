@@ -891,6 +891,12 @@ abstract class AppLocalizations {
   /// In tr, this message translates to:
   /// **'Savaştan çık'**
   String get battleLeave;
+
+  /// Back button tooltip.
+  ///
+  /// In tr, this message translates to:
+  /// **'Geri'**
+  String get backTooltip;
 }
 
 class _AppLocalizationsDelegate

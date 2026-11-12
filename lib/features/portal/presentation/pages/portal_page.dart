@@ -16,6 +16,7 @@ import '../bloc/portal_state.dart';
 import '../portal_feedback.dart';
 import '../widgets/portal_result_view.dart';
 import '../widgets/shake_hint.dart';
+import '../../../../core/widgets/app_back_button.dart';
 
 /// Portal screen (SPEC §2.3, §5.6). Expects a [PortalBloc] above it.
 /// Shake is listened to only while this page is shown and the app is in
@@ -105,6 +106,7 @@ class _PortalPageState extends State<PortalPage> with WidgetsBindingObserver {
       listener: _onState,
       builder: (context, state) => Scaffold(
         appBar: AppBar(
+          leading: AppBackButton(onFeedback: widget.feedback.button),
           actions: [
             Padding(
               padding: const EdgeInsets.only(right: AppSpacing.gutter),

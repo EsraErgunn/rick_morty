@@ -208,6 +208,23 @@ void main() {
     await unmount(tester);
   });
 
+  testWidgets('Android back mid-battle asks first; cancel keeps playing', (
+    tester,
+  ) async {
+    final (bloc, repo) = await pump(tester);
+    await tester.tap(find.byKey(const ValueKey('battle-start')));
+    await frames(tester, const Duration(milliseconds: 600));
+    await tester.binding.handlePopRoute();
+    await frames(tester, const Duration(milliseconds: 400));
+    expect(find.text('Savaştan çıkılsın mı?'), findsOneWidget);
+    await tester.tap(find.text('Devam et'));
+    await frames(tester, const Duration(milliseconds: 400));
+    expect(bloc.state.phase, BattlePhase.choosing);
+    expect(repo.finished, isEmpty);
+    expect(exits, 0);
+    await unmount(tester);
+  });
+
   group('cues (SPEC §4.7)', () {
     final l10n = lookupAppLocalizations(const Locale('tr'));
 

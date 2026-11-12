@@ -449,4 +449,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get battleLeave => 'Savaştan çık';
+
+  @override
+  String get backTooltip => 'Geri';
 }

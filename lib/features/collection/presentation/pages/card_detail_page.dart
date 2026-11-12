@@ -18,6 +18,7 @@ import '../bloc/card_detail_bloc.dart';
 import '../bloc/card_detail_event.dart';
 import '../bloc/card_detail_state.dart';
 import '../widgets/collection_grid.dart';
+import '../../../../core/widgets/app_back_button.dart';
 
 /// Card detail (SPEC §2.5, §4.5): tilt + holo + flip, back facts, and the
 /// deck action. Expects a [CardDetailBloc] above it.
@@ -44,6 +45,7 @@ class CardDetailPage extends StatelessWidget {
         final title = card?.name ?? l10n.cardDetailTitle('$id');
         return Scaffold(
           appBar: AppBar(
+            leading: AppBackButton(onFeedback: feedback.tap),
             title: Text(title),
             actions: [
               if (state.owned)

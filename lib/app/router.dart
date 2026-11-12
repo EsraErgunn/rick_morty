@@ -60,6 +60,9 @@ GoRouter createRouter({
   bool debugRoutes = kDebugMode,
   String initialLocation = AppRoutes.splash,
 }) {
+  // Screens are children of the menu, so `go('/portal')` builds the stack
+  // menu → portal: the back button and Android's back key return to the
+  // right parent (card detail → collection → menu).
   return GoRouter(
     initialLocation: initialLocation,
     errorBuilder: (context, state) => const NotFoundPage(),
@@ -89,77 +92,68 @@ GoRouter createRouter({
                 : null,
           );
         },
-      ),
-      if (portalPage != null)
-        GoRoute(
-          path: AppRoutes.portal,
-          builder: (context, _) => portalPage(context),
-        )
-      else
-        _placeholder(AppRoutes.portal, (l10n, _) => l10n.portalTitle),
-      GoRoute(
-        path: AppRoutes.collection,
-        builder: (context, state) =>
-            collectionPage?.call(context) ??
-            PlaceholderPage(
-              title: AppLocalizations.of(context).collectionTitle,
-            ),
         routes: [
+          _screen(AppRoutes.portal, portalPage, (l10n, _) => l10n.portalTitle),
           GoRoute(
-            path: ':id',
-            builder: (context, state) {
-              final raw = state.pathParameters['id']!;
-              final id = int.tryParse(raw);
-              if (id == null || cardDetailPage == null) {
-                return PlaceholderPage(
-                  title: AppLocalizations.of(context).cardDetailTitle(raw),
-                );
-              }
-              return cardDetailPage(context, id);
-            },
+            path: _child(AppRoutes.collection),
+            builder: (context, state) =>
+                collectionPage?.call(context) ??
+                PlaceholderPage(
+                  title: AppLocalizations.of(context).collectionTitle,
+                ),
+            routes: [
+              GoRoute(
+                path: ':id',
+                builder: (context, state) {
+                  final raw = state.pathParameters['id']!;
+                  final id = int.tryParse(raw);
+                  if (id == null || cardDetailPage == null) {
+                    return PlaceholderPage(
+                      title: AppLocalizations.of(context).cardDetailTitle(raw),
+                    );
+                  }
+                  return cardDetailPage(context, id);
+                },
+              ),
+            ],
           ),
-        ],
-      ),
-      if (deckPage != null)
-        GoRoute(
-          path: AppRoutes.deck,
-          builder: (context, _) => deckPage(context),
-        )
-      else
-        _placeholder(AppRoutes.deck, (l10n, _) => l10n.deckTitle),
-      if (battlePage != null)
-        GoRoute(
-          path: AppRoutes.battle,
-          builder: (context, _) => battlePage(context),
-        )
-      else
-        _placeholder(AppRoutes.battle, (l10n, _) => l10n.battleTitle),
-      _placeholder(
-        AppRoutes.album,
-        (l10n, _) => l10n.albumTitle,
-        routes: [
+          _screen(AppRoutes.deck, deckPage, (l10n, _) => l10n.deckTitle),
+          _screen(AppRoutes.battle, battlePage, (l10n, _) => l10n.battleTitle),
           _placeholder(
-            ':episodeId',
-            (l10n, state) =>
-                l10n.albumPageTitle(state.pathParameters['episodeId']!),
+            _child(AppRoutes.album),
+            (l10n, _) => l10n.albumTitle,
+            routes: [
+              _placeholder(
+                ':episodeId',
+                (l10n, state) =>
+                    l10n.albumPageTitle(state.pathParameters['episodeId']!),
+              ),
+            ],
           ),
+          _screen(
+            AppRoutes.settings,
+            settingsPage,
+            (l10n, _) => l10n.settingsTitle,
+          ),
+          if (debugRoutes)
+            GoRoute(
+              path: _child(AppRoutes.cardLab),
+              builder: (context, state) => CardLabPage(
+                cards: cardLabCards?.call() ?? const [],
+                onOpen: (id) => context.push(AppRoutes.cardDetail(id)),
+              ),
+            ),
         ],
       ),
-      if (settingsPage != null)
-        GoRoute(
-          path: AppRoutes.settings,
-          builder: (context, _) => settingsPage(context),
-        )
-      else
-        _placeholder(AppRoutes.settings, (l10n, _) => l10n.settingsTitle),
-      if (debugRoutes)
-        GoRoute(
-          path: AppRoutes.cardLab,
-          builder: (context, state) => CardLabPage(
-            cards: cardLabCards?.call() ?? const [],
-            onOpen: (id) => context.push(AppRoutes.cardDetail(id)),
-          ),
-        ),
     ],
   );
 }
+
+/// '/portal' → 'portal' (a child of the menu route).
+String _child(String path) => path.substring(1);
+
+/// A menu child: the real page when built, otherwise a placeholder.
+GoRoute _screen(String path, WidgetBuilder? page, _TitleOf title) =>
+    page == null
+    ? _placeholder(_child(path), title)
+    : GoRoute(path: _child(path), builder: (context, _) => page(context));
