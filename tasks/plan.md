@@ -6,7 +6,7 @@ Toolchain: Flutter 3.47.6 stable, Dart 3.13.5 (Mac and Windows machine).
 
 ## Where we left off (2026-11-12, Windows machine)
 - **Completed:** T1 to T9. Checkpoint A approved and pushed (2026-11-12). Phase 2 (T7 to T9) done, owner review pending.
-- **Next task:** T10 Dio client (Phase 3), after the owner decides on the stat-roll correlation (see T9 notes).
+- **Next task:** T10 Dio client (Phase 3). Stat-roll fix (option A) done; battle balance task recorded for Week 3 (see "Carry-over to Week 3").
 - **Commits:** no `Co-Authored-By` lines (owner request 2026-11-12).
 - **Open notes:**
   - Reference Android device: TBD. Device and iOS Simulator checks pending (Checkpoint A).
@@ -308,6 +308,13 @@ T1 create ─┬─ T2 deps/lints ─┬─ T3 color+motion tokens ── T4 fon
 
 ---
 
+## Carry-over to Week 3: battle balance (owner, 2026-11-12)
+Add this to the Week 3 battle engine task when the Week 3 plan is written. No code change before then.
+- **Problem:** with the current base stats (HP 100, ATK 20, DEF 12) two equal cards need about 6 hits to faint each other (average 6.2 common to 6.8 legendary with `dmg = ATK * 50 / (50 + DEF)`). A 3v3 battle then runs about 36 turns; with the 40-turn limit draws may be frequent and the battle is too long for the jury demo.
+- **Simulation:** a seeded simulation of 1000 battles (seeds 0 to 999) with the real engine and AI: equal teams, and teams with rarity gaps (e.g. common vs rare, rare vs epic, common vs legendary, mixed tiers from [GM §6]). Report average turns per battle, draw rate, and win rate by rarity gap. Keep it as a test or a `tool/` script so it can be re-run.
+- **Targets:** equal cards faint each other in 3 to 4 hits; 15 to 25 turns per battle; draws < 5%.
+- **If off target:** adjust the base ATK/HP ratio (e.g. raise base ATK or lower base HP). **Propose the change with the simulation numbers to the owner first**, then update [GM §4] and the reference values in the same commit.
+
 ## Risks and mitigations
 | Risk | Impact | Mitigation |
 |---|---|---|
@@ -372,8 +379,9 @@ T1 create ─┬─ T2 deps/lints ─┬─ T3 color+motion tokens ── T4 fon
 ### T9 (2026-11-12)
 - `CardStats.forCharacter(id, rarity)` (equatable), `Passive.fromStatus`, `Passives.zombieReviveHp`, `Passives.attackMultiplier(passive, random)`. English identifiers `zombie` / `uncertain`; UI names Zombi / Belirsiz come from l10n later.
 - Hand-computed (Python, independent) stats match: Rick 135/32/17/13, Morty 142/34/18/14, Conroy 94/22/12/9.
-- **Balance observation (open, owner decides):** `r(id, k) = hash(id*31 + k)` is linear in `k`, so for every card the ATK, DEF and SPD rolls are the HP roll shifted by a fixed 0.618 / 0.236 / 0.854 (mod 1). All 826 stat profiles lie on one curve; corr(HP roll, ATK roll) = -0.41. Possible fix: apply a non-linear mixer (e.g. murmur3 `fmix32`) to the hash. Changing it needs a GM §4 update in the same commit.
-- `flutter analyze --fatal-infos` clean, `flutter test` 135/135 (whole suite).
+- **Balance observation (resolved 2026-11-12, option A applied in `759cf0f`):** `r(id, k) = hash(id*31 + k)` is linear in `k`, so for every card the ATK, DEF and SPD rolls are the HP roll shifted by a fixed 0.618 / 0.236 / 0.854 (mod 1). All 826 stat profiles lie on one curve; corr(HP roll, ATK roll) = -0.41. Possible fix: apply a non-linear mixer (e.g. murmur3 `fmix32`) to the hash. Changing it needs a GM §4 update in the same commit.
+- After the mixer: Rick 152/33/17/17, Morty 140/26/16/15, Conroy 85/18/13/11; GM §4 updated in the same commit.
+- `flutter analyze --fatal-infos` clean, `flutter test` 138/138 (whole suite).
 
 ### Environment: Windows machine (2026-11-12)
 - Flutter SDK at `C:\flutter` pinned to **3.47.6** (`git checkout 3.47.6`; it was 3.38.3 / Dart 3.10.1, which fails `pub get` on `sdk: ^3.13.5`). No iOS work on this machine (`pod install`, iOS builds run on the Mac).
