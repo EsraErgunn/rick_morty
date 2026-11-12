@@ -2,20 +2,17 @@
 
 Status: **approved** (2026-11-11)
 Sources: `docs/SPEC.md` (approved), `docs/PROJECT.md` §5 Week 1, `CLAUDE.md`, `.claude/rules/*`, `rm-game-mechanics` [GM].
-Toolchain found on this machine: Flutter 3.47.6 stable, Dart 3.13.5.
+Toolchain: Flutter 3.47.6 stable, Dart 3.13.5 (Mac and Windows machine).
 
-## Where we left off (2026-11-11, end of session)
-- **Last completed task:** T2 Dependencies and lints (committed). One check is open: see "APK build" in the T2 notes.
-- **Next task:** T3 Color, motion and spacing tokens (+ contrast test). T7 (fixtures) can also start, since it only needs T1.
-- **Before continuing on the new computer:**
-  1. `flutter pub get`, then `cd ios && pod install` (shell needs `LANG=en_US.UTF-8` / `LC_ALL=en_US.UTF-8`, see T2 notes).
-  2. `flutter analyze --fatal-infos` and `flutter test`.
-  3. Re-verify `flutter build apk --debug` (open item from T2).
+## Where we left off (2026-11-12, Windows machine)
+- **Completed:** T1 to T6 (Phase 1). Checkpoint A: analyze + tests + APK build done; device run and owner review open.
+- **Next task:** T7 Test fixtures from the real API, then T8 and T9 (Phase 2, pure Dart engine).
 - **Open notes:**
   - Reference Android device: TBD. Device and iOS Simulator checks pending (Checkpoint A).
-  - iOS Simulator install hang from T1 (see Known issue), retry at Checkpoint C.
+  - iOS Simulator install hang from T1 (see Known issue), retry at Checkpoint C. `pod install` + iOS build after T5 (new `generate: true`) to re-check on the Mac.
   - Hive init path: `hive_ce` alone needs a directory; `hive_ce_flutter` or `path_provider` is not in the approved list. Decide before T12.
-  - To check on device (collected): T1 app opens on Android device and iOS Simulator. T2 none (no UI change).
+  - Golden `test/app/theme/goldens/glyph_sample.png` was generated on Windows; text rendering differs slightly on macOS, so it may fail there. If it does: regenerate on one agreed machine, or tag it and run goldens on that machine only.
+  - To check on device (collected): T1 app opens; T3 to T6 see Checkpoint A.
 
 ## Devices
 - **Reference Android device:** TBD (no device connected yet). All performance checks run on it once chosen.
@@ -121,10 +118,10 @@ T1 create ─┬─ T2 deps/lints ─┬─ T3 color+motion tokens ── T4 fon
 **Size:** S
 
 ### Checkpoint A (after T1 to T6)
-- [ ] `flutter analyze --fatal-infos` clean, `flutter test` green
+- [x] `flutter analyze --fatal-infos` clean, `flutter test` green (57/57, 2026-11-12)
 - [ ] App runs on the reference Android device and the iOS Simulator: dark themed placeholder screens, Turkish text, fonts correct
   - pending: no device connected (Android device and iOS Simulator run of T1 not verified; build-only so far)
-- [ ] Contrast and glyph results written into SPEC
+- [x] Contrast and glyph results written into SPEC
 - [ ] Review with you before continuing
 
 ---
@@ -341,6 +338,27 @@ T1 create ─┬─ T2 deps/lints ─┬─ T3 color+motion tokens ── T4 fon
 - **APK build: to be re-verified at home.** The first `flutter build apk --debug` ran 20+ min (first Gradle build with native plugins) and was stopped when the session ended. Afterwards `./gradlew assembleDebug` (with `JAVA_HOME` = Android Studio JBR) finished `BUILD SUCCESSFUL in 56s`, but `flutter build apk --debug` itself was stopped again before finishing. Note: `./gradlew` from a plain shell fails with "Unable to locate a Java Runtime" because `JAVA_HOME` is not set; `flutter` finds the JBR on its own.
 - **APK build verified 2026-11-12 (Windows machine):** `flutter build apk --debug` → `✓ Built build\app\outputs\flutter-apk\app-debug.apk`. First run took about 34 min (Gradle 9.3.1 download + Build-Tools 36 install), after the Avast truststore fix below.
 - `lib/` folder skeleton: not created on purpose (empty folders are not committed; each folder gets its first file in a later task).
+
+### T3 (2026-11-12)
+- `AppColors` (SPEC `void` is `voidBase`: `void` is a Dart keyword), `AppMotion`, `AppSpacing`, `AppRadius`, `AppOutline`, `AppDepth` (hard shadow offset).
+- Owner decisions: text on rarity frames is `ink`; `warn` changed `#F7B731` → `#FF9F43` (no shared meaning with legendary gold).
+- `contrast_test.dart`: 19 pairs, all pass; numbers in SPEC §5.2. Review page `docs/design/palette_preview.html` (placeholder cards only).
+
+### T4 (2026-11-12)
+- Static TTFs from Google Fonts with OFL: Grandstander 700/900, Atkinson Hyperlegible Next 400/700. Flutter families `Grandstander`, `AtkinsonHyperlegibleNext`.
+- `glyph_test.dart` parses each TTF `cmap` (all 12 Turkish glyphs present) and `GSUB` (`tnum` present), checks the scale, renders a golden. Result in SPEC §5.3: no swap.
+- `token_usage_test.dart` enforces SPEC §5.8 T3 over all of `lib/` (except `app/theme`, `l10n`, generated code).
+
+### T5 (2026-11-12)
+- `l10n.yaml` (`nullable-getter: false`), `lib/l10n/app_tr.arb`; generated `app_localizations*.dart` are committed. `pubspec.yaml` has `flutter: generate: true`.
+- `AppLogger` (`lib/core/logging/`): `dart:developer` log, only when `kDebugMode`; sink injectable for tests. Test also scans `lib/` for `print(`.
+- Template counter app and `test/widget_test.dart` removed.
+
+### T6 (2026-11-12)
+- `di.dart` (`getIt`, `configureDependencies()`), `router.dart` (`AppRoutes`, `createRouter()`), `placeholder_page.dart`, `not_found_page.dart` (one small file more than planned, same task scope).
+- `PortalCardsApp` takes the router as a parameter (`main` passes `getIt<GoRouter>()`), so widget tests need no DI.
+- Placeholders show only the title (as planned), so on a device the app stays on the `/splash` placeholder until T15.
+- Checks: `flutter analyze --fatal-infos` clean, `flutter test` 57/57, `flutter build apk --debug` OK.
 
 ### Environment: Windows machine (2026-11-12)
 - Flutter SDK at `C:\flutter` pinned to **3.47.6** (`git checkout 3.47.6`; it was 3.38.3 / Dart 3.10.1, which fails `pub get` on `sdk: ^3.13.5`). No iOS work on this machine (`pod install`, iOS builds run on the Mac).
