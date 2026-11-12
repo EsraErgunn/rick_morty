@@ -35,6 +35,7 @@ void main() {
       expect(s.forceNextLegendary, isFalse);
       expect(s.syncProgress, isEmpty);
       expect(s.syncTotals, isEmpty);
+      expect(s.syncPages, isEmpty);
       expect(s.syncVersion, isNull);
       expect(s.syncedAt, isNull);
       expect(s.isSynced, isFalse);
@@ -54,6 +55,7 @@ void main() {
         forceNextLegendary: true,
         syncProgress: const {'character': 42, 'episode': 3, 'location': 7},
         syncTotals: const {'character': 826, 'episode': 51, 'location': 126},
+        syncPages: const {'character': 42, 'episode': 3, 'location': 7},
         syncVersion: 1,
         syncedAt: DateTime.utc(2026, 11, 12, 10, 30),
       );

@@ -72,6 +72,7 @@ class PlayerState extends Equatable {
     this.forceNextLegendary = false,
     this.syncProgress = const {},
     this.syncTotals = const {},
+    this.syncPages = const {},
     this.syncVersion,
     this.syncedAt,
   });
@@ -109,6 +110,10 @@ class PlayerState extends Equatable {
   @HiveField(10)
   final Map<String, int> syncTotals;
 
+  /// `info.pages` per resource, saved with the first page.
+  @HiveField(13)
+  final Map<String, int> syncPages;
+
   /// Set when a full sync completed; null until then.
   @HiveField(11)
   final int? syncVersion;
@@ -129,6 +134,7 @@ class PlayerState extends Equatable {
     bool? forceNextLegendary,
     Map<String, int>? syncProgress,
     Map<String, int>? syncTotals,
+    Map<String, int>? syncPages,
     int? syncVersion,
     DateTime? syncedAt,
   }) => PlayerState(
@@ -143,6 +149,7 @@ class PlayerState extends Equatable {
     forceNextLegendary: forceNextLegendary ?? this.forceNextLegendary,
     syncProgress: syncProgress ?? this.syncProgress,
     syncTotals: syncTotals ?? this.syncTotals,
+    syncPages: syncPages ?? this.syncPages,
     syncVersion: syncVersion ?? this.syncVersion,
     syncedAt: syncedAt ?? this.syncedAt,
   );
@@ -160,6 +167,7 @@ class PlayerState extends Equatable {
     forceNextLegendary,
     syncProgress,
     syncTotals,
+    syncPages,
     syncVersion,
     syncedAt,
   ];
