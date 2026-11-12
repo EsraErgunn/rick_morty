@@ -1,5 +1,6 @@
 import 'package:hive_ce/hive.dart';
 
+import 'player_state.dart';
 import 'stored_models.dart';
 
 /// Box names: one box per aggregate (architecture rules).
@@ -18,6 +19,9 @@ void initHive(String directory) {
   _register(StoredCharacterAdapter());
   _register(StoredEpisodeAdapter());
   _register(StoredLocationAdapter());
+  _register(PlayerSettingsAdapter());
+  _register(PlayerStateAdapter());
+  _register(OwnedCardAdapter());
 }
 
 void _register<T>(TypeAdapter<T> adapter) {

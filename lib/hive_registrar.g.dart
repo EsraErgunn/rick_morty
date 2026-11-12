@@ -3,10 +3,14 @@
 // Check in to version control
 
 import 'package:hive_ce/hive_ce.dart';
+import 'package:portalcards/core/storage/player_state.dart';
 import 'package:portalcards/core/storage/stored_models.dart';
 
 extension HiveRegistrar on HiveInterface {
   void registerAdapters() {
+    registerAdapter(OwnedCardAdapter());
+    registerAdapter(PlayerSettingsAdapter());
+    registerAdapter(PlayerStateAdapter());
     registerAdapter(StoredCharacterAdapter());
     registerAdapter(StoredEpisodeAdapter());
     registerAdapter(StoredLocationAdapter());
@@ -15,6 +19,9 @@ extension HiveRegistrar on HiveInterface {
 
 extension IsolatedHiveRegistrar on IsolatedHiveInterface {
   void registerAdapters() {
+    registerAdapter(OwnedCardAdapter());
+    registerAdapter(PlayerSettingsAdapter());
+    registerAdapter(PlayerStateAdapter());
     registerAdapter(StoredCharacterAdapter());
     registerAdapter(StoredEpisodeAdapter());
     registerAdapter(StoredLocationAdapter());
