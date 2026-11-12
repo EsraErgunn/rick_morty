@@ -73,3 +73,9 @@ final class NotEnoughCoinsFailure extends Failure {
 final class DeckFullFailure extends Failure {
   const DeckFullFailure() : super('deck full');
 }
+
+/// A battle move that the rules do not allow (fainted card, wrong side,
+/// not your turn, battle over). Nothing changed.
+final class InvalidMoveFailure extends Failure {
+  const InvalidMoveFailure([super.message = 'invalid move']);
+}
