@@ -1,4 +1,6 @@
+import 'dart:async';
 import 'dart:io';
+import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -37,6 +39,51 @@ void main() {
         expect(cache.failed, isTrue);
       },
     );
+
+    test('a program that does not warm up in time falls back', () async {
+      final cache = ShaderCache(
+        loader: (_) => ui.FragmentProgram.fromAsset(ShaderCache.holoAsset),
+        warmer: (_) => Completer<void>().future, // GPU never answers
+        limit: const Duration(milliseconds: 50),
+      );
+      await cache.load();
+      expect(cache.holo, isNull);
+      expect(cache.portal, isNull);
+      expect(cache.failed, isTrue);
+    });
+
+    test('a loader that hangs falls back', () async {
+      final cache = ShaderCache(
+        loader: (_) => Completer<ui.FragmentProgram>().future,
+        limit: const Duration(milliseconds: 50),
+      );
+      await cache.load();
+      expect(cache.failedFor(ShaderCache.portalAsset), isTrue);
+    });
+
+    test(
+      'disabled: nothing is loaded, every widget uses its fallback',
+      () async {
+        var asked = 0;
+        final cache = ShaderCache(
+          loader: (_) async {
+            asked++;
+            throw StateError('should not load');
+          },
+          enabled: false,
+        );
+        await cache.load();
+        expect(asked, 0);
+        expect(cache.holo, isNull);
+        expect(cache.portal, isNull);
+      },
+    );
+
+    test('DISABLE_SHADERS is honored only outside release', () {
+      expect(shadersDisabled(isRelease: false, requested: true), isTrue);
+      expect(shadersDisabled(isRelease: true, requested: true), isFalse);
+      expect(shadersDisabled(isRelease: false, requested: false), isFalse);
+    });
 
     test('pubspec lists the shader under flutter: shaders:', () {
       final pubspec = File('pubspec.yaml').readAsStringSync();

@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:get_it/get_it.dart';
-import 'package:flutter/foundation.dart' show kDebugMode;
+import 'package:flutter/foundation.dart' show kDebugMode, kReleaseMode;
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:path_provider/path_provider.dart';
@@ -78,7 +78,9 @@ Future<void> configureDependencies({
   final player = await PlayerStore.open();
   final collection = await CollectionStore.open();
   // Shaders load once per run, before any card needs them.
-  final shaders = ShaderCache();
+  final shaders = ShaderCache(
+    enabled: !shadersDisabled(isRelease: kReleaseMode),
+  );
   await shaders.load();
 
   getIt

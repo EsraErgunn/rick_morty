@@ -27,6 +27,10 @@ abstract final class AppMotion {
   /// sync (min visible + close + margin); then it navigates anyway.
   static const Duration splashExitLimit = Duration(milliseconds: 1500);
 
+  /// A shader that does not load and warm up within this falls back to
+  /// its static drawing.
+  static const Duration shaderLoadLimit = Duration(seconds: 3);
+
   static const Duration portalSpin = Duration(milliseconds: 3200);
 
   /// Shake hint: one swing; three swings then [hintPause] (SPEC §4.3).
