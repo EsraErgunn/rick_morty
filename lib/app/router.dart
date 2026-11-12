@@ -54,6 +54,7 @@ GoRouter createRouter({
   GameCardData? Function(int id)? cardById,
   TiltStream? tiltStream,
   ShaderCache? shaders,
+  WidgetBuilder? portalPage,
   bool debugRoutes = kDebugMode,
   String initialLocation = AppRoutes.splash,
 }) {
@@ -83,7 +84,13 @@ GoRouter createRouter({
           );
         },
       ),
-      _placeholder(AppRoutes.portal, (l10n, _) => l10n.portalTitle),
+      if (portalPage != null)
+        GoRoute(
+          path: AppRoutes.portal,
+          builder: (context, _) => portalPage(context),
+        )
+      else
+        _placeholder(AppRoutes.portal, (l10n, _) => l10n.portalTitle),
       _placeholder(
         AppRoutes.collection,
         (l10n, _) => l10n.collectionTitle,

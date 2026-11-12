@@ -1,0 +1,68 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../../../core/errors/failures.dart';
+import '../../domain/portal_repository.dart';
+import 'portal_event.dart';
+import 'portal_state.dart';
+
+/// Portal screen flow (SPEC §2.3). The result is saved by the repository
+/// before the state turns to `revealing`, so the animation can never lose
+/// a card or refund coins (AC8). Sounds and haptics are side effects of
+/// state changes and scene beats, handled by the page's listeners.
+class PortalBloc extends Bloc<PortalEvent, PortalState> {
+  PortalBloc(this._repository) : super(const PortalState()) {
+    on<PortalStarted>(_onStarted);
+    on<PortalShaken>(_onOpen);
+    on<PortalOpenRequested>(_onOpen);
+    on<RevealFinished>(_onRevealFinished);
+    on<PortalReset>(_onReset);
+  }
+
+  final PortalRepository _repository;
+
+  void _onStarted(PortalStarted event, Emitter<PortalState> emit) => emit(
+    state.copyWith(
+      coins: _repository.coins,
+      showShakeHint: !_repository.shakeHintSeen,
+    ),
+  );
+
+  Future<void> _onOpen(PortalEvent event, Emitter<PortalState> emit) async {
+    if (state.busy) return;
+    emit(state.copyWith(phase: PortalPhase.opening, clearFailure: true));
+
+    final result = await _repository.open();
+    result.match(
+      (failure) => emit(
+        failure is NotEnoughCoinsFailure
+            ? state.copyWith(
+                phase: PortalPhase.idle,
+                coins: failure.balance,
+                notEnoughCoins: state.notEnoughCoins + 1,
+              )
+            : state.copyWith(phase: PortalPhase.idle, failure: failure),
+      ),
+      (r) => emit(
+        state.copyWith(
+          phase: PortalPhase.revealing,
+          result: r,
+          coins: r.coinsAfter,
+          showShakeHint: false,
+        ),
+      ),
+    );
+  }
+
+  void _onRevealFinished(RevealFinished event, Emitter<PortalState> emit) {
+    if (state.phase != PortalPhase.revealing) return;
+    emit(state.copyWith(phase: PortalPhase.revealed));
+  }
+
+  void _onReset(PortalReset event, Emitter<PortalState> emit) => emit(
+    state.copyWith(
+      phase: PortalPhase.idle,
+      coins: _repository.coins,
+      clearResult: true,
+    ),
+  );
+}

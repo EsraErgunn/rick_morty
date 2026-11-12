@@ -65,4 +65,23 @@ abstract final class AppSizes {
 
   /// Max width of centered content blocks (text, bars, buttons).
   static const double contentMaxWidth = 320;
+
+  /// Portal on the portal screen (shrinks on small screens).
+  static const double portalHero = 300;
+
+  /// Card width in the reveal scene.
+  static const double revealCard = 200;
+
+  /// Screen shake amplitude on the portal burst (SPEC §4.3).
+  static const double screenShake = 6;
+
+  /// Coin counter shake amplitude.
+  static const double coinShake = 8;
+
+  /// Hover bob of the landed card.
+  static const double hoverBob = 2;
+
+  /// Icon sizes.
+  static const double iconSmall = 20;
+  static const double iconLarge = 40;
 }

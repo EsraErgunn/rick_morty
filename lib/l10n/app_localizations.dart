@@ -333,6 +333,72 @@ abstract class AppLocalizations {
   /// In tr, this message translates to:
   /// **'Önce verileri indir: kart laboratuvarı senkronize karakterleri kullanır.'**
   String get cardLabEmpty;
+
+  /// Primary button on the portal screen.
+  ///
+  /// In tr, this message translates to:
+  /// **'Portalı aç · {cost}'**
+  String portalOpenButton(int cost);
+
+  /// First-visit hint above the idle portal (SPEC D4).
+  ///
+  /// In tr, this message translates to:
+  /// **'Telefonu salla!'**
+  String get portalShakeHint;
+
+  /// SPEC 2.3 AC2.
+  ///
+  /// In tr, this message translates to:
+  /// **'Portal için {cost} coin gerekli. Savaşarak coin kazan.'**
+  String portalNotEnoughCoins(int cost);
+
+  /// Action in the not-enough-coins message.
+  ///
+  /// In tr, this message translates to:
+  /// **'Savaşa git'**
+  String get portalGoToBattle;
+
+  /// Hint under the landed card back.
+  ///
+  /// In tr, this message translates to:
+  /// **'Çevirmek için dokun'**
+  String get portalTapToFlip;
+
+  /// After a reveal: open another portal.
+  ///
+  /// In tr, this message translates to:
+  /// **'Tekrar aç'**
+  String get portalOpenAgain;
+
+  /// After a reveal: go to the collection.
+  ///
+  /// In tr, this message translates to:
+  /// **'Koleksiyona git'**
+  String get portalToCollection;
+
+  /// Shown when the card is a duplicate.
+  ///
+  /// In tr, this message translates to:
+  /// **'Zaten vardı · +{coins} coin'**
+  String portalDuplicate(int coins);
+
+  /// Shown when the card is new.
+  ///
+  /// In tr, this message translates to:
+  /// **'Yeni kart!'**
+  String get portalNewCard;
+
+  /// Accessibility label of the coin counter.
+  ///
+  /// In tr, this message translates to:
+  /// **'{coins} coin'**
+  String coinsLabel(int coins);
+
+  /// Portal failed for a storage reason.
+  ///
+  /// In tr, this message translates to:
+  /// **'Portal açılamadı. Tekrar dene.'**
+  String get portalError;
 }
 
 class _AppLocalizationsDelegate

@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:get_it/get_it.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -18,6 +19,10 @@ import '../core/storage/player_store.dart';
 import '../core/widgets/shader_cache.dart';
 import '../features/portal/data/portal_repository_impl.dart';
 import '../features/portal/domain/portal_repository.dart';
+import '../features/portal/presentation/bloc/portal_bloc.dart';
+import '../features/portal/presentation/bloc/portal_event.dart';
+import '../features/portal/presentation/pages/portal_page.dart';
+import '../features/portal/presentation/portal_feedback.dart';
 import '../features/sync/data/remote_data_source.dart';
 import '../features/sync/data/sync_repository_impl.dart';
 import '../features/sync/domain/sync_repository.dart';
@@ -102,6 +107,17 @@ Future<void> configureDependencies({
         initialLocation: initialLocation,
         tiltStream: getIt(),
         shaders: getIt(),
+        portalPage: (context) => BlocProvider(
+          create: (_) => PortalBloc(getIt())..add(const PortalStarted()),
+          child: PortalPage(
+            shaders: getIt(),
+            shake: getIt(),
+            feedback: PortalFeedback(audio: getIt(), haptics: getIt()),
+            deckReady: getIt<PlayerStore>().state.deck.length == 3,
+            onGoToBattle: () => context.go(AppRoutes.battle),
+            onGoToCollection: () => context.go(AppRoutes.collection),
+          ),
+        ),
         cardById: (id) => switch (getIt<ApiDataStore>().character(id)) {
           final c? => CardFactory.fromCharacter(c),
           null => null,

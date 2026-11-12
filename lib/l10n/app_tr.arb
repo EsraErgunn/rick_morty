@@ -185,5 +185,73 @@
   "cardLabEmpty": "Önce verileri indir: kart laboratuvarı senkronize karakterleri kullanır.",
   "@cardLabEmpty": {
     "description": "Debug card lab when no characters are synced."
+  },
+  "portalOpenButton": "Portalı aç · {cost}",
+  "@portalOpenButton": {
+    "description": "Primary button on the portal screen.",
+    "placeholders": {
+      "cost": {
+        "type": "int",
+        "example": "100"
+      }
+    }
+  },
+  "portalShakeHint": "Telefonu salla!",
+  "@portalShakeHint": {
+    "description": "First-visit hint above the idle portal (SPEC D4)."
+  },
+  "portalNotEnoughCoins": "Portal için {cost} coin gerekli. Savaşarak coin kazan.",
+  "@portalNotEnoughCoins": {
+    "description": "SPEC 2.3 AC2.",
+    "placeholders": {
+      "cost": {
+        "type": "int",
+        "example": "100"
+      }
+    }
+  },
+  "portalGoToBattle": "Savaşa git",
+  "@portalGoToBattle": {
+    "description": "Action in the not-enough-coins message."
+  },
+  "portalTapToFlip": "Çevirmek için dokun",
+  "@portalTapToFlip": {
+    "description": "Hint under the landed card back."
+  },
+  "portalOpenAgain": "Tekrar aç",
+  "@portalOpenAgain": {
+    "description": "After a reveal: open another portal."
+  },
+  "portalToCollection": "Koleksiyona git",
+  "@portalToCollection": {
+    "description": "After a reveal: go to the collection."
+  },
+  "portalDuplicate": "Zaten vardı · +{coins} coin",
+  "@portalDuplicate": {
+    "description": "Shown when the card is a duplicate.",
+    "placeholders": {
+      "coins": {
+        "type": "int",
+        "example": "40"
+      }
+    }
+  },
+  "portalNewCard": "Yeni kart!",
+  "@portalNewCard": {
+    "description": "Shown when the card is new."
+  },
+  "coinsLabel": "{coins} coin",
+  "@coinsLabel": {
+    "description": "Accessibility label of the coin counter.",
+    "placeholders": {
+      "coins": {
+        "type": "int",
+        "example": "300"
+      }
+    }
+  },
+  "portalError": "Portal açılamadı. Tekrar dene.",
+  "@portalError": {
+    "description": "Portal failed for a storage reason."
   }
 }

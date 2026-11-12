@@ -138,4 +138,45 @@ class AppLocalizationsTr extends AppLocalizations {
   @override
   String get cardLabEmpty =>
       'Önce verileri indir: kart laboratuvarı senkronize karakterleri kullanır.';
+
+  @override
+  String portalOpenButton(int cost) {
+    return 'Portalı aç · $cost';
+  }
+
+  @override
+  String get portalShakeHint => 'Telefonu salla!';
+
+  @override
+  String portalNotEnoughCoins(int cost) {
+    return 'Portal için $cost coin gerekli. Savaşarak coin kazan.';
+  }
+
+  @override
+  String get portalGoToBattle => 'Savaşa git';
+
+  @override
+  String get portalTapToFlip => 'Çevirmek için dokun';
+
+  @override
+  String get portalOpenAgain => 'Tekrar aç';
+
+  @override
+  String get portalToCollection => 'Koleksiyona git';
+
+  @override
+  String portalDuplicate(int coins) {
+    return 'Zaten vardı · +$coins coin';
+  }
+
+  @override
+  String get portalNewCard => 'Yeni kart!';
+
+  @override
+  String coinsLabel(int coins) {
+    return '$coins coin';
+  }
+
+  @override
+  String get portalError => 'Portal açılamadı. Tekrar dene.';
 }
