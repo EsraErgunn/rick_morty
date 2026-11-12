@@ -543,6 +543,120 @@ abstract class AppLocalizations {
   /// In tr, this message translates to:
   /// **'{name}!'**
   String featuredCallout(String name);
+
+  /// Toggle.
+  ///
+  /// In tr, this message translates to:
+  /// **'Ses efektleri'**
+  String get settingsSound;
+
+  /// Toggle.
+  ///
+  /// In tr, this message translates to:
+  /// **'Müzik'**
+  String get settingsMusic;
+
+  /// Toggle.
+  ///
+  /// In tr, this message translates to:
+  /// **'Titreşim'**
+  String get settingsHaptics;
+
+  /// Slider.
+  ///
+  /// In tr, this message translates to:
+  /// **'Efekt sesi'**
+  String get settingsSfxVolume;
+
+  /// Slider.
+  ///
+  /// In tr, this message translates to:
+  /// **'Müzik sesi'**
+  String get settingsMusicVolume;
+
+  /// Version label; 7 taps open the demo panel.
+  ///
+  /// In tr, this message translates to:
+  /// **'Sürüm {version}'**
+  String settingsVersion(String version);
+
+  /// Hidden demo panel title (SPEC D2).
+  ///
+  /// In tr, this message translates to:
+  /// **'Demo paneli'**
+  String get settingsDemoTitle;
+
+  /// Demo action.
+  ///
+  /// In tr, this message translates to:
+  /// **'+1000 coin'**
+  String get settingsDemoCoins;
+
+  /// Demo action (one-shot).
+  ///
+  /// In tr, this message translates to:
+  /// **'Sonraki portal Legendary'**
+  String get settingsDemoLegendary;
+
+  /// Shown when the override is armed.
+  ///
+  /// In tr, this message translates to:
+  /// **'Sonraki portal Legendary: hazır'**
+  String get settingsDemoLegendaryArmed;
+
+  /// Hide the demo panel.
+  ///
+  /// In tr, this message translates to:
+  /// **'Demo modunu kapat'**
+  String get settingsDemoOff;
+
+  /// Destructive action.
+  ///
+  /// In tr, this message translates to:
+  /// **'İlerlemeyi sıfırla'**
+  String get settingsReset;
+
+  /// Confirm dialog title.
+  ///
+  /// In tr, this message translates to:
+  /// **'İlerleme sıfırlansın mı?'**
+  String get settingsResetTitle;
+
+  /// Confirm dialog body.
+  ///
+  /// In tr, this message translates to:
+  /// **'Coinler, kartlar, deste ve ilerleme silinir. İndirilen karakter verileri kalır.'**
+  String get settingsResetBody;
+
+  /// Destructive confirm button.
+  ///
+  /// In tr, this message translates to:
+  /// **'Sıfırla'**
+  String get settingsResetConfirm;
+
+  /// Cancel button.
+  ///
+  /// In tr, this message translates to:
+  /// **'Vazgeç'**
+  String get settingsCancel;
+
+  /// Snack bar after reset.
+  ///
+  /// In tr, this message translates to:
+  /// **'İlerleme sıfırlandı.'**
+  String get settingsResetDone;
+
+  /// Fan-project disclaimer (SPEC 2.9 AC4).
+  ///
+  /// In tr, this message translates to:
+  /// **'Portal Cards, ticari olmayan bir hayran projesidir. Rick and Morty karakterleri ve görselleri Adult Swim\'e aittir. Veriler: rickandmortyapi.com.'**
+  String get settingsDisclaimer;
+
+  /// Audio credits (SPEC 2.9 AC4).
+  ///
+  /// In tr, this message translates to:
+  /// **'Tüm sesler ve müzikler tools/audio ile prosedürel olarak üretildi.'**
+  String get settingsCredits;
 }
 
 class _AppLocalizationsDelegate

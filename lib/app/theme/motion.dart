@@ -53,6 +53,9 @@ abstract final class AppMotion {
   static const Duration breathe = Duration(milliseconds: 1200);
   static const double breatheScale = 1.04;
 
+  /// Demo unlock: taps on the version label must fall in this window (D2).
+  static const Duration demoTapWindow = Duration(seconds: 3);
+
   /// Pop-in of new elements.
   static const Curve popIn = Curves.easeOutBack;
 

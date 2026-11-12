@@ -37,9 +37,14 @@ import '../features/portal/presentation/bloc/portal_bloc.dart';
 import '../features/portal/presentation/bloc/portal_event.dart';
 import '../features/portal/presentation/pages/portal_page.dart';
 import '../features/portal/presentation/portal_feedback.dart';
+import '../features/settings/data/settings_repository_impl.dart';
+import '../features/settings/presentation/bloc/settings_bloc.dart';
+import '../features/settings/presentation/bloc/settings_event.dart';
+import '../features/settings/presentation/pages/settings_page.dart';
 import '../features/sync/data/remote_data_source.dart';
 import '../features/sync/data/sync_repository_impl.dart';
 import '../features/sync/domain/sync_repository.dart';
+import 'app_info.dart';
 import 'debug/card_lab_page.dart';
 import 'router.dart';
 
@@ -150,6 +155,17 @@ Future<void> configureDependencies({
                   ? () => context.go(AppRoutes.cardLab)
                   : null,
             ),
+          ),
+        ),
+        settingsPage: (context) => BlocProvider(
+          create: (_) => SettingsBloc(
+            SettingsRepositoryImpl(player: getIt(), collection: getIt()),
+          )..add(const SettingsStarted()),
+          child: SettingsPage(
+            audio: getIt(),
+            haptics: getIt(),
+            feedback: UiFeedback(audio: getIt(), haptics: getIt()),
+            version: AppInfo.version,
           ),
         ),
         portalPage: (context) => BlocProvider(

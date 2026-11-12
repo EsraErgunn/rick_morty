@@ -367,5 +367,86 @@
         "type": "String"
       }
     }
+  },
+  "settingsSound": "Ses efektleri",
+  "@settingsSound": {
+    "description": "Toggle."
+  },
+  "settingsMusic": "Müzik",
+  "@settingsMusic": {
+    "description": "Toggle."
+  },
+  "settingsHaptics": "Titreşim",
+  "@settingsHaptics": {
+    "description": "Toggle."
+  },
+  "settingsSfxVolume": "Efekt sesi",
+  "@settingsSfxVolume": {
+    "description": "Slider."
+  },
+  "settingsMusicVolume": "Müzik sesi",
+  "@settingsMusicVolume": {
+    "description": "Slider."
+  },
+  "settingsVersion": "Sürüm {version}",
+  "@settingsVersion": {
+    "description": "Version label; 7 taps open the demo panel.",
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "settingsDemoTitle": "Demo paneli",
+  "@settingsDemoTitle": {
+    "description": "Hidden demo panel title (SPEC D2)."
+  },
+  "settingsDemoCoins": "+1000 coin",
+  "@settingsDemoCoins": {
+    "description": "Demo action."
+  },
+  "settingsDemoLegendary": "Sonraki portal Legendary",
+  "@settingsDemoLegendary": {
+    "description": "Demo action (one-shot)."
+  },
+  "settingsDemoLegendaryArmed": "Sonraki portal Legendary: hazır",
+  "@settingsDemoLegendaryArmed": {
+    "description": "Shown when the override is armed."
+  },
+  "settingsDemoOff": "Demo modunu kapat",
+  "@settingsDemoOff": {
+    "description": "Hide the demo panel."
+  },
+  "settingsReset": "İlerlemeyi sıfırla",
+  "@settingsReset": {
+    "description": "Destructive action."
+  },
+  "settingsResetTitle": "İlerleme sıfırlansın mı?",
+  "@settingsResetTitle": {
+    "description": "Confirm dialog title."
+  },
+  "settingsResetBody": "Coinler, kartlar, deste ve ilerleme silinir. İndirilen karakter verileri kalır.",
+  "@settingsResetBody": {
+    "description": "Confirm dialog body."
+  },
+  "settingsResetConfirm": "Sıfırla",
+  "@settingsResetConfirm": {
+    "description": "Destructive confirm button."
+  },
+  "settingsCancel": "Vazgeç",
+  "@settingsCancel": {
+    "description": "Cancel button."
+  },
+  "settingsResetDone": "İlerleme sıfırlandı.",
+  "@settingsResetDone": {
+    "description": "Snack bar after reset."
+  },
+  "settingsDisclaimer": "Portal Cards, ticari olmayan bir hayran projesidir. Rick and Morty karakterleri ve görselleri Adult Swim'e aittir. Veriler: rickandmortyapi.com.",
+  "@settingsDisclaimer": {
+    "description": "Fan-project disclaimer (SPEC 2.9 AC4)."
+  },
+  "settingsCredits": "Tüm sesler ve müzikler tools/audio ile prosedürel olarak üretildi.",
+  "@settingsCredits": {
+    "description": "Audio credits (SPEC 2.9 AC4)."
   }
 }

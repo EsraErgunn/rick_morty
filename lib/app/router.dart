@@ -54,6 +54,7 @@ GoRouter createRouter({
   WidgetBuilder? portalPage,
   ShaderCache? shaders,
   WidgetBuilder? menuPage,
+  WidgetBuilder? settingsPage,
   bool debugRoutes = kDebugMode,
   String initialLocation = AppRoutes.splash,
 }) {
@@ -130,7 +131,13 @@ GoRouter createRouter({
           ),
         ],
       ),
-      _placeholder(AppRoutes.settings, (l10n, _) => l10n.settingsTitle),
+      if (settingsPage != null)
+        GoRoute(
+          path: AppRoutes.settings,
+          builder: (context, _) => settingsPage(context),
+        )
+      else
+        _placeholder(AppRoutes.settings, (l10n, _) => l10n.settingsTitle),
       if (debugRoutes)
         GoRoute(
           path: AppRoutes.cardLab,

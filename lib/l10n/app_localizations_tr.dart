@@ -257,4 +257,66 @@ class AppLocalizationsTr extends AppLocalizations {
   String featuredCallout(String name) {
     return '$name!';
   }
+
+  @override
+  String get settingsSound => 'Ses efektleri';
+
+  @override
+  String get settingsMusic => 'Müzik';
+
+  @override
+  String get settingsHaptics => 'Titreşim';
+
+  @override
+  String get settingsSfxVolume => 'Efekt sesi';
+
+  @override
+  String get settingsMusicVolume => 'Müzik sesi';
+
+  @override
+  String settingsVersion(String version) {
+    return 'Sürüm $version';
+  }
+
+  @override
+  String get settingsDemoTitle => 'Demo paneli';
+
+  @override
+  String get settingsDemoCoins => '+1000 coin';
+
+  @override
+  String get settingsDemoLegendary => 'Sonraki portal Legendary';
+
+  @override
+  String get settingsDemoLegendaryArmed => 'Sonraki portal Legendary: hazır';
+
+  @override
+  String get settingsDemoOff => 'Demo modunu kapat';
+
+  @override
+  String get settingsReset => 'İlerlemeyi sıfırla';
+
+  @override
+  String get settingsResetTitle => 'İlerleme sıfırlansın mı?';
+
+  @override
+  String get settingsResetBody =>
+      'Coinler, kartlar, deste ve ilerleme silinir. İndirilen karakter verileri kalır.';
+
+  @override
+  String get settingsResetConfirm => 'Sıfırla';
+
+  @override
+  String get settingsCancel => 'Vazgeç';
+
+  @override
+  String get settingsResetDone => 'İlerleme sıfırlandı.';
+
+  @override
+  String get settingsDisclaimer =>
+      'Portal Cards, ticari olmayan bir hayran projesidir. Rick and Morty karakterleri ve görselleri Adult Swim\'e aittir. Veriler: rickandmortyapi.com.';
+
+  @override
+  String get settingsCredits =>
+      'Tüm sesler ve müzikler tools/audio ile prosedürel olarak üretildi.';
 }
