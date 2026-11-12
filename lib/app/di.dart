@@ -2,6 +2,7 @@ import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 import 'package:path_provider/path_provider.dart';
 
+import '../core/cards/rarity_pool.dart';
 import '../core/network/dio_client.dart';
 import '../core/storage/api_data_store.dart';
 import '../core/storage/hive_init.dart';
@@ -37,6 +38,11 @@ Future<void> configureDependencies({String? storageDirectory}) async {
     ..registerLazySingleton<SyncRepository>(
       () =>
           SyncRepositoryImpl(remote: getIt(), store: getIt(), player: getIt()),
+    )
+    // Built on first use, which is after the splash finished the sync
+    // (portal, Week 2). A later re-sync must reset it (SPEC §3).
+    ..registerLazySingleton<RarityPool>(
+      () => RarityPool.fromCharacters(getIt<ApiDataStore>().characters),
     )
     ..registerLazySingleton<GoRouter>(
       () => createRouter(syncRepository: getIt()),

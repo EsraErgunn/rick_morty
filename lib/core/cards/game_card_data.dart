@@ -1,0 +1,56 @@
+import 'package:equatable/equatable.dart';
+
+import '../game/card_stats.dart';
+import '../game/card_type.dart';
+import '../game/passives.dart';
+import '../game/rarity.dart';
+
+/// Everything a card shows, derived from a stored character (never stored
+/// itself, SPEC §3).
+final class GameCardData extends Equatable {
+  const GameCardData({
+    required this.id,
+    required this.name,
+    required this.imageUrl,
+    required this.rarity,
+    required this.type,
+    required this.stats,
+    required this.passive,
+    required this.species,
+    required this.status,
+    required this.originName,
+    required this.locationName,
+    required this.episodeCount,
+  });
+
+  final int id;
+  final String name;
+  final String imageUrl;
+  final Rarity rarity;
+  final CardType type;
+  final CardStats stats;
+  final Passive passive;
+
+  // Back facts (card detail page).
+  final String species;
+  final String status;
+  final String originName;
+  final String locationName;
+  final int episodeCount;
+
+  @override
+  List<Object?> get props => [
+    id,
+    name,
+    imageUrl,
+    rarity,
+    type,
+    stats,
+    passive,
+    species,
+    status,
+    originName,
+    locationName,
+    episodeCount,
+  ];
+}
