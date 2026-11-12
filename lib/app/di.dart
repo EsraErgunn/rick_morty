@@ -8,6 +8,7 @@ import '../core/cards/card_factory.dart';
 import '../core/haptics/haptics_service.dart';
 import '../core/cards/rarity_pool.dart';
 import '../core/network/dio_client.dart';
+import '../core/sensors/shake_detector.dart';
 import '../core/sensors/tilt_stream.dart';
 import '../core/storage/api_data_store.dart';
 import '../core/storage/hive_init.dart';
@@ -69,6 +70,11 @@ Future<void> configureDependencies({
     // All vibration goes through HapticsService (rules).
     ..registerLazySingleton<HapticsService>(
       () => HapticsService(settings: player.state.settings),
+    )
+    // Shake to open the portal; active only while the portal page listens.
+    ..registerLazySingleton<ShakeDetector>(
+      ShakeDetector.new,
+      dispose: (d) => d.dispose(),
     )
     // The only tilt sensor subscription in the app (sensors rules).
     ..registerLazySingleton<TiltStream>(
