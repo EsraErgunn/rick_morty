@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 import '../../core/cards/game_card_data.dart';
+import '../../core/widgets/game_card/card_back.dart';
+import '../../core/widgets/game_card/flip_card.dart';
 import '../../core/widgets/game_card/game_card.dart';
 import '../../l10n/app_localizations.dart';
 import '../theme/card_style.dart';
@@ -8,6 +10,7 @@ import '../theme/spacing.dart';
 
 /// Debug-only screen (`/debug/card-lab`, registered only in debug builds):
 /// real synced characters through `CardFactory`, one per rarity and type.
+/// Tap a card to flip it.
 class CardLabPage extends StatelessWidget {
   const CardLabPage({required this.cards, super.key});
 
@@ -39,7 +42,10 @@ class CardLabPage extends StatelessWidget {
                 childAspectRatio: CardMetrics.aspect,
               ),
               itemCount: cards.length,
-              itemBuilder: (context, i) => GameCard(data: cards[i]),
+              itemBuilder: (context, i) => FlipCard(
+                front: GameCard(data: cards[i]),
+                back: CardBack(facts: cards[i]),
+              ),
             ),
     );
   }
