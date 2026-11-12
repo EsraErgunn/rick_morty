@@ -56,3 +56,15 @@ final class StorageFailure extends Failure {
 final class UnexpectedFailure extends Failure {
   const UnexpectedFailure([super.message = 'unexpected']);
 }
+
+/// A purchase needs more coins than the player has (nothing changed).
+final class NotEnoughCoinsFailure extends Failure {
+  const NotEnoughCoinsFailure(this.needed, this.balance)
+    : super('not enough coins');
+
+  final int needed;
+  final int balance;
+
+  @override
+  List<Object?> get props => [message, needed, balance];
+}

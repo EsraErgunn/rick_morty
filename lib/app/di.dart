@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 import 'package:path_provider/path_provider.dart';
@@ -14,6 +16,8 @@ import '../core/storage/api_data_store.dart';
 import '../core/storage/hive_init.dart';
 import '../core/storage/player_store.dart';
 import '../core/widgets/shader_cache.dart';
+import '../features/portal/data/portal_repository_impl.dart';
+import '../features/portal/domain/portal_repository.dart';
 import '../features/sync/data/remote_data_source.dart';
 import '../features/sync/data/sync_repository_impl.dart';
 import '../features/sync/domain/sync_repository.dart';
@@ -80,6 +84,17 @@ Future<void> configureDependencies({
     ..registerLazySingleton<TiltStream>(
       TiltStream.new,
       dispose: (t) => t.dispose(),
+    )
+    // The app's only unseeded Random is created here, in composition code;
+    // game logic always receives it (architecture rules).
+    ..registerLazySingleton<PortalRepository>(
+      () => PortalRepositoryImpl(
+        apiData: getIt(),
+        player: getIt(),
+        collection: getIt(),
+        pool: getIt(),
+        random: Random(),
+      ),
     )
     ..registerLazySingleton<GoRouter>(
       () => createRouter(
