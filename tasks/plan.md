@@ -6,7 +6,7 @@ Toolchain: Flutter 3.47.6 stable, Dart 3.13.5 (Mac and Windows machine).
 
 ## Where we left off (2026-11-12, Windows machine)
 - **Completed:** Week 2 T22 to T36 (2026-11-12); T37 prepared (icon script), waiting for the owner's art.
-- **Next:** Checkpoint E: iPhone + Android device session, then the Week 3 plan (deck, battle engine + featured signatures, balance simulation).
+- **Next:** owner approves the Week 3 plan (Q1 to Q5), then T38. Checkpoint E device session still open.
 - **Commits:** no `Co-Authored-By` lines (owner request 2026-11-12).
 - **Open notes:**
   - Reference Android device: TBD. Device and iOS Simulator checks pending (Checkpoint A).
@@ -503,6 +503,120 @@ See Task 15b (automatic warm-up for owned + deck + next album page; Settings but
 | Reveal scene + portal shader below 60 fps | Demo looks broken | One controller timeline, `RepaintBoundary`, profile on the phone (`START_ROUTE`), capped particles |
 | Signature abilities unbalance battles | Week 3 balance work grows | Numbers are proposals; the Week 3 simulation checks 50 % ± 8 % |
 | Art assets arrive late | Menu/splash look plain | The flat `void` design works on its own (SPEC §5.1); assets are additive |
+
+
+---
+
+# Implementation Plan: Week 3 (Deck, battle, rewards)
+
+Status: **draft, waiting for owner approval** (2026-11-12)
+Sources: `docs/SPEC.md` §2.6, §2.7, §4.6, §4.7 (incl. featured signatures), [GM §3, §4, §5, §6, §8, §12], "Carry-over to Week 3: battle balance" above, `.claude/rules/*`.
+Roadmap: `docs/PROJECT.md` §5 Week 3. The album stays in Week 4.
+
+**Legend:** ★ MVP critical · ☆ MVP, can slip · ⛔ gate (stop for an owner decision before going on)
+
+## Decisions needed before the battle engine (proposals)
+| # | Question | Proposal |
+|---|---|---|
+| Q1 | What is one "turn" for the 40-turn limit and the 15–25 target? | **One side's attack = one turn** (player turn, then AI turn = 2 turns). 40 turns = 20 attacks each. |
+| Q2 | Order of multipliers | `dmg = max(1, round(ATK' × typeMult × crit × passiveMult × signatureMult × 50 / (50 + DEF)))`, with `ATK'` = ATK × 1.2 after Summer's Takım ruhu; `signatureMult` = Morty ×1.5 (once) on the attacker side, Pickle ×0.5 on the defender side. |
+| Q3 | Signature edge cases | Myth dodge happens before damage: a dodged attack does **not** use Pickle's armor. Zombi revive does **not** trigger Morty's ≤ 30 % rule. A KO that is revived by Zombi still counts for Meeseeks. Summer triggers only on an *ally* fainting (not herself). |
+| Q4 | Leaving mid-battle (AC6) | Counts as a defeat with the normal defeat reward (25 coins) and no `wins` change, so leaving is never better than losing. |
+| Q5 | Tie on SPD for the first turn | Player starts (GM §6); Beast is "SPD +∞" on its side's first turn only. |
+
+## Priority order
+1. ★ T38 Battle model + damage (pure Dart)
+2. ★ T39 Battle engine (turns, passives, traits, signatures, end conditions)
+3. ★ T40 AI · ★ T41 Opponent generation by tier
+4. ⛔ T42 Balance simulation → numbers to the owner → (if needed) base stat change in [GM §4]
+5. ★ T43 Battle rewards + wins/tier (repository, write-before-animate)
+6. ★ T44 Deck builder screen
+7. ★ T45 BattleBloc · ★ T46 Battle screen + event replay
+8. ☆ T47 Featured signatures in the battle UI · ☆ T48 Integration (menu, portal "Savaşa git", tier display)
+
+Checkpoint F after T46 (a full battle on the phone), Checkpoint G at the end of the week.
+
+## Dependency graph
+```
+T38 model ─ T39 engine ─┬─ T40 AI ─┐
+                        ├─ T41 opponents ─ T42 balance ⛔ ─ T43 rewards ─┐
+T44 deck builder ───────┴──────────────────────────────── T45 BattleBloc ─ T46 screen ─ T47 signatures UI
+                                                                              └─ T48 integration
+```
+
+## Phase 8: Battle core (pure Dart, `lib/core/game/`)
+
+### Task 38 ★: Battle model and damage
+**Description:** `battle_model.dart`: `BattleCard` (card id, stats, type, passive, signature, current HP, flags: revived, signature used), `BattleState` (two sides, whose turn, turn count, result), sealed `BattleEvent` (`turnStart`, `attack`, `dodge`, `damage(amount, isCrit, effectiveness, signature)`, `faint`, `revive`, `signature`, `heal`, `turnEnd`, `victory`, `defeat`, `draw`). `damage.dart`: the Q2 formula; `Random` injected.
+**Acceptance:** [ ] formula values for hand-computed pairs (Rick vs Conroy, Morty vs Rick) incl. type, crit, Belirsiz; [ ] `max(1, …)`; [ ] Rick's crit chance 20 %, everyone else 10 % (10,000 seeded rolls ± 2 %).
+**Size:** M
+
+### Task 39 ★: Battle engine
+**Description:** `battle_engine.dart`: `start(player, enemy)` (first turn by fastest alive SPD, tie → player, Beast first-turn rule), `resolvePlayerTurn(state, attacker, target, Random)`, `resolveAiTurn(state, Random)` → `(newState, List<BattleEvent>)`. Faint, Zombi revive once (30 % max HP), Myth dodge 10 %, Belirsiz ×1.2/×0.8, signatures per [GM §12.2] and Q3; victory/defeat when a side has no alive card; 40-turn draw (Q1). The engine never waits for the UI.
+**Acceptance:** [ ] fixed seed + fixed choices → identical event list (AC7); [ ] each passive/trait/signature has a scenario test asserting the event list; [ ] invalid choices (fainted attacker/target, wrong side) are rejected with a `Failure`.
+**Size:** L
+
+### Task 40 ★: AI
+**Description:** `battle_ai.dart` per [GM §6]: best type-advantage pair by expected damage, else highest-ATK card on the lowest-HP target; same formula, injected Random, no cheating.
+**Acceptance:** [ ] scripted states → expected choice; [ ] ties broken deterministically (lowest card id).
+**Size:** S
+
+### Task 41 ★: Opponent generation
+**Description:** `opponents.dart`: tier = wins ÷ 3 (max 4); rarity mix per tier [GM §6] (tier 4: 10 % legendary for the third slot); characters drawn uniformly from the `RarityPool`, no duplicates within a team.
+**Acceptance:** [ ] each tier's rarity mix; [ ] 10,000 seeded tier-4 teams: legendary third slot 10 % ± 2 %; [ ] empty-rarity fallback like [GM §7.3].
+**Size:** S
+
+### Task 42 ⛔: Balance simulation (owner decision)
+**Description:** `tool/battle_sim.dart` (or a tagged test `@Tags(['sim'])`): 1000 seeded battles AI vs AI with the real engine for equal teams, rarity gaps (common/rare, rare/epic, common/legendary), each tier, and featured vs same-rarity non-featured. Report average turns, draw rate, win rate by gap, hits to faint between equal cards.
+**Acceptance:** report table in `docs/balance.md`; targets: equal cards faint in 3–4 hits, 15–25 turns, draws < 5 %, featured team 50 % ± 8 %.
+**Gate:** if off target, **stop**: propose base ATK/HP (and if needed signature numbers) with the numbers; after approval update [GM §4]/[GM §12.2] + reference values in one commit.
+**Size:** M
+
+### Task 43 ★: Rewards and progress
+**Description:** `features/battle/data`: `BattleRepository` — deck cards, opponent team (T41), and `finish(result)`: rewards via `Economy` (victory 100 + 25 × tier, defeat 25, draw 50), `wins + 1` on victory, saved **once and before** the result animation (AC5); leaving = defeat (Q4).
+**Acceptance:** [ ] rewards credited exactly once even if `finish` is called twice; [ ] tier from wins; [ ] tests on a temp Hive dir.
+**Size:** S
+
+## Phase 9: Screens
+
+### Task 44 ★: Deck builder
+**Description:** `features/deck`: three slots on top, owned cards below (reuse the collection grid); tap fills the first empty slot, tap a slot empties it; no duplicates; totals (sum HP, ATK, DEF, average SPD) and type-triangle coverage; persisted at once (AC1–AC4). Animations/sounds per SPEC §4.6 (drop in with `easeOutBack` + `card_flip`, slide out + `button_tap`, deck complete outline + `rare_reveal`).
+**Acceptance:** bloc tests; widget tests (fill, empty, duplicate blocked, complete outline once).
+**Size:** M
+
+### Task 45 ★: BattleBloc
+**Description:** `features/battle/presentation/bloc`: pre-battle (opponent + deck, "Başla"), select attacker → target, call the engine per turn, queue events for replay, block input during replay, AI turn automatically, result + rewards (T43), leave dialog (AC6), 2× toggle. Sound/haptics from a `BattleFeedback` (like `PortalFeedback`) driven by replayed events.
+**Acceptance:** `bloc_test` for every event; replay queue order; input blocked while replaying.
+**Size:** M
+
+### Task 46 ★: Battle screen and event replay
+**Description:** stage layout (enemy top, player bottom, event band in the middle), deal-in, selection lift + valid-target outline, lunge, shake, floating damage numbers, HP bar tween (yellow ≤ 50 %, red ≤ 20 %), "KRİTİK!", "SÜPER ETKİLİ!" banner, "Pek etkili değil…", "KAÇTI!", faint, Zombi revive, victory/defeat/draw screens with coin count-up; `battle_loop` in, music stops on the result; pacing ≤ 1.6 s per turn, 2× toggle; reduced motion = short fades. All timings from `AppMotion`.
+**Acceptance:** widget tests per event type (replay phases); golden of the stage (tagged `golden`); profile on the phone (≤ 5 % jank in a full battle).
+**Size:** L
+
+### Checkpoint F (after T38 to T46)
+- [ ] A full battle on the phone: choose, replay, AI turn, result, rewards once
+- [ ] Balance report reviewed (T42 gate closed)
+- [ ] `flutter analyze --fatal-infos` clean, `flutter test` green, release APK builds
+
+### Task 47 ☆: Featured signatures in battle (SPEC §4.7)
+**Description:** "DAHİ!" callout + `genius_crit` for Rick's crits; "Görev tamam!" + poof smoke puff + `meeseeks_poof` + heal number; signature-name callout for Morty, Summer, Pickle Rick.
+**Size:** S
+
+### Task 48 ☆: Integration
+**Description:** menu "Savaş" opens the battle (deck full), portal "Savaşa git", tier/wins shown on the pre-battle screen; coin counter rolls after rewards; collection card detail deck action stays in sync with the deck builder.
+**Size:** S
+
+### Checkpoint G: Week 3 complete
+- [ ] All ★ done, ☆ done or moved; iPhone + Android session (incl. open Week 2 checks); review, then the Week 4 plan (album, polish, README, demo rehearsal)
+
+## Week 3 risks
+| Risk | Impact | Mitigation |
+|---|---|---|
+| Battles too long / many draws | Demo drags, grading | T42 gate before the UI; base stats tuned with numbers |
+| Signature edge cases disagree with the owner's intent | Rework | Q3 decided up front; each case has a scenario test |
+| Replay animations drop frames | Battle looks broken | One controller per effect, `RepaintBoundary` per card, profile on the phone |
+| Rewards credited twice (retry, back button) | Economy exploit | Idempotent `finish` with a battle id, tested |
 
 
 ## Progress notes
