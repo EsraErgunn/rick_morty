@@ -472,7 +472,7 @@ The theme task (`app/theme/`: colors, typography, motion, spacing tokens) is don
 | Menu background | `assets/images/menu_bg.*` | Main menu behind the portal | flat `void` |
 | Splash background | `assets/images/splash_bg.*` | Splash behind the portal loader | flat `void` |
 | App icon | `assets/icon/app_icon.png` (1024 px, plus a foreground layer for Android adaptive icons if available) | Android launcher + iOS AppIcon | Flutter default icon |
-Backgrounds must keep text contrast (§5.2): a `void` scrim is added if a picture is too bright. No characters or logo of the show in the icon (fan-project rule).
+Backgrounds must keep text contrast (§5.2): a `void` scrim is added if a picture is too bright. **Delivered 2026-11-12:** WebP 1080 px (`tools/images/prepare_backgrounds.py`); the menu gets a dark top/bottom `void` gradient (owner request, the only gradient besides the shaders); the splash loader sits on the art's green glow (screen center with `BoxFit.cover`). Icon: Android adaptive (foreground + `#15112B`) and iOS set from `tools/icon/generate_icons.py`. Source files stay out of git. No characters or logo of the show in the icon (fan-project rule).
 
 ## 6. Jury demo
 

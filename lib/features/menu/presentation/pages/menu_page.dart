@@ -11,6 +11,7 @@ import '../../../../core/audio/audio_service.dart';
 import '../../../../core/feedback/ui_feedback.dart';
 import '../../../../core/widgets/coin_counter.dart';
 import '../../../../core/widgets/portal/portal_view.dart';
+import '../../../../core/widgets/screen_background.dart';
 import '../../../../core/widgets/shader_cache.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../domain/menu_repository.dart';
@@ -90,14 +91,20 @@ class _MenuPageState extends State<MenuPage> {
       final s = state.summary;
       if (s == null) return const Scaffold();
       return Scaffold(
-        body: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: AppSpacing.gutter),
-            child: _MenuBody(
-              summary: s,
-              shaders: widget.shaders,
-              actions: widget.actions,
-              tap: _tap,
+        body: ScreenBackground(
+          asset: Backgrounds.menu,
+          scrim: true,
+          child: SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: AppSpacing.gutter,
+              ),
+              child: _MenuBody(
+                summary: s,
+                shaders: widget.shaders,
+                actions: widget.actions,
+                tap: _tap,
+              ),
             ),
           ),
         ),

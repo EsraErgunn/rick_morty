@@ -5,6 +5,7 @@ import '../../../../app/theme/motion.dart';
 import '../../../../app/theme/spacing.dart';
 import '../../../../app/theme/typography.dart';
 import '../../../../core/widgets/portal_loader.dart';
+import '../../../../core/widgets/screen_background.dart';
 import '../../../../core/widgets/shader_cache.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../bloc/sync_bloc.dart';
@@ -42,25 +43,18 @@ class _SplashPageState extends State<SplashPage> {
         setState(() => _loaderActive = state.status != SyncStatus.success);
       },
       child: Scaffold(
-        body: SafeArea(
-          child: Center(
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.all(AppSpacing.gutter),
-              child: ConstrainedBox(
-                constraints: const BoxConstraints(
-                  maxWidth: AppSizes.contentMaxWidth,
-                ),
-                child: BlocBuilder<SyncBloc, SyncState>(
-                  builder: (context, state) => Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        AppLocalizations.of(context).appTitle,
-                        style: AppTypography.display,
-                        textAlign: TextAlign.center,
-                      ),
-                      const SizedBox(height: AppSpacing.xl),
-                      PortalLoader(
+        // The art's green glow is at its center; with BoxFit.cover that is
+        // the screen center, where the loader sits.
+        body: ScreenBackground(
+          asset: Backgrounds.splash,
+          child: LayoutBuilder(
+            builder: (context, box) {
+              final edge = box.maxHeight / 2 + AppSizes.splashPortal / 2;
+              return BlocBuilder<SyncBloc, SyncState>(
+                builder: (context, state) => Stack(
+                  children: [
+                    Center(
+                      child: PortalLoader(
                         active: _loaderActive,
                         intensity: state.status == SyncStatus.failure
                             ? SplashPage.dimIntensity
@@ -68,28 +62,50 @@ class _SplashPageState extends State<SplashPage> {
                         onSettled: widget.onDone,
                         shaders: widget.shaders,
                       ),
-                      const SizedBox(height: AppSpacing.xl),
-                      AnimatedSwitcher(
-                        duration: AppMotion.normal,
-                        transitionBuilder: _slideUp,
-                        child: state.status == SyncStatus.failure
-                            ? SyncErrorView(
-                                key: const ValueKey('sync-error'),
-                                connectionProblem: state.isConnectionProblem,
-                                onRetry: () => context.read<SyncBloc>().add(
-                                  const SyncRetryRequested(),
-                                ),
-                              )
-                            : SyncProgressView(
-                                key: const ValueKey('sync-progress'),
-                                progress: state.progress,
-                              ),
+                    ),
+                    Positioned(
+                      left: AppSpacing.gutter,
+                      right: AppSpacing.gutter,
+                      bottom: edge + AppSpacing.lg,
+                      child: Text(
+                        AppLocalizations.of(context).appTitle,
+                        style: AppTypography.display,
+                        textAlign: TextAlign.center,
                       ),
-                    ],
-                  ),
+                    ),
+                    Positioned(
+                      left: AppSpacing.gutter,
+                      right: AppSpacing.gutter,
+                      top: edge + AppSpacing.lg,
+                      child: Center(
+                        child: ConstrainedBox(
+                          constraints: const BoxConstraints(
+                            maxWidth: AppSizes.contentMaxWidth,
+                          ),
+                          child: AnimatedSwitcher(
+                            duration: AppMotion.normal,
+                            transitionBuilder: _slideUp,
+                            child: state.status == SyncStatus.failure
+                                ? SyncErrorView(
+                                    key: const ValueKey('sync-error'),
+                                    connectionProblem:
+                                        state.isConnectionProblem,
+                                    onRetry: () => context.read<SyncBloc>().add(
+                                      const SyncRetryRequested(),
+                                    ),
+                                  )
+                                : SyncProgressView(
+                                    key: const ValueKey('sync-progress'),
+                                    progress: state.progress,
+                                  ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-            ),
+              );
+            },
           ),
         ),
       ),

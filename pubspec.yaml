@@ -91,6 +91,9 @@ flutter:
   assets:
     - assets/audio/sfx/
     - assets/audio/music/
+    # Backgrounds (WebP from tools/images; the *_source files stay out).
+    - assets/images/menu_bg.webp
+    - assets/images/splash_bg.webp
 
   # Fragment shaders (animation rules).
   shaders:

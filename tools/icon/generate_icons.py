@@ -50,6 +50,42 @@ def flatten(img: Image.Image) -> Image.Image:
     return base
 
 
+# Adaptive icons are masked (often a circle with 66 % of the size visible):
+# shrink the subject so the card's corners stay inside that safe zone.
+FOREGROUND_SCALE = 0.8
+
+
+def shrink(img: Image.Image, scale: float) -> Image.Image:
+    small = img.resize((round(img.width * scale), round(img.height * scale)), Image.LANCZOS)
+    canvas = Image.new("RGBA", img.size, (0, 0, 0, 0))
+    canvas.paste(small, ((img.width - small.width) // 2, (img.height - small.height) // 2), small)
+    return canvas
+
+
+def square(img: Image.Image) -> Image.Image:
+    side = min(img.size)
+    left = (img.width - side) // 2
+    top = (img.height - side) // 2
+    return img.crop((left, top, left + side, top + side))
+
+
+def key_background(img: Image.Image, tolerance: int = 10) -> Image.Image:
+    """Transparent where the pixel is close to the corner (background) color;
+    soft edge over [tolerance, 2 x tolerance]."""
+    rgba = img.convert("RGBA")
+    bg = rgba.getpixel((4, 4))[:3]
+    px = rgba.load()
+    for y in range(rgba.height):
+        for x in range(rgba.width):
+            r, g, b, a = px[x, y]
+            d = max(abs(r - bg[0]), abs(g - bg[1]), abs(b - bg[2]))
+            if d < tolerance:
+                px[x, y] = (r, g, b, 0)
+            elif d < 2 * tolerance:
+                px[x, y] = (r, g, b, a * (d - tolerance) // tolerance)
+    return rgba
+
+
 def resized(img: Image.Image, px: int) -> Image.Image:
     return img.resize((px, px), Image.LANCZOS)
 
@@ -101,15 +137,22 @@ def main() -> int:
     root = Path(args.root)
 
     src = root / "assets/icon/app_icon.png"
-    if not src.exists():
-        print(f"waiting for {src} (asset pending, plan T37)")
+    source = next(iter(sorted((root / "assets/icon").glob("icon_source.*"))), None)
+    if src.exists():
+        icon = Image.open(src).convert("RGBA")
+        fg_path = root / "assets/icon/app_icon_foreground.png"
+        fg = Image.open(fg_path).convert("RGBA") if fg_path.exists() else None
+    elif source is not None:
+        # Owner art on a dark background: square crop, 1024 px, and an
+        # adaptive foreground with that background keyed out.
+        icon = square(Image.open(source).convert("RGBA")).resize((1024, 1024), Image.LANCZOS)
+        fg = shrink(key_background(icon), FOREGROUND_SCALE)
+    else:
+        print(f"waiting for {src} or icon_source.* (asset pending, plan T37)")
         return 1
-    icon = Image.open(src).convert("RGBA")
     if icon.size != (1024, 1024):
         print(f"app_icon.png must be 1024x1024, got {icon.size}")
         return 1
-    fg_path = root / "assets/icon/app_icon_foreground.png"
-    fg = Image.open(fg_path).convert("RGBA") if fg_path.exists() else None
 
     written = android(root, icon, fg) + ios(root, icon)
     print(f"wrote {len(written)} files")

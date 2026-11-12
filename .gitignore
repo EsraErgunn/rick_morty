@@ -46,3 +46,7 @@ key.properties
 app.*.map.json
 *.log
 __pycache__/
+
+# Owner's source art (only the converted assets are committed, plan T37)
+assets/images/*_source.*
+assets/icon/
