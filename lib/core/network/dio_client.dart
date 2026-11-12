@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:fpdart/fpdart.dart';
 
@@ -75,8 +77,13 @@ class ApiClient {
         return status == 429 || status >= 500
             ? ServerFailure(status)
             : ClientFailure(status);
-      case DioExceptionType.cancel:
       case DioExceptionType.unknown:
+        // Socket and TLS problems (no network, a proxy re-signing HTTPS)
+        // are connection problems for the player.
+        return e.error is IOException
+            ? NetworkFailure('${e.error.runtimeType}')
+            : UnexpectedFailure(e.type.name);
+      case DioExceptionType.cancel:
         return UnexpectedFailure(e.type.name);
     }
   }

@@ -17,13 +17,18 @@ void _developerSink(
   required int level,
   Object? error,
   StackTrace? stackTrace,
-}) => developer.log(
-  message,
-  name: name,
-  level: level,
-  error: error,
-  stackTrace: stackTrace,
-);
+}) {
+  // debugPrint reaches logcat / the run console (dart:developer `log` only
+  // reaches DevTools); this sink only runs in debug builds.
+  debugPrint('[$name] $message${error == null ? '' : ' | $error'}');
+  developer.log(
+    message,
+    name: name,
+    level: level,
+    error: error,
+    stackTrace: stackTrace,
+  );
+}
 
 /// The only logger in the app. Writes in debug builds only; a no-op in
 /// release and profile. Never log API payloads or player data (L1 rules).
