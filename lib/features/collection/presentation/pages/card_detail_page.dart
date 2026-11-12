@@ -7,7 +7,7 @@ import '../../../../core/widgets/game_card/card_back.dart';
 import '../../../../core/widgets/game_card/flip_card.dart';
 import '../../../../core/widgets/game_card/game_card.dart';
 import '../../../../core/widgets/game_card/holo_layer.dart';
-import '../../../../core/widgets/game_card/shader_cache.dart';
+import '../../../../core/widgets/shader_cache.dart';
 import '../../../../core/widgets/game_card/tilting_game_card.dart';
 import '../../../../l10n/app_localizations.dart';
 

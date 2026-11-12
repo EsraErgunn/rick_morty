@@ -95,6 +95,7 @@ flutter:
   # Fragment shaders (animation rules).
   shaders:
     - shaders/holo.frag
+    - shaders/portal.frag
 
   # SIL OFL 1.1 fonts (SPEC §5.3); license files sit next to each family.
   fonts:

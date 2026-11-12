@@ -5,7 +5,7 @@ import 'package:go_router/go_router.dart';
 
 import '../core/cards/game_card_data.dart';
 import '../core/sensors/tilt_stream.dart';
-import '../core/widgets/game_card/shader_cache.dart';
+import '../core/widgets/shader_cache.dart';
 import '../features/collection/presentation/pages/card_detail_page.dart';
 import '../features/sync/domain/sync_repository.dart';
 import '../features/sync/presentation/bloc/sync_bloc.dart';

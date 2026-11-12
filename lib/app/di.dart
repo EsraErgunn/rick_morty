@@ -12,7 +12,7 @@ import '../core/sensors/tilt_stream.dart';
 import '../core/storage/api_data_store.dart';
 import '../core/storage/hive_init.dart';
 import '../core/storage/player_store.dart';
-import '../core/widgets/game_card/shader_cache.dart';
+import '../core/widgets/shader_cache.dart';
 import '../features/sync/data/remote_data_source.dart';
 import '../features/sync/data/sync_repository_impl.dart';
 import '../features/sync/domain/sync_repository.dart';

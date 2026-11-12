@@ -1,11 +1,10 @@
 import 'dart:async';
-import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 
-import '../../app/theme/colors.dart';
 import '../../app/theme/motion.dart';
 import '../../app/theme/spacing.dart';
+import 'portal/portal_spiral_painter.dart';
 
 /// The waiting portal: opens from a point (scale 0 → 1, `popIn`), then
 /// spins while [active].
@@ -141,7 +140,7 @@ class _PortalLoaderState extends State<PortalLoader>
         animation: _spin,
         builder: (context, _) => CustomPaint(
           size: Size.square(widget.size),
-          painter: _PortalPainter(
+          painter: PortalSpiralPainter(
             turn: _spin.value,
             intensity: widget.intensity.clamp(0, 1),
           ),
@@ -168,60 +167,4 @@ class _PortalLoaderState extends State<PortalLoader>
       child: Center(child: content),
     );
   }
-}
-
-/// Green spiral portal: ink ring, green disc, three hot spiral arms.
-class _PortalPainter extends CustomPainter {
-  _PortalPainter({required this.turn, required this.intensity});
-
-  /// 0.0 to 1.0, one full rotation.
-  final double turn;
-  final double intensity;
-
-  static const int _arms = 3;
-  static const int _steps = 48;
-  static const double _armTurns = 1.25;
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final center = size.center(Offset.zero);
-    final radius = size.shortestSide / 2 - AppOutline.thick;
-
-    final disc = Paint()
-      ..color = Color.lerp(AppColors.voidRaised, AppColors.portal, intensity)!;
-    canvas.drawCircle(center, radius, disc);
-
-    final arm = Paint()
-      ..color = AppColors.portalHot.withValues(alpha: 0.25 + 0.75 * intensity)
-      ..style = PaintingStyle.stroke
-      ..strokeCap = StrokeCap.round
-      ..strokeWidth = radius * 0.12;
-
-    canvas
-      ..save()
-      ..translate(center.dx, center.dy)
-      ..rotate(turn * 2 * math.pi);
-    for (var a = 0; a < _arms; a++) {
-      final start = a * 2 * math.pi / _arms;
-      final path = Path()..moveTo(0, 0);
-      for (var i = 1; i <= _steps; i++) {
-        final t = i / _steps;
-        final angle = start + t * _armTurns * 2 * math.pi;
-        final r = t * radius * 0.85;
-        path.lineTo(r * math.cos(angle), r * math.sin(angle));
-      }
-      canvas.drawPath(path, arm);
-    }
-    canvas.restore();
-
-    final ring = Paint()
-      ..color = AppColors.ink
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = AppOutline.thick * 2;
-    canvas.drawCircle(center, radius, ring);
-  }
-
-  @override
-  bool shouldRepaint(_PortalPainter old) =>
-      old.turn != turn || old.intensity != intensity;
 }

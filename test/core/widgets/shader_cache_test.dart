@@ -7,18 +7,17 @@ import 'package:portalcards/core/game/rarity.dart';
 import 'package:portalcards/core/widgets/game_card/card_art.dart';
 import 'package:portalcards/core/widgets/game_card/game_card.dart';
 import 'package:portalcards/core/widgets/game_card/holo_layer.dart';
-import 'package:portalcards/core/widgets/game_card/shader_cache.dart';
+import 'package:portalcards/core/widgets/shader_cache.dart';
 
 import '../../helpers/cards.dart';
 
 void main() {
   group('ShaderCache', () {
-    test('loads holo.frag once, however often load() is called', () async {
-      var calls = 0;
+    test('loads each program once, however often load() is called', () async {
+      final asked = <String>[];
       final cache = ShaderCache(
         loader: (asset) async {
-          calls++;
-          expect(asset, 'shaders/holo.frag');
+          asked.add(asset);
           throw UnsupportedError('no GPU in unit tests');
         },
       );
@@ -26,7 +25,7 @@ void main() {
       await Future.wait([cache.load(), cache.load()]);
       await cache.load();
 
-      expect(calls, 1);
+      expect(asked, ['shaders/holo.frag', 'shaders/portal.frag']);
     });
 
     test(
@@ -42,7 +41,9 @@ void main() {
     test('pubspec lists the shader under flutter: shaders:', () {
       final pubspec = File('pubspec.yaml').readAsStringSync();
       expect(
-        RegExp(r'shaders:\s*\n\s*- shaders/holo\.frag').hasMatch(pubspec),
+        RegExp(
+          r'shaders:\s*\n\s*- shaders/holo\.frag\s*\n\s*- shaders/portal\.frag',
+        ).hasMatch(pubspec),
         isTrue,
       );
     });

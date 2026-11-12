@@ -4,7 +4,7 @@ import 'package:flutter/foundation.dart' show ValueListenable;
 import 'package:flutter/material.dart';
 
 import '../../game/rarity.dart';
-import 'shader_cache.dart';
+import '../shader_cache.dart';
 
 /// Holo foil over a card face. Strength comes from the rarity [GM §2];
 /// common (0) draws nothing. [tilt] is the same value as the 3D tilt
