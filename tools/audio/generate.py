@@ -186,7 +186,10 @@ def write_credits(cfg: dict, rows: list) -> None:
     ]
     for name, kind, sec, size, sr, digest, _ in rows:
         lines.append(f"| {kind}/{name}.wav | {sec:.2f} | {sr} | `{digest}` |")
-    (ROOT / cfg["output"]["credits"]).write_text("\n".join(lines) + "\n", encoding="utf-8")
+    # LF on every OS so the output is the same on Windows and macOS.
+    (ROOT / cfg["output"]["credits"]).write_text(
+        "\n".join(lines) + "\n", encoding="utf-8", newline="\n"
+    )
 
 
 if __name__ == "__main__":
