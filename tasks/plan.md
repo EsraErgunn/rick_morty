@@ -6,7 +6,7 @@ Toolchain: Flutter 3.47.6 stable, Dart 3.13.5 (Mac and Windows machine).
 
 ## Where we left off (2026-11-12, Windows machine)
 - **Completed:** Week 1 (T1 to T21); Checkpoint C approved and pushed (2026-11-12); START_ROUTE and golden tags done.
-- **Next:** owner approves the Week 2 plan (below) and the [GM §12.2] signature numbers; then T22 (audio generator) first.
+- **Next:** T22 audio generator; stop for the owner's listening approval, then T23 to T32 and Checkpoint D.
 - **Commits:** no `Co-Authored-By` lines (owner request 2026-11-12).
 - **Open notes:**
   - Reference Android device: TBD. Device and iOS Simulator checks pending (Checkpoint A).
@@ -354,14 +354,14 @@ Add this to the Week 3 battle engine task when the Week 3 plan is written. No co
 
 # Implementation Plan: Week 2 (Portal, sound, collection)
 
-Status: **draft, waiting for owner approval** (2026-11-12)
+Status: **approved** (2026-11-12), incl. [GM §12.2] signatures and the audio format.
 Sources: `docs/SPEC.md` (D5 to D9, §2.2 to §2.5, §2.9, §4.2 to §4.5, §4.9, §4.11, §5.5, §5.9), `docs/PROJECT.md` §5 Week 2, `rm-game-mechanics` §7, §8, §12, `.claude/rules/*`.
 Toolchain: Python 3.12 + numpy 2.5.4 + scipy 1.18.1 + Pillow 12.3.0 are installed on the Windows machine (no setup step). `tomllib` is in the standard library.
 
 **Legend:** ★ = MVP critical (the jury demo or a graded requirement fails without it). ☆ = MVP, can slip a few days. ⏸ = waiting for an outside input, never blocks other tasks.
 
 ## Priority order
-1. ★ T22 Audio generator + 16 sound files (graded requirement; needs listening approval, so it starts first)
+1. ★ T22 Audio generator + 18 sound files (graded requirement; needs listening approval, so it starts first)
 2. ★ T23 AudioService · ★ T24 HapticsService
 3. ★ T25 portal.frag + PortalView
 4. ★ T26 Economy + portal roll (`core/game`)
@@ -392,21 +392,22 @@ T37 art assets: whenever the files arrive
 
 ## Phase 5: Sound and feedback
 
-### Task 22 ★: Procedural audio generator and the 16 files (D5, SPEC §4.11)
-**Description:** `tools/audio/` (dev-only; only the generated WAVs ship): `generate.py`, `synth.py` (oscillators, ADSR, filters, noise, FM, delay/reverb with `scipy.signal`), `config.toml` (the single config: seed, sample rates, every sound's parameters, the music written as note lists), `requirements.txt` (numpy, scipy pinned), `README.md`. Writes `assets/audio/sfx/*.wav` (13), `assets/audio/music/*.wav` (3) and `assets/audio/CREDITS.md`.
-- SFX sketch: `portal_charge` rising filtered noise + FM whoop (1.2 s); `portal_open` downward zap + sub boom + sparkle tail; `card_flip` short swish; `rare_reveal` bright arpeggio chime; `legendary_reveal` choir-like chord swell + shimmer; `hit` noise + pitch-drop thump; `crit_hit` hit + metallic ring; `super_effective` rising 3-note zap; `faint` descending wobble; `victory` short major fanfare; `defeat` minor descending; `button_tap` tiny blip; `coin` two-tone ping.
+### Task 22 ★: Procedural audio generator and the 18 files (D5, SPEC §4.11)
+**Description:** `tools/audio/` (dev-only; only the generated WAVs ship): `generate.py`, `synth.py` (oscillators, ADSR, filters, noise, FM, delay/reverb with `scipy.signal`), `config.toml` (the single config: seed, sample rates, every sound's parameters, the music written as note lists), `requirements.txt` (numpy, scipy pinned), `README.md`. Writes `assets/audio/sfx/*.wav` (15), `assets/audio/music/*.wav` (3) and `assets/audio/CREDITS.md`.
+- SFX sketch: `portal_charge` rising filtered noise + FM whoop (1.2 s); `portal_open` downward zap + sub boom + sparkle tail; `card_flip` short swish; `rare_reveal` bright arpeggio chime; `legendary_reveal` choir-like chord swell + shimmer; `hit` noise + pitch-drop thump; `crit_hit` hit + metallic ring; `super_effective` rising 3-note zap; `faint` descending wobble; `victory` short major fanfare; `defeat` minor descending; `button_tap` tiny blip; `coin` two-tone ping; `genius_crit` crit + bright "eureka" synth sting; `meeseeks_poof` soft noise puff with a short pop.
 - Music: `battle_loop` 136 BPM, 16 bars, synthwave bass arpeggio + square lead + gated drums; `menu_loop` 90 BPM, 16 bars, pad + theremin-like lead (sine, slow vibrato, portamento) + soft space noise; `legendary_sting` 4 s swell. Original progressions, written in `config.toml`.
 **Acceptance criteria:**
 - [ ] Same seed + config → byte-identical files (the script prints SHA-256 per file; a second run matches).
 - [ ] Loops: the join between last and first sample is continuous (the script checks the sample jump and the RMS of the last/first 50 ms and fails on a likely click).
 - [ ] No clipping (peak ≤ -1 dBFS), SFX normalized to -3 dBFS, total size < 8 MB (printed).
-- [ ] Owner listening approval of all 16 files (I send a short list of what each should sound like).
+- [ ] Music sample rate is one line in `config.toml` (22.05 kHz now, 32 kHz if muffled).
+- [ ] Owner listening approval of all 18 files (I send a short list of what each should sound like).
 **Verification:** `python tools/audio/generate.py --check`; listening session; loop test on the phone after T23.
 **Files:** `tools/audio/*`, `assets/audio/**`, `pubspec.yaml` (assets)
 **Size:** L (most of the creative work; iterate on feedback)
 
 ### Task 23 ★: AudioService
-**Description:** `core/audio/audio_service.dart`: preloaded SFX pool (audioplayers low-latency, overlap allowed), one music player with fade in/out and crossfade, settings-aware (`soundEnabled`, `musicEnabled`, volumes from `PlayerState`), music pauses in background. Enums `Sfx` / `Music` with the 16 asset names; widgets never touch audioplayers.
+**Description:** `core/audio/audio_service.dart`: preloaded SFX pool (audioplayers low-latency, overlap allowed), one music player with fade in/out and crossfade, settings-aware (`soundEnabled`, `musicEnabled`, volumes from `PlayerState`), music pauses in background. Enums `Sfx` / `Music` with the 18 asset names; widgets never touch audioplayers.
 **Acceptance criteria:** [ ] sound/music off → no player call; [ ] crossfade menu ↔ battle ↔ sting; [ ] background pauses music, resume continues; [ ] loops play without a gap on the reference phone (if `ReleaseMode.loop` gaps with WAV: two players crossfading at the loop point).
 **Verification:** unit tests with a fake player backend (settings, crossfade timing, pool reuse); device check.
 **Dependencies:** T22, T13 · **Size:** M

@@ -213,15 +213,15 @@ The list is a constant in `core/game/featured.dart` (ids only; names come from t
 ### 12.1 Frame
 Rarity frame unchanged + 2-unit `portal` green inner line + featured badge (Material `stars` icon) on the name plate (SPEC §5.5).
 
-### 12.2 Signature abilities — **PROPOSED, waiting for owner approval**
-Rules for all signatures: deterministic except where they use the battle's injected `Random`; each one emits a `signature` BattleEvent (character id) so the UI can show it; they multiply into the damage formula as `signatureMult` (default 1.0) after `passiveMult`; at most one trigger per battle unless stated.
+### 12.2 Signature abilities — **approved 2026-11-12**
+Rules for all signatures (numbers approved by the owner 2026-11-12): deterministic except where they use the battle's injected `Random`; each one emits a `signature` BattleEvent (character id) so the UI can show it (Rick's crit is reported as a `crit` event with `signature: dahi`, so the UI swaps the text and sound); they multiply into the damage formula as `signatureMult` (default 1.0) after `passiveMult`; at most one trigger per battle unless stated.
 
 | Character | Name (UI) | Rule | Expected effect |
 |---|---|---|---|
-| Rick | **Dahi** | Crit chance 20 % instead of 10 % (§6). Always on. | Average damage ×1.05 (1.05 → 1.10 expected multiplier). |
+| Rick | **Dahi** | Crit chance 20 % instead of 10 % (§6). Always on. Rick's crits show **"DAHİ!"** instead of the normal crit text and play `genius_crit` instead of `crit_hit`. | Average damage ×1.05 (1.05 → 1.10 expected multiplier). |
 | Morty | **Aman tanrım!** | Once per battle, the first time his HP drops to ≤ 30 % of max (and he is still alive), his **next** attack deals ×1.5. | One boosted hit in a ~6-hit fight: about +8 % of his output, only when he is losing. |
 | Summer | **Takım ruhu** | Once per battle, when an ally on her side faints, her ATK is ×1.2 for the rest of the battle. | Matters only after the team loses a card; comeback help. |
-| Mr. Meeseeks | **Görev tamam** | Once per battle, when his attack makes an enemy faint, he heals 20 % of his max HP (not above max). Stacks with Belirsiz. | About one extra hit of survival for an epic card. |
+| Mr. Meeseeks | **Görev tamam** | Once per battle, when his attack makes an enemy faint, he heals 20 % of his max HP (not above max). Stacks with Belirsiz. On trigger the UI shows **"Görev tamam!"** with a short "poof" smoke puff and plays `meeseeks_poof`. | About one extra hit of survival for an epic card. |
 | Pickle Rick | **Turşu zırhı** | The first attack he receives in a battle deals ×0.5 damage. | Half a hit of extra HP for a common card; keeps him common-tier. |
 
 Balance check (Week 3, with the battle simulation in `tasks/plan.md` "Carry-over to Week 3"): a team with one featured card vs the same team with a non-featured card of the same rarity and type wins 50 % ± 8 % over 1,000 seeded battles. If not, tune the numbers above (owner approves the change).
