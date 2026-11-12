@@ -5,8 +5,8 @@ Sources: `docs/SPEC.md` (approved), `docs/PROJECT.md` §5 Week 1, `CLAUDE.md`, `
 Toolchain: Flutter 3.47.6 stable, Dart 3.13.5 (Mac and Windows machine).
 
 ## Where we left off (2026-11-12, Windows machine)
-- **Completed:** Week 2 T22 to T32 (2026-11-12). Checkpoint D: analyze clean, 349 tests green, debug APK builds; device checks and owner review open.
-- **Next:** Checkpoint D review on a phone, then T33 to T37.
+- **Completed:** Week 2 T22 to T36 (2026-11-12); T37 prepared (icon script), waiting for the owner's art.
+- **Next:** Checkpoint E: iPhone + Android device session, then the Week 3 plan (deck, battle engine + featured signatures, balance simulation).
 - **Commits:** no `Co-Authored-By` lines (owner request 2026-11-12).
 - **Open notes:**
   - Reference Android device: TBD. Device and iOS Simulator checks pending (Checkpoint A).
@@ -482,7 +482,7 @@ T37 art assets: whenever the files arrive
 See Task 15b (automatic warm-up for owned + deck + next album page; Settings button "Tüm görselleri çevrimdışı için indir"). The "next album page" part waits for the album (Week 3/4); until then: owned + deck.
 **Dependencies:** T32, T35 · **Size:** M
 
-### Task 37 ⏸: Pending art assets (D9, SPEC §5.9) — asset bekleniyor
+### Task 37 ⏸: Pending art assets (D9, SPEC §5.9) — asset bekleniyor (icon script ready: `tools/icon/generate_icons.py`)
 - Menu background `assets/images/menu_bg.*`, splash background `assets/images/splash_bg.*`: when the files arrive, list them in `pubspec.yaml`, show them behind the portal with a `void` scrim if needed, re-check text contrast; the flat `void` stays as the fallback.
 - App icon `assets/icon/app_icon.png` (1024 px): a dev-only Python script (`tools/icon/`, Pillow) writes the Android `mipmap-*` launcher icons (+ adaptive foreground/background if a foreground layer is given) and the iOS `AppIcon.appiconset`. No new Flutter package.
 - Never blocks other tasks.
@@ -614,6 +614,14 @@ See Task 15b (automatic warm-up for owned + deck + next album page; Settings but
 - Fixes found while building: tap on the reveal card was swallowed (GestureDetector over IgnorePointer, now opaque); `half` is reserved in GLSL; portal particle seam at the atan wrap; tilt angle 6° (SPEC §4.5, was 12°); rarity name on the card body uses `paperMuted` (epic purple 4.10:1).
 - Simplified vs SPEC (follow-up): duplicate card does not fly into the coin counter (text "+N coin" instead); "add to deck" shows a popping deck counter instead of a flying card copy.
 - Tests: `test/helpers/` (fonts, cards + `frames()` stepper, fake audio). Hive file I/O cannot run inside `testWidgets` fake time: widget tests use in-memory fakes.
+
+### Week 2, T33 to T37 (2026-11-12)
+- T33 featured: `core/game/featured.dart` (ids, signatures, approved numbers), `GameCardData.signature`, portal-green inner line + `stars` badge, signature on the card back, reveal entrance (art window empty after the flip, image drops in with squash, name callout).
+- T34 PortalLoader draws PortalView inside when given the ShaderCache (splash); spiral painter stays as fallback.
+- T35 settings (`features/settings`): toggles/volumes applied before their own feedback (bug found by tests: the old order played the tap with the old setting), demo panel (7 taps / 3 s, `AppMotion.demoTapWindow`), reset keeps settings + sync data, disclaimer, credits; `AppInfo.version` tested against pubspec.
+- T36 `core/images`: ImagePrecacher (≤ 4 parallel, disk cache only, skip cached, cancel/resume) + ImageDownloadController (DI) + settings row; menu warm-up for owned + deck. Next-album-page warm-up comes with the album.
+- T37 `tools/icon/generate_icons.py` ready (tested on a scratch copy). Menu/splash backgrounds: still flat `void` until `assets/images/` exists.
+- Checks: `flutter analyze --fatal-infos` clean, `flutter test` 375/375 (`-j 2`; a running emulator made the full suite fail to load once).
 
 ### Environment: Windows machine (2026-11-12)
 - Flutter SDK at `C:\flutter` pinned to **3.47.6** (`git checkout 3.47.6`; it was 3.38.3 / Dart 3.10.1, which fails `pub get` on `sdk: ^3.13.5`). No iOS work on this machine (`pod install`, iOS builds run on the Mac).
