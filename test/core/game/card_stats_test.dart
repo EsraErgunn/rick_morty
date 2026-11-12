@@ -70,41 +70,41 @@ void main() {
   });
 
   group('hand-computed values (independent calculation, GM 4)', () {
-    test('Rick (id 1, legendary) is HP 152, ATK 33, DEF 17, SPD 17', () {
+    test('Rick (id 1, legendary) is HP 152, ATK 66, DEF 17, SPD 17', () {
       expect(
         _fromFixture(1),
-        const CardStats(hp: 152, atk: 33, def: 17, spd: 17),
+        const CardStats(hp: 152, atk: 66, def: 17, spd: 17),
       );
     });
 
-    test('Morty (id 2, legendary) is HP 140, ATK 26, DEF 16, SPD 15', () {
+    test('Morty (id 2, legendary) is HP 140, ATK 53, DEF 16, SPD 15', () {
       expect(
         _fromFixture(2),
-        const CardStats(hp: 140, atk: 26, def: 16, spd: 15),
+        const CardStats(hp: 140, atk: 53, def: 16, spd: 15),
       );
     });
 
     test(
-      'Conroy (id 71, common, 1 episode) is HP 85, ATK 18, DEF 13, SPD 11',
+      'Conroy (id 71, common, 1 episode) is HP 85, ATK 36, DEF 13, SPD 11',
       () {
         expect(
           _fromFixture(71),
-          const CardStats(hp: 85, atk: 18, def: 13, spd: 11),
+          const CardStats(hp: 85, atk: 36, def: 13, spd: 11),
         );
       },
     );
 
-    test('Arcade Alien (id 23, epic) is HP 126, ATK 28, DEF 14, SPD 13', () {
+    test('Arcade Alien (id 23, epic) is HP 126, ATK 57, DEF 14, SPD 13', () {
       expect(
         _fromFixture(23),
-        const CardStats(hp: 126, atk: 28, def: 14, spd: 13),
+        const CardStats(hp: 126, atk: 57, def: 14, spd: 13),
       );
     });
 
-    test('Cyclops Rick (id 86, rare) is HP 119, ATK 21, DEF 14, SPD 13', () {
+    test('Cyclops Rick (id 86, rare) is HP 119, ATK 42, DEF 14, SPD 13', () {
       expect(
         _fromFixture(86),
-        const CardStats(hp: 119, atk: 21, def: 14, spd: 13),
+        const CardStats(hp: 119, atk: 42, def: 14, spd: 13),
       );
     });
   });

@@ -79,7 +79,7 @@ void main() {
     for (final label in ['Can', 'Saldırı', 'Savunma', 'Hız']) {
       expect(find.text(label), findsOneWidget);
     }
-    for (final value in ['152', '33', '17']) {
+    for (final value in ['152', '66', '17']) {
       expect(find.text(value), findsWidgets);
     }
     expect(find.text('Zombi'), findsNothing);

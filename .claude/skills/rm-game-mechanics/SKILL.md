@@ -74,14 +74,14 @@ mix(h)    = murmur3 fmix32(h):                    // all steps & 0xFFFFFFFF
 r(id, k)  = mix(hash(id * 31 + k)) / 0xFFFFFFFF   // 0.0 – 1.0, k = stat index
 vary(x)   = 0.85 + 0.30 * x                       // ±15%
 
-base:  HP 100 · ATK 20 · DEF 12 · SPD 10
+base:  HP 100 · ATK 40 · DEF 12 · SPD 10          // ATK 20 → 40 on 2026-11-12, see docs/balance.md
 stat = round(base * rarityMult * vary(r(id, k)))   // k: HP=0, ATK=1, DEF=2, SPD=3
 ```
 Why `mix` (added 2026-11-12, owner decision): `hash(id * 31 + k)` alone is linear in `k`, so every card's ATK / DEF / SPD roll was its HP roll shifted by a fixed 0.618 / 0.236 / 0.854 (mod 1); all stat profiles lay on one curve (corr(HP, ATK) = -0.41). With `mix` the rolls are independent (|corr| < 0.08 over ids 1–826).
 
-Reference values (tests): Rick (1, legendary) 152/33/17/17 · Morty (2, legendary) 140/26/16/15 · Conroy (71, common) 85/18/13/11 (HP/ATK/DEF/SPD).
+Reference values (tests): Rick (1, legendary) 152/66/17/17 · Morty (2, legendary) 140/53/16/15 · Conroy (71, common) 85/36/13/11 (HP/ATK/DEF/SPD).
 
-Base values (HP 100, ATK 20) are under review: equal cards need about 6 hits to faint each other; the Week 3 battle simulation decides whether the ATK/HP ratio changes (see `tasks/plan.md`).
+**Base ATK raised 20 → 40 (2026-11-12, delivery mode, owner pre-approved the rule):** with ATK 20 equal cards needed ~7 hits, battles ran ~36 turns and 19–44 % ended in a draw. With ATK 40: 3.6–3.9 hits, 15–21 turns, 0 % draws (1000 seeded battles per scenario, `tool/battle_sim.dart`, report in `docs/balance.md`).
 Star bonus (merge, stretch): each star ×1.10 on all stats (max 3 stars).
 
 Tests must check: same id → identical stats; legendary average > epic average > rare > common.

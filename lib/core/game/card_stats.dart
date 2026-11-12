@@ -14,14 +14,26 @@ final class CardStats extends Equatable {
 
   /// `stat = round(base * rarityMult * vary(r(id, k)))`, k: HP 0, ATK 1,
   /// DEF 2, SPD 3.
-  factory CardStats.forCharacter(int id, Rarity rarity) {
+  factory CardStats.forCharacter(int id, Rarity rarity) =>
+      compute(id, rarity, hp: baseHp, atk: baseAtk, def: baseDef, spd: baseSpd);
+
+  /// The [GM §4] formula with explicit base values (balance simulation,
+  /// `tool/battle_sim.dart`). The game always uses [forCharacter].
+  static CardStats compute(
+    int id,
+    Rarity rarity, {
+    required int hp,
+    required int atk,
+    required int def,
+    required int spd,
+  }) {
     int stat(int base, int k) =>
         (base * rarity.statMultiplier * _vary(statRoll(id, k))).round();
     return CardStats(
-      hp: stat(baseHp, _hpIndex),
-      atk: stat(baseAtk, _atkIndex),
-      def: stat(baseDef, _defIndex),
-      spd: stat(baseSpd, _spdIndex),
+      hp: stat(hp, _hpIndex),
+      atk: stat(atk, _atkIndex),
+      def: stat(def, _defIndex),
+      spd: stat(spd, _spdIndex),
     );
   }
 
@@ -31,7 +43,7 @@ final class CardStats extends Equatable {
   final int spd;
 
   static const int baseHp = 100;
-  static const int baseAtk = 20;
+  static const int baseAtk = 40;
   static const int baseDef = 12;
   static const int baseSpd = 10;
 

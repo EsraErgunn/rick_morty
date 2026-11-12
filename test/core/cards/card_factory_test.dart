@@ -21,7 +21,7 @@ void main() {
       expect(card.rarity, Rarity.legendary);
       expect(card.type, CardType.human);
       expect(card.passive, Passive.none);
-      expect(card.stats, const CardStats(hp: 152, atk: 33, def: 17, spd: 17));
+      expect(card.stats, const CardStats(hp: 152, atk: 66, def: 17, spd: 17));
       expect(card.episodeCount, 51);
       expect(card.originName, 'Earth (C-137)');
     });
@@ -31,7 +31,7 @@ void main() {
       expect(card.rarity, Rarity.common);
       expect(card.type, CardType.robot);
       expect(card.passive, Passive.zombie);
-      expect(card.stats, const CardStats(hp: 85, atk: 18, def: 13, spd: 11));
+      expect(card.stats, const CardStats(hp: 85, atk: 36, def: 13, spd: 11));
     });
 
     test('every fixture equals the core/game results (no own formula)', () {
