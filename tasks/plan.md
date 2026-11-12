@@ -5,8 +5,8 @@ Sources: `docs/SPEC.md` (approved), `docs/PROJECT.md` §5 Week 1, `CLAUDE.md`, `
 Toolchain: Flutter 3.47.6 stable, Dart 3.13.5 (Mac and Windows machine).
 
 ## Where we left off (2026-11-12, Windows machine)
-- **Completed:** Week 1 (T1 to T21); Checkpoint C approved and pushed (2026-11-12); START_ROUTE and golden tags done.
-- **Next:** T22 audio generator; stop for the owner's listening approval, then T23 to T32 and Checkpoint D.
+- **Completed:** Week 2 T22 to T32 (2026-11-12). Checkpoint D: analyze clean, 349 tests green, debug APK builds; device checks and owner review open.
+- **Next:** Checkpoint D review on a phone, then T33 to T37.
 - **Commits:** no `Co-Authored-By` lines (owner request 2026-11-12).
 - **Open notes:**
   - Reference Android device: TBD. Device and iOS Simulator checks pending (Checkpoint A).
@@ -607,6 +607,13 @@ See Task 15b (automatic warm-up for owned + deck + next album page; Settings but
 - `shaders/holo.frag` + `ShaderCache` (loaded once in DI) + `HoloLayer` (repaints on tilt only, clipped to the card shape, fallback sheen). Bug found by rendering: `pow(x, 2.0)` with negative `x` is undefined in GLSL → use `x * x`.
 - Perf method in `docs/perf/README.md` (DevTools timeline, 30 s, export JSON). Not measured: no phone; the `Pixel_8` emulator did not boot (qemu idle). Open point: how to reach a card in a `--profile` build (card lab is debug only).
 - Checks: `flutter analyze --fatal-infos` clean, `flutter test` 242/242, `flutter build apk --release --obfuscate --split-debug-info=build/symbols` OK (47.6 MB, 5 min).
+
+### Week 2, T22 to T32 (2026-11-12)
+- T22 audio: 18 files, 4.4 MB, owner approved. T23 AudioService, T24 HapticsService, T25 portal.frag + PortalView (ShaderCache now loads holo + portal), T26 Economy + PortalRoll, T27 ShakeDetector, T28 portal repository (collection write first, then one player update), T29 PortalBloc + page, T30 reveal scene (RevealTimeline / RevealStage / RevealCard / effects), T31 main menu (`features/menu`, UiFeedback in `core/feedback`), T32 collection + card detail with a real deck toggle (SPEC §2.5 AC4).
+- Rule gap noted, not changed: [GM §7.3] steps down only; if commons are used up and the roll is common, a first-three portal can give a duplicate. Impossible with real data (hundreds of commons); covered by a test.
+- Fixes found while building: tap on the reveal card was swallowed (GestureDetector over IgnorePointer, now opaque); `half` is reserved in GLSL; portal particle seam at the atan wrap; tilt angle 6° (SPEC §4.5, was 12°); rarity name on the card body uses `paperMuted` (epic purple 4.10:1).
+- Simplified vs SPEC (follow-up): duplicate card does not fly into the coin counter (text "+N coin" instead); "add to deck" shows a popping deck counter instead of a flying card copy.
+- Tests: `test/helpers/` (fonts, cards + `frames()` stepper, fake audio). Hive file I/O cannot run inside `testWidgets` fake time: widget tests use in-memory fakes.
 
 ### Environment: Windows machine (2026-11-12)
 - Flutter SDK at `C:\flutter` pinned to **3.47.6** (`git checkout 3.47.6`; it was 3.38.3 / Dart 3.10.1, which fails `pub get` on `sdk: ^3.13.5`). No iOS work on this machine (`pod install`, iOS builds run on the Mac).
