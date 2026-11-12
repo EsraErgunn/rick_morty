@@ -5,8 +5,9 @@ Sources: `docs/SPEC.md` (approved), `docs/PROJECT.md` §5 Week 1, `CLAUDE.md`, `
 Toolchain: Flutter 3.47.6 stable, Dart 3.13.5 (Mac and Windows machine).
 
 ## Where we left off (2026-11-12, Windows machine)
-- **Completed:** T1 to T6 (Phase 1). Checkpoint A: analyze + tests + APK build done; device run and owner review open.
-- **Next task:** T7 Test fixtures from the real API, then T8 and T9 (Phase 2, pure Dart engine).
+- **Completed:** T1 to T9. Checkpoint A approved and pushed (2026-11-12). Phase 2 (T7 to T9) done, owner review pending.
+- **Next task:** T10 Dio client (Phase 3), after the owner decides on the stat-roll correlation (see T9 notes).
+- **Commits:** no `Co-Authored-By` lines (owner request 2026-11-12).
 - **Open notes:**
   - Reference Android device: TBD. Device and iOS Simulator checks pending (Checkpoint A).
   - iOS Simulator install hang from T1 (see Known issue), retry at Checkpoint C. `pod install` + iOS build after T5 (new `generate: true`) to re-check on the Mac.
@@ -359,6 +360,20 @@ T1 create ─┬─ T2 deps/lints ─┬─ T3 color+motion tokens ── T4 fon
 - `PortalCardsApp` takes the router as a parameter (`main` passes `getIt<GoRouter>()`), so widget tests need no DI.
 - Placeholders show only the title (as planned), so on a device the app stays on the `/splash` placeholder until T15.
 - Checks: `flutter analyze --fatal-infos` clean, `flutter test` 57/57, `flutter build apk --debug` OK.
+
+### T7 (2026-11-12)
+- 8 character fixtures (ids 1, 2, 23, 63, 71, 82, 86, 309) + `episode_page_1.json` + `location_page_1.json`, raw `curl` output; sources in `test/fixtures/README.md`. Loader: `test/fixtures/fixtures.dart`.
+- Coverage: rarities common (63, 71), rare (82, 86, 309), epic (23), legendary (1, 2); all 6 types (86 is Humanoid → Human, 82 is Cronenberg → Neutral); all 3 statuses.
+
+### T8 (2026-11-12)
+- `Rarity` (multiplier, holo strength, `fromEpisodeCount`), `CardType` (`fromSpecies`, `strongAgainst`), `Effectiveness` (×1.5 / ×0.75 / ×1). Frame colors stay in `app/theme`.
+- `purity_test.dart`: no Flutter / `dart:ui` / Hive / Dio import and no `Random()` in `lib/core/game`.
+
+### T9 (2026-11-12)
+- `CardStats.forCharacter(id, rarity)` (equatable), `Passive.fromStatus`, `Passives.zombieReviveHp`, `Passives.attackMultiplier(passive, random)`. English identifiers `zombie` / `uncertain`; UI names Zombi / Belirsiz come from l10n later.
+- Hand-computed (Python, independent) stats match: Rick 135/32/17/13, Morty 142/34/18/14, Conroy 94/22/12/9.
+- **Balance observation (open, owner decides):** `r(id, k) = hash(id*31 + k)` is linear in `k`, so for every card the ATK, DEF and SPD rolls are the HP roll shifted by a fixed 0.618 / 0.236 / 0.854 (mod 1). All 826 stat profiles lie on one curve; corr(HP roll, ATK roll) = -0.41. Possible fix: apply a non-linear mixer (e.g. murmur3 `fmix32`) to the hash. Changing it needs a GM §4 update in the same commit.
+- `flutter analyze --fatal-infos` clean, `flutter test` 135/135 (whole suite).
 
 ### Environment: Windows machine (2026-11-12)
 - Flutter SDK at `C:\flutter` pinned to **3.47.6** (`git checkout 3.47.6`; it was 3.38.3 / Dart 3.10.1, which fails `pub get` on `sdk: ^3.13.5`). No iOS work on this machine (`pod install`, iOS builds run on the Mac).
