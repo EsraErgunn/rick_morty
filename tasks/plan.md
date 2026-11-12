@@ -339,6 +339,7 @@ T1 create ─┬─ T2 deps/lints ─┬─ T3 color+motion tokens ── T4 fon
 - `flutter pub get`: OK. `flutter analyze --fatal-infos`: no issues (223 s). `flutter test`: 1/1 passed.
 - `pod install`: OK (4 pods). It failed first with `Encoding::CompatibilityError` because the shell had no UTF-8 locale; fixed by `LANG`/`LC_ALL=en_US.UTF-8` (now in the owner's `~/.zshrc`). `ios/Podfile` sets `platform :ios, '15.0'`. Remaining CocoaPods warning about the Profile base configuration is the known, harmless Flutter one.
 - **APK build: to be re-verified at home.** The first `flutter build apk --debug` ran 20+ min (first Gradle build with native plugins) and was stopped when the session ended. Afterwards `./gradlew assembleDebug` (with `JAVA_HOME` = Android Studio JBR) finished `BUILD SUCCESSFUL in 56s`, but `flutter build apk --debug` itself was stopped again before finishing. Note: `./gradlew` from a plain shell fails with "Unable to locate a Java Runtime" because `JAVA_HOME` is not set; `flutter` finds the JBR on its own.
+- **APK build verified 2026-11-12 (Windows machine):** `flutter build apk --debug` → `✓ Built build\app\outputs\flutter-apk\app-debug.apk`. First run took about 34 min (Gradle 9.3.1 download + Build-Tools 36 install), after the Avast truststore fix below.
 - `lib/` folder skeleton: not created on purpose (empty folders are not committed; each folder gets its first file in a later task).
 
 ### Environment: Windows machine (2026-11-12)
