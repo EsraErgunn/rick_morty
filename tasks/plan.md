@@ -5,8 +5,8 @@ Sources: `docs/SPEC.md` (approved), `docs/PROJECT.md` §5 Week 1, `CLAUDE.md`, `
 Toolchain: Flutter 3.47.6 stable, Dart 3.13.5 (Mac and Windows machine).
 
 ## Where we left off (2026-11-12, Windows machine)
-- **Completed:** T1 to T21 (Week 1 code). Checkpoints A and B approved. Checkpoint C: analyze, tests and Android release build done; device, iOS and profile checks open.
-- **Next:** owner review at Checkpoint C, then the Week 2 plan (portal, sound, haptics; T15b with Settings).
+- **Completed:** Week 1 (T1 to T21); Checkpoint C approved and pushed (2026-11-12); START_ROUTE and golden tags done.
+- **Next:** owner approves the Week 2 plan (below) and the [GM §12.2] signature numbers; then T22 (audio generator) first.
 - **Commits:** no `Co-Authored-By` lines (owner request 2026-11-12).
 - **Open notes:**
   - Reference Android device: TBD. Device and iOS Simulator checks pending (Checkpoint A).
@@ -349,6 +349,160 @@ Add this to the Week 3 battle engine task when the Week 3 plan is written. No co
 - Phase 2 (T7 to T9) needs only T1 and can run alongside Phase 1.
 - T10 and T19 need only T2.
 - Everything else follows the dependency graph.
+
+---
+
+# Implementation Plan: Week 2 (Portal, sound, collection)
+
+Status: **draft, waiting for owner approval** (2026-11-12)
+Sources: `docs/SPEC.md` (D5 to D9, §2.2 to §2.5, §2.9, §4.2 to §4.5, §4.9, §4.11, §5.5, §5.9), `docs/PROJECT.md` §5 Week 2, `rm-game-mechanics` §7, §8, §12, `.claude/rules/*`.
+Toolchain: Python 3.12 + numpy 2.5.4 + scipy 1.18.1 + Pillow 12.3.0 are installed on the Windows machine (no setup step). `tomllib` is in the standard library.
+
+**Legend:** ★ = MVP critical (the jury demo or a graded requirement fails without it). ☆ = MVP, can slip a few days. ⏸ = waiting for an outside input, never blocks other tasks.
+
+## Priority order
+1. ★ T22 Audio generator + 16 sound files (graded requirement; needs listening approval, so it starts first)
+2. ★ T23 AudioService · ★ T24 HapticsService
+3. ★ T25 portal.frag + PortalView
+4. ★ T26 Economy + portal roll (`core/game`)
+5. ★ T27 ShakeDetector
+6. ★ T28 Portal repository (write-before-animate) · ★ T29 PortalBloc + portal page
+7. ★ T30 Reveal scene (D7) + legendary cinematic
+8. ★ T31 Main menu
+9. ★ T32 Collection grid + filters + card detail
+10. ☆ T33 Featured characters (frame + entrance), after the owner approves [GM §12.2]
+11. ☆ T34 PortalLoader → portal.frag (D8)
+12. ☆ T35 Settings screen + demo panel · ☆ T36 Image precache (T15b)
+13. ⏸ T37 Pending art assets (menu/splash backgrounds, app icon)
+
+Checkpoint D after T32 (demo path works end to end), Checkpoint E at the end of the week (everything + iPhone session).
+
+## Dependency graph
+```
+T22 audio files ── T23 AudioService ──┐
+T24 HapticsService ───────────────────┤
+T25 portal.frag ──┬── T34 loader      │
+                  └───────────────────┼── T29 PortalBloc + page ── T30 reveal ── T33 featured
+T26 economy + roll ── T28 portal repo ┤                         └── T31 main menu
+T27 ShakeDetector ────────────────────┘
+T16..T21 cards ── T32 collection + detail ── T36 precache (automatic part)
+T23 + T24 + T26 ── T35 settings ── T36 precache (button)
+T37 art assets: whenever the files arrive
+```
+
+## Phase 5: Sound and feedback
+
+### Task 22 ★: Procedural audio generator and the 16 files (D5, SPEC §4.11)
+**Description:** `tools/audio/` (dev-only; only the generated WAVs ship): `generate.py`, `synth.py` (oscillators, ADSR, filters, noise, FM, delay/reverb with `scipy.signal`), `config.toml` (the single config: seed, sample rates, every sound's parameters, the music written as note lists), `requirements.txt` (numpy, scipy pinned), `README.md`. Writes `assets/audio/sfx/*.wav` (13), `assets/audio/music/*.wav` (3) and `assets/audio/CREDITS.md`.
+- SFX sketch: `portal_charge` rising filtered noise + FM whoop (1.2 s); `portal_open` downward zap + sub boom + sparkle tail; `card_flip` short swish; `rare_reveal` bright arpeggio chime; `legendary_reveal` choir-like chord swell + shimmer; `hit` noise + pitch-drop thump; `crit_hit` hit + metallic ring; `super_effective` rising 3-note zap; `faint` descending wobble; `victory` short major fanfare; `defeat` minor descending; `button_tap` tiny blip; `coin` two-tone ping.
+- Music: `battle_loop` 136 BPM, 16 bars, synthwave bass arpeggio + square lead + gated drums; `menu_loop` 90 BPM, 16 bars, pad + theremin-like lead (sine, slow vibrato, portamento) + soft space noise; `legendary_sting` 4 s swell. Original progressions, written in `config.toml`.
+**Acceptance criteria:**
+- [ ] Same seed + config → byte-identical files (the script prints SHA-256 per file; a second run matches).
+- [ ] Loops: the join between last and first sample is continuous (the script checks the sample jump and the RMS of the last/first 50 ms and fails on a likely click).
+- [ ] No clipping (peak ≤ -1 dBFS), SFX normalized to -3 dBFS, total size < 8 MB (printed).
+- [ ] Owner listening approval of all 16 files (I send a short list of what each should sound like).
+**Verification:** `python tools/audio/generate.py --check`; listening session; loop test on the phone after T23.
+**Files:** `tools/audio/*`, `assets/audio/**`, `pubspec.yaml` (assets)
+**Size:** L (most of the creative work; iterate on feedback)
+
+### Task 23 ★: AudioService
+**Description:** `core/audio/audio_service.dart`: preloaded SFX pool (audioplayers low-latency, overlap allowed), one music player with fade in/out and crossfade, settings-aware (`soundEnabled`, `musicEnabled`, volumes from `PlayerState`), music pauses in background. Enums `Sfx` / `Music` with the 16 asset names; widgets never touch audioplayers.
+**Acceptance criteria:** [ ] sound/music off → no player call; [ ] crossfade menu ↔ battle ↔ sting; [ ] background pauses music, resume continues; [ ] loops play without a gap on the reference phone (if `ReleaseMode.loop` gaps with WAV: two players crossfading at the loop point).
+**Verification:** unit tests with a fake player backend (settings, crossfade timing, pool reuse); device check.
+**Dependencies:** T22, T13 · **Size:** M
+
+### Task 24 ★: HapticsService
+**Description:** `core/haptics/haptics_service.dart` wrapping `HapticFeedback` with the table from the rules (incl. legendary heavy → 80 ms → heavy → 120 ms → heavy), respecting `hapticsEnabled`.
+**Acceptance criteria:** [ ] off → no call; [ ] legendary sequence timing (fake async).
+**Verification:** unit tests with a fake platform channel. · **Size:** S
+
+## Phase 6: Portal
+
+### Task 25 ★: portal.frag and PortalView
+**Description:** `shaders/portal.frag` (`uTime`, `uSize`, `uIntensity`, `uColor`): swirling green vortex, ink rim, particles pulled inward as intensity rises, red for legendary. `PortalView` widget (ticker drives `uTime`, `RepaintBoundary`, loaded once through `ShaderCache`, fallback = the T15 spiral painter). States: idle 0.15, charging 0.15 → 1.0, opening 1.0, legendary red (SPEC §2.3 AC5).
+**Acceptance criteria:** [ ] one program load per run; [ ] fallback on load failure; [ ] reduced motion: slow idle, no particles.
+**Verification:** loader/fallback tests, render check like the holo; profile on the phone (`docs/perf/`). · **Size:** M
+
+### Task 26 ★: Economy and portal roll (`core/game`, pure Dart)
+**Description:** `economy.dart` (`Economy`: the only writer of coins; reasons `portal`, `duplicate`, `victory`, `defeat`, `draw`, `album`, `demo`; never below 0; debug log) and `portal_roll.dart` ([GM §7], §7.1 first three portals without duplicates, §7.2 demo legendary override, §7.3 step-down). `Random` injected.
+**Acceptance criteria:** [ ] 10,000 seeded rolls: 60/28/10/2 % ± 2 %; [ ] first 3 portals never duplicate, even with a tiny pool; [ ] step-down order; [ ] override is one-shot; [ ] duplicate coins 20/40/80/200.
+**Verification:** `flutter test test/core/game/`. · **Size:** M
+
+### Task 27 ★: ShakeDetector
+**Description:** `core/sensors/shake_detector.dart`: `userAccelerometerEventStream`, ≈ 15 m/s², 2 peaks within 500 ms, 1.5 s cooldown, pause/resume like `TiltStream`, source injected.
+**Acceptance criteria:** [ ] one shake → one event; [ ] cooldown; [ ] a single peak is ignored.
+**Verification:** unit tests with scripted readings. · **Size:** S
+
+### Task 28 ★: Portal repository (write-before-animate)
+**Description:** `features/portal/{domain,data}`: `OpenPortal` use case: check coins → `Economy` spend → roll → add to the collection or pay duplicate coins → `portalsOpened + 1` → clear the demo flag → save, **then** return the result (SPEC §2.3 AC3, AC4, AC8). Returns `Either<Failure, PortalResult>`.
+**Acceptance criteria:** [ ] not enough coins → no state change; [ ] the result is persisted before it is returned; [ ] a storage error leaves nothing half-written (write order documented and tested).
+**Verification:** tests on a temp Hive directory. · **Dependencies:** T26 · **Size:** M
+
+### Task 29 ★: PortalBloc and portal page (idle, hint, not enough coins)
+**Description:** `PortalBloc` (`PortalShaken`, `PortalOpenRequested`, `RevealFinished`, `CardFlipRequested`); page with `PortalView`, coin counter, "Portalı aç · 100" button, shake hint (D4), not-enough-coins message; sound/haptics only from `BlocListener`; shake ignored while busy (AC6); sensors pause when hidden (AC7).
+**Verification:** `bloc_test` per event; widget tests (hint once, not enough coins, button fallback).
+**Dependencies:** T23, T24, T25, T27, T28 · **Size:** M
+
+### Task 30 ★: Reveal scene and legendary cinematic (D7, SPEC §4.3)
+**Description:** `features/portal/presentation/widgets/reveal_scene.dart`: one `AnimationController` timeline: charge → burst + screen shake → emerge with spin → gravity fall → squash & stretch landing with shadow → wait → flip + rarity effect. Legendary variant (red portal, dim, silhouette, gold sweep, music sting, haptic sequence); duplicate → the card shrinks into the coin counter; reduced motion → 600 ms crossfade. Timings only from `AppMotion` (new tokens for fall, squash and shake).
+**Acceptance criteria:** [ ] sounds/haptics fire on the right beats (fake services in tests); [ ] 60 fps on the reference phone (profile); [ ] interrupting never changes the saved result (AC10).
+**Verification:** widget tests that pump the timeline phase by phase; golden key frames (tagged `golden`); a device video for the owner.
+**Dependencies:** T29 · **Size:** L
+
+### Task 31 ★: Main menu
+**Description:** Replaces the menu placeholder: portal hero (`PortalView` idle), coins (tabular, rolling counter), entries with values (SPEC §5.6), "Savaş" disabled until the deck has 3 cards, pulse on an empty collection, `menu_loop`. The debug card lab link stays (debug only). Background slot for T37.
+**Verification:** widget tests (battle disabled, pulse only when empty); device check. · **Dependencies:** T23, T25 · **Size:** M
+
+### Task 32 ★: Collection grid, filters and card detail
+**Description:** `features/collection`: grid of 3 (owned cards, `GameCard`), filter chips (rarity, type), count `owned / 826`, empty state (SPEC §2.4 AC4); the card detail page becomes the real one (tilt + holo + flip from Week 1, facts, deck action placeholder for Week 3). Flip sound/haptic through `BlocListener` + `FlipCard.onFlipped`.
+**Verification:** `bloc_test`, widget tests (filters, empty state), scroll performance on the phone.
+**Dependencies:** T16 to T21, T23, T24 · **Size:** M
+
+### Checkpoint D (after T22 to T32)
+- [ ] Demo path on the phone: splash → menu (music) → shake → reveal scene with sound + haptics → collection → card detail with tilt + holo
+- [ ] Owner listening approval done; loops gap-free on the phone
+- [ ] `flutter analyze --fatal-infos` clean, `flutter test` green, release APK builds
+
+## Phase 7: Featured, settings, polish
+
+### Task 33 ☆: Featured characters (D6, [GM §12]) — starts after the owner approves §12.2
+**Description:** `core/game/featured.dart` (ids + signature definitions as data; battle logic is Week 3), featured frame on `GameCard` (portal-green inner line + `stars` badge), featured entrance in the reveal scene (the character image falls into the empty art window, name callout).
+**Verification:** unit tests (ids, data), widget test + golden for the frame, reveal phase test. · **Dependencies:** T30 · **Size:** M
+
+### Task 34 ☆: PortalLoader on portal.frag (D8)
+**Description:** The inside of `PortalLoader` uses the `PortalView` shader; constructor and behavior unchanged (all T15 tests stay green); the spiral painter stays as the fallback.
+**Dependencies:** T25 · **Size:** S
+
+### Task 35 ☆: Settings screen and demo panel
+**Description:** SPEC §2.9 AC1 to AC5: toggles and volume sliders (instant, persisted), version label with the 7-tap demo unlock (D2: +1000 coin through `Economy` reason `demo`, next portal legendary, "Demo modunu kapat"), "İlerlemeyi sıfırla" with a destructive confirm, disclaimer, credits ("procedurally generated by tools/audio").
+**Dependencies:** T23, T24, T26 · **Size:** M
+
+### Task 36 ☆: Image precache (Task 15b, SPEC §3 Images)
+See Task 15b (automatic warm-up for owned + deck + next album page; Settings button "Tüm görselleri çevrimdışı için indir"). The "next album page" part waits for the album (Week 3/4); until then: owned + deck.
+**Dependencies:** T32, T35 · **Size:** M
+
+### Task 37 ⏸: Pending art assets (D9, SPEC §5.9) — asset bekleniyor
+- Menu background `assets/images/menu_bg.*`, splash background `assets/images/splash_bg.*`: when the files arrive, list them in `pubspec.yaml`, show them behind the portal with a `void` scrim if needed, re-check text contrast; the flat `void` stays as the fallback.
+- App icon `assets/icon/app_icon.png` (1024 px): a dev-only Python script (`tools/icon/`, Pillow) writes the Android `mipmap-*` launcher icons (+ adaptive foreground/background if a foreground layer is given) and the iOS `AppIcon.appiconset`. No new Flutter package.
+- Never blocks other tasks.
+**Size:** S each, once the files exist
+
+### Checkpoint E: Week 2 complete
+- [ ] All ★ and ☆ tasks done or explicitly moved; ⏸ status reported
+- [ ] iPhone session (real device, end of Week 2): shake, tilt, haptics, audio latency, loops
+- [ ] Device checklist incl. the open Week 1 checks (tilt sign, holo profile ≤ 5 % jank)
+- [ ] Review with the owner, then the Week 3 plan (deck, battle, featured signatures in battle, balance simulation)
+
+## Week 2 risks
+| Risk | Impact | Mitigation |
+|---|---|---|
+| Procedural audio sounds cheap | Graded requirement looks weak | Start first (T22); layered synthesis (FM, filters, reverb tails); iterate on listening feedback |
+| WAV loop gap with `audioplayers` | Audible click every 16 bars | Seamless rendering + device test; fallback: two players crossfading at the loop point (T23) |
+| Audio size | Over 8 MB | Music at 22.05 kHz mono; the script fails above 8 MB |
+| Reveal scene + portal shader below 60 fps | Demo looks broken | One controller timeline, `RepaintBoundary`, profile on the phone (`START_ROUTE`), capped particles |
+| Signature abilities unbalance battles | Week 3 balance work grows | Numbers are proposals; the Week 3 simulation checks 50 % ± 8 % |
+| Art assets arrive late | Menu/splash look plain | The flat `void` design works on its own (SPEC §5.1); assets are additive |
+
 
 ## Progress notes
 

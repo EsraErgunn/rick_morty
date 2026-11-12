@@ -18,7 +18,13 @@ These were missing or conflicting in the sources and were decided with the owner
 | D3 | D1 needs an unowned character of the rolled rarity, but the legendary pool is small. | If no unowned character is left in the rolled rarity, step down one rarity at a time until one is found. |
 | D4 | No tutorial, but first-time players must learn to shake. | On the first visit to the portal screen, show the hint "Telefonu salla!" with an animated shaking-hand icon, once; persisted as `player.shakeHintSeen`. |
 
-D1, D2 and D3 are recorded in `rm-game-mechanics` as [GM §7.1–§7.3].
+| D5 | Sound files: stock libraries (Pixabay/Freesound) need license tracking per file and rarely match the style. | **All sound is procedurally generated** by a dev-only Python tool (`tools/audio/`, numpy + scipy, fixed seed, one config file). Original melodies in a sci-fi cartoon mood; never imitate the show's music. See §4.11. (2026-11-12) |
+| D6 | Fans expect the main characters to feel special. | **Five featured characters** in the MVP: Rick (1), Morty (2), Summer (3), Mr. Meeseeks (242), Pickle Rick (265). Special frame, signature ability and entrance cinematic [GM §12]. Rarity, pool and stats are unchanged. (2026-11-12) |
+| D7 | The card reveal needs a physical, memorable moment for the demo. | **Portal reveal scene** (§4.3): charge → burst + screen shake → card spins out of the portal depth → falls on a gravity curve → squash & stretch landing with shadow → flip with rarity effect. No 3D models. (2026-11-12) |
+| D8 | Splash portal and portal screen looked different (CustomPainter vs shader). | `PortalLoader` draws `portal.frag` inside; its public API is unchanged. (2026-11-12) |
+| D9 | Menu and splash backgrounds and the app icon are made outside the code (Gemini). | **Asset pending**, non-blocking: screens ship with the flat `void` background until the files arrive in `assets/images/` and `assets/icon/` (§5.9). (2026-11-12) |
+
+D1, D2 and D3 are recorded in `rm-game-mechanics` as [GM §7.1–§7.3]; D6 as [GM §12].
 
 ### Assumptions (approved 2026-11-11)
 1. Portrait orientation only.
@@ -86,6 +92,8 @@ Every screen has: a loading state, an empty state (if it shows a list), an error
 - **AC6** Shake is ignored while a portal is already charging/opening/revealing, and during the 1.5 s cooldown.
 - **AC7** Sensor subscriptions pause when the screen is not visible or the app is in background.
 - **AC8** Coins are deducted and the card is persisted **before** the animation starts (killing the app mid-animation never loses a card or refunds coins).
+- **AC10** The reveal follows the portal reveal scene (§4.3, D7). The result is already saved (AC8); interrupting the scene (back button, app killed) never changes the result, and reopening the portal screen shows the idle portal.
+- **AC11** A featured character [GM §12] uses the featured entrance: the card lands with an empty art window, then the character image falls out of the portal and settles into it; the featured frame appears with the flip.
 - **AC9** First visit only (D4): while `player.shakeHintSeen` is false, the idle portal shows the hint "Telefonu salla!" with a hand icon (Material Icons, vector, no emoji; no lucide package) that rocks left and right. If the Material hand icon does not match the thick ink-outline style (§5), only this icon is drawn with a `CustomPainter`. The hint hides as soon as a portal opens (by shake or button); `shakeHintSeen` is then saved as true, and the hint never appears again, including after an app restart. "İlerlemeyi sıfırla" resets it.
 
 ### 2.4 Collection (`features/collection`)
@@ -199,10 +207,15 @@ Every button everywhere: press scale 0.96 (`fast`), `button_tap`, `selectionClic
 | First visit hint (D4) | Hand icon rocks ±15° (3 swings, `normal` each, then 1.2 s pause, repeat) above "Telefonu salla!"; fades out (`fast`) on portal open. Reduced motion: static icon | none | none |
 | Shake / button | `uIntensity` 0.15 → 1.0 over `slow`, particles pulled inward | `portal_charge` | `mediumImpact` |
 | Not enough coins | Coin counter shakes on X (3 cycles, `normal`) | none | `lightImpact` |
-| Open | Flash + ring burst; card back flies out of the center and scales up (`slow`, `easeOutBack`) | `portal_open` | `heavyImpact` |
+| Burst (D7) | Portal flash + ring burst at `uIntensity` 1.0; **screen shake** 3 cycles, ±6 dp, `fast` total (reduced motion: no shake) | `portal_open` | `heavyImpact` |
+| Emerge | Card back comes out of the portal **depth**: scale 0.1 → 1.0 while rotating 1.5 turns on Y, `slow`, `easeOutCubic`; portal stays bright | none | none |
+| Fall | Card drops from the portal center to the floor line on a **gravity curve** (position `Curves.easeIn`, quadratic), `normal`; a soft ink shadow ellipse grows under it as it nears the floor (the only blurred shadow allowed, portal scene only) | none | none |
+| Land | **Squash & stretch**: scaleY 1 → 0.82 → 1.06 → 1, scaleX 1 → 1.14 → 0.96 → 1 around the bottom edge, `fast` each step; shadow snaps to full | `hit` (low volume) | `mediumImpact` |
 | Waiting | Card back hovers (2 px bob); hint "Çevirmek için dokun" after 1.5 s; auto-flip after 4 s | none | none |
 | Flip (common) | Y-axis flip (`normal`) | `card_flip` | `lightImpact` |
 | Flip (rare / epic) | Flip + rarity-color burst behind the card, holo turns on | `card_flip` then `rare_reveal` | `lightImpact` then `mediumImpact` |
+| Featured entrance (AC11) | After landing: art window is empty (portal swirl); the character image falls from the portal with the same gravity curve, squashes into the window (`fast`), featured frame line draws around the card (`slow`); a short callout with the name in `callout` type | `rare_reveal` (or the legendary sequence for Rick, Morty, Summer) | `mediumImpact` on settle |
+| Reduced motion | Whole scene becomes a 600 ms crossfade: portal → card front (no shake, spin, fall or squash) | same sounds | same haptics |
 | **Legendary** | Portal recolors red (`uColor`), screen dims, card back appears as a black silhouette, slow rotation, gold light sweep, flip to rainbow foil (total ≥ `cinematic` 1500 ms; under reduced motion: 600 ms crossfade) | music crossfades to `legendary_sting`, then `legendary_reveal`; `menu_loop` returns after | heavy → 80 ms → heavy → 120 ms → heavy |
 | Duplicate | Card shrinks into the coin counter; "+40" floats up (`normal`) | `coin` | `selectionClick` |
 | Album completed | Banner drops from top with page name and reward (`slow`, `elasticOut`) | `victory` (short), `coin` | `heavyImpact` |
@@ -260,6 +273,15 @@ Replay pacing: gap between events = `fast`; a full turn (attack → damage → e
 | Toggle | Switch thumb (`fast`) | `button_tap` (only if sound stays on) | `selectionClick` (only if haptics stays on) |
 | SFX volume slider released | none | `button_tap` at the new volume | none |
 | Demo unlock (7th tap) | Panel slides down (`normal`) | `portal_open` | `heavyImpact` |
+
+### 4.11 Audio assets (D5)
+All 16 files are generated by `tools/audio/` (dev-only, never shipped): Python 3.12 + numpy + scipy, one config file `tools/audio/config.toml`, fixed seed, so a rerun gives the same bytes. Output: 16-bit mono WAV in `assets/audio/sfx/` and `assets/audio/music/`.
+- **SFX (13, 44.1 kHz):** `portal_charge`, `portal_open`, `card_flip`, `rare_reveal`, `legendary_reveal`, `hit`, `crit_hit`, `super_effective`, `faint`, `victory`, `defeat`, `button_tap`, `coin`. Short (0.05 to 2.5 s), peak normalized to -3 dBFS, no click at start/end (short fades).
+- **Music (3, 22.05 kHz):** `battle_loop` 130 to 140 BPM arena synthwave/chiptune, 16 bars, seamless; `menu_loop` 90 BPM space mood with a theremin-like lead (sine + vibrato + glide), 16 bars, seamless; `legendary_sting` about 4 s, one-shot.
+- **Seamless loops:** the last sample flows into the first (same phase and level, tails rendered into the start, no fade at the loop point).
+- **Originality:** melodies and chord progressions are written for this project; nothing is transcribed or imitated from the show.
+- **Budget:** all audio < 8 MB (expected about 4.5 MB).
+- **Acceptance:** owner listening approval of every file; loops checked on a phone for gaps; `assets/audio/CREDITS.md` says "procedurally generated by tools/audio" with the tool version and seed.
 
 ### 4.10 Device checklist (for S5)
 For each row above on a real phone: correct sound, correct haptic, and silence when the related toggle is off. Plus: music pauses in background and resumes; shake works and has a cooldown; tilt moves the holo; button and drag fallbacks work on a simulator.
@@ -354,6 +376,8 @@ Card ratio 5:7. The frame is the rarity; the card body is always `voidRaised` so
 Front layout: name plate (display font) at top, art 60% height, type icon + rarity name row, 2×2 stat grid (tabular figures), passive name at the bottom if any.
 Back: `ink` field with a portal-ring pattern; on the detail page, text facts (species, status, origin, location, episodes).
 
+**Featured frame [GM §12] (D6):** the rarity frame stays as it is (color, width and corners still say the rarity), plus a 2-unit `portal` green inner line and a featured badge (Material `stars` icon in `ink` on a `portal` disc) at the top-right of the name plate. Never color alone: the badge is the signal.
+
 ### 5.6 Screen layouts (portrait)
 
 Main menu: the portal leads, left-aligned menu under it, coins top right.
@@ -434,6 +458,14 @@ The theme task (`app/theme/`: colors, typography, motion, spacing tokens) is don
 - **T3** No hex color, duration or font size outside `app/theme/` (`grep` check on `lib/features` and `lib/core/widgets`).
 
 ---
+
+### 5.9 Pending art assets (D9, owner provides, non-blocking)
+| Asset | Path | Used by | Until it arrives |
+|---|---|---|---|
+| Menu background | `assets/images/menu_bg.*` | Main menu behind the portal | flat `void` |
+| Splash background | `assets/images/splash_bg.*` | Splash behind the portal loader | flat `void` |
+| App icon | `assets/icon/app_icon.png` (1024 px, plus a foreground layer for Android adaptive icons if available) | Android launcher + iOS AppIcon | Flutter default icon |
+Backgrounds must keep text contrast (§5.2): a `void` scrim is added if a picture is too bright. No characters or logo of the show in the icon (fan-project rule).
 
 ## 6. Jury demo
 

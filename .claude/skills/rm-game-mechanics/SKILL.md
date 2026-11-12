@@ -193,3 +193,38 @@ Coins can never go below 0. All coin changes go through one `Economy` class so t
 
 - 3 copies of the same character → 1 card with +1 star (max 3 stars). Extra copies after 3 stars → duplicate coins.
 - Merge animation: three cards orbit, collide, flash, single card pops in with the new star.
+
+---
+
+## 12. Featured characters (MVP: 5) — added 2026-11-12
+
+Featured characters keep their normal **rarity, type, stats, passive and portal chances** (§2 to §5, §7). They only add a special frame, a signature ability (battle, Week 3) and an entrance cinematic (portal, Week 2).
+
+| id | Character | Rarity (episodes) | Type | Passive |
+|---|---|---|---|---|
+| 1 | Rick Sanchez | Legendary (51) | Human | — |
+| 2 | Morty Smith | Legendary (51) | Human | — |
+| 3 | Summer Smith | Legendary (42) | Human | — |
+| 242 | Mr. Meeseeks | Epic (5) | Human (Humanoid) | Belirsiz |
+| 265 | Pickle Rick | Common (1) | Neutral (species "unknown") | — |
+
+The list is a constant in `core/game/featured.dart` (ids only; names come from the API).
+
+### 12.1 Frame
+Rarity frame unchanged + 2-unit `portal` green inner line + featured badge (Material `stars` icon) on the name plate (SPEC §5.5).
+
+### 12.2 Signature abilities — **PROPOSED, waiting for owner approval**
+Rules for all signatures: deterministic except where they use the battle's injected `Random`; each one emits a `signature` BattleEvent (character id) so the UI can show it; they multiply into the damage formula as `signatureMult` (default 1.0) after `passiveMult`; at most one trigger per battle unless stated.
+
+| Character | Name (UI) | Rule | Expected effect |
+|---|---|---|---|
+| Rick | **Dahi** | Crit chance 20 % instead of 10 % (§6). Always on. | Average damage ×1.05 (1.05 → 1.10 expected multiplier). |
+| Morty | **Aman tanrım!** | Once per battle, the first time his HP drops to ≤ 30 % of max (and he is still alive), his **next** attack deals ×1.5. | One boosted hit in a ~6-hit fight: about +8 % of his output, only when he is losing. |
+| Summer | **Takım ruhu** | Once per battle, when an ally on her side faints, her ATK is ×1.2 for the rest of the battle. | Matters only after the team loses a card; comeback help. |
+| Mr. Meeseeks | **Görev tamam** | Once per battle, when his attack makes an enemy faint, he heals 20 % of his max HP (not above max). Stacks with Belirsiz. | About one extra hit of survival for an epic card. |
+| Pickle Rick | **Turşu zırhı** | The first attack he receives in a battle deals ×0.5 damage. | Half a hit of extra HP for a common card; keeps him common-tier. |
+
+Balance check (Week 3, with the battle simulation in `tasks/plan.md` "Carry-over to Week 3"): a team with one featured card vs the same team with a non-featured card of the same rarity and type wins 50 % ± 8 % over 1,000 seeded battles. If not, tune the numbers above (owner approves the change).
+
+### 12.3 Entrance cinematic (portal, Week 2)
+After the reveal scene lands the card (SPEC §4.3), the art window is empty; the character image falls out of the portal with the same gravity curve and squashes into the window, the featured frame line draws around the card, and the name is shown as a short `callout`. Rick, Morty and Summer are legendary, so this runs inside the legendary cinematic (red portal, music sting). Battle signature animations come in Week 3.
