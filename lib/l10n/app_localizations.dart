@@ -99,6 +99,72 @@ abstract class AppLocalizations {
   /// In tr, this message translates to:
   /// **'Portal Cards'**
   String get appTitle;
+
+  /// Splash screen title while the first sync runs.
+  ///
+  /// In tr, this message translates to:
+  /// **'Yükleniyor'**
+  String get splashTitle;
+
+  /// Main menu screen title; also the label of buttons that go back to it.
+  ///
+  /// In tr, this message translates to:
+  /// **'Ana menü'**
+  String get menuTitle;
+
+  /// Portal screen title.
+  ///
+  /// In tr, this message translates to:
+  /// **'Portal'**
+  String get portalTitle;
+
+  /// Collection screen title.
+  ///
+  /// In tr, this message translates to:
+  /// **'Koleksiyon'**
+  String get collectionTitle;
+
+  /// Card detail screen title. Placeholder until the card name is shown.
+  ///
+  /// In tr, this message translates to:
+  /// **'Kart {id}'**
+  String cardDetailTitle(String id);
+
+  /// Deck builder screen title.
+  ///
+  /// In tr, this message translates to:
+  /// **'Deste'**
+  String get deckTitle;
+
+  /// Battle screen title.
+  ///
+  /// In tr, this message translates to:
+  /// **'Savaş'**
+  String get battleTitle;
+
+  /// Album screen title.
+  ///
+  /// In tr, this message translates to:
+  /// **'Albüm'**
+  String get albumTitle;
+
+  /// Album page for one episode. Placeholder until the episode code is shown.
+  ///
+  /// In tr, this message translates to:
+  /// **'Bölüm {episodeId}'**
+  String albumPageTitle(String episodeId);
+
+  /// Settings screen title.
+  ///
+  /// In tr, this message translates to:
+  /// **'Ayarlar'**
+  String get settingsTitle;
+
+  /// Shown for an unknown route.
+  ///
+  /// In tr, this message translates to:
+  /// **'Sayfa bulunamadı'**
+  String get notFoundTitle;
 }
 
 class _AppLocalizationsDelegate

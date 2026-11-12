@@ -3,5 +3,61 @@
   "appTitle": "Portal Cards",
   "@appTitle": {
     "description": "App name. Kept in English: it is the working title of the game."
+  },
+  "splashTitle": "Yükleniyor",
+  "@splashTitle": {
+    "description": "Splash screen title while the first sync runs."
+  },
+  "menuTitle": "Ana menü",
+  "@menuTitle": {
+    "description": "Main menu screen title; also the label of buttons that go back to it."
+  },
+  "portalTitle": "Portal",
+  "@portalTitle": {
+    "description": "Portal screen title."
+  },
+  "collectionTitle": "Koleksiyon",
+  "@collectionTitle": {
+    "description": "Collection screen title."
+  },
+  "cardDetailTitle": "Kart {id}",
+  "@cardDetailTitle": {
+    "description": "Card detail screen title. Placeholder until the card name is shown.",
+    "placeholders": {
+      "id": {
+        "type": "String",
+        "example": "1"
+      }
+    }
+  },
+  "deckTitle": "Deste",
+  "@deckTitle": {
+    "description": "Deck builder screen title."
+  },
+  "battleTitle": "Savaş",
+  "@battleTitle": {
+    "description": "Battle screen title."
+  },
+  "albumTitle": "Albüm",
+  "@albumTitle": {
+    "description": "Album screen title."
+  },
+  "albumPageTitle": "Bölüm {episodeId}",
+  "@albumPageTitle": {
+    "description": "Album page for one episode. Placeholder until the episode code is shown.",
+    "placeholders": {
+      "episodeId": {
+        "type": "String",
+        "example": "1"
+      }
+    }
+  },
+  "settingsTitle": "Ayarlar",
+  "@settingsTitle": {
+    "description": "Settings screen title."
+  },
+  "notFoundTitle": "Sayfa bulunamadı",
+  "@notFoundTitle": {
+    "description": "Shown for an unknown route."
   }
 }

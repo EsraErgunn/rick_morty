@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import 'app/app.dart';
+import 'app/di.dart';
 
-void main() {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(const PortalCardsApp());
+  await configureDependencies();
+  runApp(PortalCardsApp(router: getIt<GoRouter>()));
 }

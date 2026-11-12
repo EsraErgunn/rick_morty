@@ -11,4 +11,41 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get appTitle => 'Portal Cards';
+
+  @override
+  String get splashTitle => 'Yükleniyor';
+
+  @override
+  String get menuTitle => 'Ana menü';
+
+  @override
+  String get portalTitle => 'Portal';
+
+  @override
+  String get collectionTitle => 'Koleksiyon';
+
+  @override
+  String cardDetailTitle(String id) {
+    return 'Kart $id';
+  }
+
+  @override
+  String get deckTitle => 'Deste';
+
+  @override
+  String get battleTitle => 'Savaş';
+
+  @override
+  String get albumTitle => 'Albüm';
+
+  @override
+  String albumPageTitle(String episodeId) {
+    return 'Bölüm $episodeId';
+  }
+
+  @override
+  String get settingsTitle => 'Ayarlar';
+
+  @override
+  String get notFoundTitle => 'Sayfa bulunamadı';
 }
