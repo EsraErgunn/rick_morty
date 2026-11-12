@@ -323,6 +323,8 @@ Fonts bundled under `assets/fonts/` (SIL OFL, no new package; `google_fonts` is 
 | Body + numbers: stats, lists, settings | **Atkinson Hyperlegible Next** (Regular 400, Bold 700), tabular figures for stats and coins | Built for legibility at small sizes on dense cards |
 
 Turkish glyph support is an acceptance criterion of the Week 1 theme task (§5.8). If either font fails, swap within the same role (display: Lilita One; body: Lexend) and record it here.
+
+**Glyph check, 2026-11-12: passed, no swap.** All four files (Grandstander 700/900, Atkinson Hyperlegible Next 400/700; static TTFs from Google Fonts, OFL next to each family) map `ğ ş ı İ ç ö ü Ğ Ş Ç Ö Ü` in their `cmap` and have `tnum` (tabular figures). Checked by `test/app/theme/glyph_test.dart`, which also renders the sample in every style to `test/app/theme/goldens/glyph_sample.png` (real glyphs, no fallback, no missing-glyph box). Flutter family names: `Grandstander`, `AtkinsonHyperlegibleNext`.
 Never use the show's logo typeface or a look-alike (copyright, fan-project rule).
 
 Scale (sp, 1.25 ratio, body 16): `caption 12 · body 16 · title 20 · headline 25 · display 40 · callout 56`.
