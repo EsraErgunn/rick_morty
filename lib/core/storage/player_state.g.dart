@@ -88,6 +88,7 @@ class PlayerStateAdapter extends TypeAdapter<PlayerState> {
           ? const {}
           : (fields[13] as Map).cast<String, int>(),
       syncVersion: (fields[11] as num?)?.toInt(),
+      lastBattleId: fields[14] as String?,
       syncedAt: fields[12] as DateTime?,
     );
   }
@@ -95,7 +96,7 @@ class PlayerStateAdapter extends TypeAdapter<PlayerState> {
   @override
   void write(BinaryWriter writer, PlayerState obj) {
     writer
-      ..writeByte(14)
+      ..writeByte(15)
       ..writeByte(0)
       ..write(obj.coins)
       ..writeByte(1)
@@ -123,7 +124,9 @@ class PlayerStateAdapter extends TypeAdapter<PlayerState> {
       ..writeByte(12)
       ..write(obj.syncedAt)
       ..writeByte(13)
-      ..write(obj.syncPages);
+      ..write(obj.syncPages)
+      ..writeByte(14)
+      ..write(obj.lastBattleId);
   }
 
   @override

@@ -74,6 +74,7 @@ class PlayerState extends Equatable {
     this.syncTotals = const {},
     this.syncPages = const {},
     this.syncVersion,
+    this.lastBattleId,
     this.syncedAt,
   });
 
@@ -114,6 +115,10 @@ class PlayerState extends Equatable {
   @HiveField(13)
   final Map<String, int> syncPages;
 
+  /// Id of the last battle whose reward was paid (rewards exactly once).
+  @HiveField(14)
+  final String? lastBattleId;
+
   /// Set when a full sync completed; null until then.
   @HiveField(11)
   final int? syncVersion;
@@ -137,6 +142,7 @@ class PlayerState extends Equatable {
     Map<String, int>? syncPages,
     int? syncVersion,
     DateTime? syncedAt,
+    String? lastBattleId,
   }) => PlayerState(
     coins: coins ?? this.coins,
     settings: settings ?? this.settings,
@@ -152,6 +158,7 @@ class PlayerState extends Equatable {
     syncPages: syncPages ?? this.syncPages,
     syncVersion: syncVersion ?? this.syncVersion,
     syncedAt: syncedAt ?? this.syncedAt,
+    lastBattleId: lastBattleId ?? this.lastBattleId,
   );
 
   @override
@@ -170,6 +177,7 @@ class PlayerState extends Equatable {
     syncPages,
     syncVersion,
     syncedAt,
+    lastBattleId,
   ];
 }
 
