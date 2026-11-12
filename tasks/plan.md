@@ -5,8 +5,8 @@ Sources: `docs/SPEC.md` (approved), `docs/PROJECT.md` §5 Week 1, `CLAUDE.md`, `
 Toolchain: Flutter 3.47.6 stable, Dart 3.13.5 (Mac and Windows machine).
 
 ## Where we left off (2026-11-12, Windows machine)
-- **Completed:** T1 to T9. Checkpoint A approved and pushed (2026-11-12). Phase 2 (T7 to T9) done, owner review pending.
-- **Next task:** T10 Dio client (Phase 3). Stat-roll fix (option A) done; battle balance task recorded for Week 3 (see "Carry-over to Week 3").
+- **Completed:** T1 to T15. Checkpoints A approved. Phase 3 (T10 to T15) done; Checkpoint B review pending (device checks open).
+- **Next task:** T15b only after the owner resolves its conflict with SPEC §3 (see T15b notes); otherwise T16 Card factory + rarity pool.
 - **Commits:** no `Co-Authored-By` lines (owner request 2026-11-12).
 - **Open notes:**
   - Reference Android device: TBD. Device and iOS Simulator checks pending (Checkpoint A).
@@ -241,10 +241,11 @@ T1 create ─┬─ T2 deps/lints ─┬─ T3 color+motion tokens ── T4 fon
 **Verification:** unit test with a fake downloader (concurrency limit, skip on error, resume); device: after first sync, airplane mode → collection shows art (once T17 exists).
 **Dependencies:** T15
 **Size:** S
+**Open (2026-11-12):** conflicts with SPEC §3 "Images: never prefetched in bulk (bandwidth). Owned cards are cached when first revealed." All 826 avatars are roughly 10 to 15 MB. Not started; owner decides: change SPEC §3, limit it (e.g. Wi-Fi only, or owned + deck + next album page), or drop it. No new package is needed (`CachedNetworkImageProvider.defaultCacheManager.downloadFile`).
 **Size:** M
 
 ### Checkpoint B (after T7 to T15)
-- [ ] `flutter analyze --fatal-infos` clean, `flutter test` green
+- [x] `flutter analyze --fatal-infos` clean, `flutter test` green (199/199, 2026-11-12)
 - [ ] Real device: full first sync; box sizes match `info.count` for all three (SPEC S1); airplane-mode relaunch works (S2)
 - [ ] Review with you before continuing
 
@@ -399,6 +400,34 @@ Add this to the Week 3 battle engine task when the Week 3 plan is written. No co
 - **Balance observation (resolved 2026-11-12, option A applied in `759cf0f`):** `r(id, k) = hash(id*31 + k)` is linear in `k`, so for every card the ATK, DEF and SPD rolls are the HP roll shifted by a fixed 0.618 / 0.236 / 0.854 (mod 1). All 826 stat profiles lie on one curve; corr(HP roll, ATK roll) = -0.41. Possible fix: apply a non-linear mixer (e.g. murmur3 `fmix32`) to the hash. Changing it needs a GM §4 update in the same commit.
 - After the mixer: Rick 152/33/17/17, Morty 140/26/16/15, Conroy 85/18/13/11; GM §4 updated in the same commit.
 - `flutter analyze --fatal-infos` clean, `flutter test` 138/138 (whole suite).
+
+### T10 (2026-11-12)
+- `core/network/dio_client.dart` (`ApiClient`), `retry_interceptor.dart`, `endpoints.dart` (incl. `idFromUrl`), `core/errors/failures.dart` (sealed `Failure`).
+- Retries 429, 5xx, timeouts and connection errors (max 3; 500 ms, 1 s, 2 s; `Retry-After` honored, capped 10 s). Other 4xx never. dio 5.11 has a new `transformTimeout` type, mapped to `TimeoutFailure`.
+- HTTPS check throws `ArgumentError` (not `assert`), so it also holds in release.
+- `token_usage_test` skips `lib/core/network/` (timeouts are not design tokens).
+
+### T11 (2026-11-12)
+- Shared entities `Character`, `Episode`, `Location` in `lib/core/entities/` (used by several features; features may not import each other's data layer).
+- DTOs + strict `JsonReader` (missing or mistyped field → `FormatException` naming the field → `ParseFailure`). Empty origin/location URL → null id.
+
+### T12 (2026-11-12)
+- **Decision:** `path_provider` added as a direct dependency (owner approved); see Decisions.
+- `hive_type_ids.dart`, `stored_models.dart` (+ `.g.dart`), `hive_init.dart` (`initHive(dir)`, adapters registered once), `api_data_store.dart` (one `putAll` per page). hive_ce_generator also writes `lib/hive_registrar.g.dart` on every build; committed, not used.
+
+### T13 (2026-11-12)
+- `player_state.dart` (`PlayerState`, `PlayerSettings`, `OwnedCard`), `player_store.dart` (`PlayerStore`, `CollectionStore`). Start: 300 coins, settings on, counters 0, created once.
+- `core/game/economy.dart` holds `EconomyRules.startingCoins` / `portalCost` so [GM §8] numbers live in `core/game` only; the `Economy` class comes in Week 2.
+
+### T14 (2026-11-12)
+- Order: page 1 of characters, episodes, locations (all totals known early), then remaining pages. Each page: write items, then save progress. `PlayerState.syncPages` added (field 13).
+- **Real API run (Windows desktop, Wi-Fi, 2 runs):** 52 requests, 17.5 s and 25.6 s; stored 826 characters, 51 episodes, 126 locations = `info.count` of each.
+
+### T15 (2026-11-12)
+- `SyncBloc`, `SplashPage` (bar + `%NN` + `downloaded / total`, error message + Tekrar dene, portal dims to 0.05 on error), `PortalLoader` in `core/widgets` (owner requirements above). Splash gets `onDone` from the router (no `features → app/router` import).
+- `PortalLoader.onSettled` runs after the frame (it navigates; must not run during build).
+- Splash placeholder title removed; DI now opens Hive with `getApplicationSupportDirectory()`.
+- Checks: `flutter analyze --fatal-infos` clean, `flutter test` 199/199, `flutter build apk --debug` OK.
 
 ### Environment: Windows machine (2026-11-12)
 - Flutter SDK at `C:\flutter` pinned to **3.47.6** (`git checkout 3.47.6`; it was 3.38.3 / Dart 3.10.1, which fails `pub get` on `sdk: ^3.13.5`). No iOS work on this machine (`pod install`, iOS builds run on the Mac).
