@@ -5,8 +5,8 @@ Sources: `docs/SPEC.md` (approved), `docs/PROJECT.md` §5 Week 1, `CLAUDE.md`, `
 Toolchain: Flutter 3.47.6 stable, Dart 3.13.5 (Mac and Windows machine).
 
 ## Where we left off (2026-11-12, Windows machine)
-- **Completed:** T1 to T15. Checkpoints A approved. Phase 3 (T10 to T15) done; Checkpoint B review pending (device checks open).
-- **Next task:** T16 Card factory + rarity pool (Phase 4). T15b decided (variant b) and moved to the Settings screen task (Week 2).
+- **Completed:** T1 to T21 (Week 1 code). Checkpoints A and B approved. Checkpoint C: analyze, tests and Android release build done; device, iOS and profile checks open.
+- **Next:** owner review at Checkpoint C, then the Week 2 plan (portal, sound, haptics; T15b with Settings).
 - **Commits:** no `Co-Authored-By` lines (owner request 2026-11-12).
 - **Open notes:**
   - Reference Android device: TBD. Device and iOS Simulator checks pending (Checkpoint A).
@@ -319,8 +319,8 @@ T1 create ─┬─ T2 deps/lints ─┬─ T3 color+motion tokens ── T4 fon
 **Size:** M
 
 ### Checkpoint C: Week 1 complete
-- [ ] `flutter analyze --fatal-infos` clean, `flutter test` green
-- [ ] `flutter build apk --release --obfuscate --split-debug-info=build/symbols` and `flutter build ios --no-codesign` succeed
+- [x] `flutter analyze --fatal-infos` clean, `flutter test` green (242/242, 2026-11-12)
+- [ ] `flutter build apk --release --obfuscate --split-debug-info=build/symbols` (done 2026-11-12) and `flutter build ios --no-codesign` (Mac) succeed
 - [ ] Device checklist (reference Android device; iOS Simulator for UI only): first sync + offline relaunch; card lab shows 4 rarities; flip; tilt by sensor and by drag; holo per rarity; no jank in profile mode
 - [ ] Review with you, then the Week 2 plan
 
@@ -428,6 +428,30 @@ Add this to the Week 3 battle engine task when the Week 3 plan is written. No co
 - `PortalLoader.onSettled` runs after the frame (it navigates; must not run during build).
 - Splash placeholder title removed; DI now opens Hive with `getApplicationSupportDirectory()`.
 - Checks: `flutter analyze --fatal-infos` clean, `flutter test` 199/199, `flutter build apk --debug` OK.
+
+### T16 (2026-11-12)
+- `lib/core/cards/`: `GameCardData`, `CardFactory` (only `core/game` formulas), `RarityPool` (lazy DI singleton; first used after the sync).
+
+### T17 (2026-11-12)
+- `lib/core/widgets/game_card/`: `GameCard` (250 x 350 design size scaled with `FittedBox`), `CardFront`, `RarityFramePainter` + `cardShape`, `CardArt` (`CachedNetworkImage`, ink silhouette on error; `debugArtBuilder` test hook), `card_labels.dart` (l10n names). Frame tokens in `lib/app/theme/card_style.dart`.
+- Rarity name on the card body is `paperMuted`, not the rarity color: epic purple on `voidRaised` is 4.10:1 (< 4.5 for small text). Rarity color only on the frame.
+- Card lab `/debug/card-lab` only in debug (`createRouter(debugRoutes: kDebugMode)`), linked from the menu placeholder in debug. Data: the 8 fixture ids read from synced Hive through `CardFactory` (the app cannot read `test/fixtures/`; same API data). Goldens: `test/core/widgets/goldens/game_card_rarities.png`.
+
+### T18 (2026-11-12)
+- `CardBack` (ink + portal rings; facts on the detail page), `FlipCard` (perspective 0.001, swap at 90°, `onFlipped`, instant with reduced motion).
+
+### T19 (2026-11-12)
+- `TiltStream`: relative to the pose at start/resume, ±0.35 g = full deflection (about ±20°), α 0.15, clamp. Sign convention (`dx` > 0 right edge down) must be confirmed on a phone.
+
+### T20 (2026-11-12)
+- **Spike:** `onGestureMove` fires for `GesturesType.controller` (flutter_tilt 4.1.0 source + widget test). Holo reads `areaProgress` from `onGestureMove`; recorded in `.claude/rules/animation-audio.md`.
+- **Deviation from the task text:** "light + shadow" → light on, shadow **off**: flutter_tilt shadows are blurred, SPEC §5.4 forbids blur outside portal/holo.
+- `TiltingGameCard` (all flutter_tilt usage in one file), `CardDetailPage` placeholder at `/collection/:id`; card lab long press opens it.
+
+### T21 (2026-11-12)
+- `shaders/holo.frag` + `ShaderCache` (loaded once in DI) + `HoloLayer` (repaints on tilt only, clipped to the card shape, fallback sheen). Bug found by rendering: `pow(x, 2.0)` with negative `x` is undefined in GLSL → use `x * x`.
+- Perf method in `docs/perf/README.md` (DevTools timeline, 30 s, export JSON). Not measured: no phone; the `Pixel_8` emulator did not boot (qemu idle). Open point: how to reach a card in a `--profile` build (card lab is debug only).
+- Checks: `flutter analyze --fatal-infos` clean, `flutter test` 242/242, `flutter build apk --release --obfuscate --split-debug-info=build/symbols` OK (47.6 MB, 5 min).
 
 ### Environment: Windows machine (2026-11-12)
 - Flutter SDK at `C:\flutter` pinned to **3.47.6** (`git checkout 3.47.6`; it was 3.38.3 / Dart 3.10.1, which fails `pub get` on `sdk: ^3.13.5`). No iOS work on this machine (`pod install`, iOS builds run on the Mac).
