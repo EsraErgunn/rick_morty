@@ -13,11 +13,30 @@ import 'rarity_frame_painter.dart';
 /// Front face at design size (SPEC §5.5): name plate, art, type + rarity
 /// row, 2x2 stats, passive. Text on the frame is `ink`, on the body `paper`.
 class CardFront extends StatelessWidget {
-  const CardFront({required this.data, super.key});
+  const CardFront({required this.data, this.hideArt = false, super.key});
 
   final GameCardData data;
 
+  /// Empty art window (featured entrance: the image falls in later).
+  final bool hideArt;
+
   static const double plateHeight = 36;
+
+  /// The art window in card design units (for the featured entrance).
+  static Rect artRect(GameCardData data) {
+    final style = RarityStyle.of(data.rarity);
+    final body = RarityFramePainter(
+      style: style,
+      bodyTop: style.frameWidth + plateHeight,
+    ).bodyRect(const Size(CardMetrics.designWidth, CardMetrics.designHeight));
+    final inner = body.deflate(AppOutline.thin);
+    return Rect.fromLTWH(
+      inner.left,
+      inner.top,
+      inner.width,
+      body.height * CardMetrics.artShare,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,11 +45,13 @@ class CardFront extends StatelessWidget {
     final painter = RarityFramePainter(
       style: style,
       bodyTop: style.frameWidth + plateHeight,
+      featured: data.featured,
     );
     final body = painter.bodyRect(
       const Size(CardMetrics.designWidth, CardMetrics.designHeight),
     );
     final passive = l10n.passiveName(data.passive);
+    final badgeRoom = data.featured ? CardMetrics.featuredBadge : 0.0;
 
     return CustomPaint(
       key: ValueKey('card-front-${data.rarity.name}'),
@@ -40,8 +61,10 @@ class CardFront extends StatelessWidget {
         clipBehavior: Clip.none,
         children: [
           Positioned(
-            left: style.frameWidth + CardMetrics.padding,
-            right: style.frameWidth + CardMetrics.padding,
+            // Room for the featured badge on both sides keeps the name
+            // centered and clear of the badge.
+            left: style.frameWidth + CardMetrics.padding + badgeRoom,
+            right: style.frameWidth + CardMetrics.padding + badgeRoom,
             top: style.frameWidth,
             height: plateHeight,
             child: Center(
@@ -55,6 +78,17 @@ class CardFront extends StatelessWidget {
               ),
             ),
           ),
+          if (data.featured)
+            Positioned(
+              top:
+                  style.frameWidth +
+                  (plateHeight - CardMetrics.featuredBadge) / 2,
+              right: style.frameWidth + CardMetrics.padding / 2,
+              child: Semantics(
+                label: AppLocalizations.of(context).featuredBadge,
+                child: const FeaturedBadge(),
+              ),
+            ),
           if (style.emblem)
             const Positioned(
               top: -CardMetrics.emblemSize / 3,
@@ -71,7 +105,12 @@ class CardFront extends StatelessWidget {
                 children: [
                   SizedBox(
                     height: body.height * CardMetrics.artShare,
-                    child: CardArt(url: data.imageUrl, name: data.name),
+                    child: hideArt
+                        ? const ColoredBox(
+                            key: ValueKey('art-empty'),
+                            color: AppColors.ink,
+                          )
+                        : CardArt(url: data.imageUrl, name: data.name),
                   ),
                   const Divider(
                     height: AppOutline.thin,

@@ -64,6 +64,8 @@ void main() {
 
     expect(find.byKey(_back), findsOneWidget);
     expect(find.text('Earth (C-137)'), findsOneWidget);
+    expect(find.text('İmza yeteneği'), findsOneWidget);
+    expect(find.text('Dahi'), findsOneWidget);
     expect(flips, [true]);
   });
 

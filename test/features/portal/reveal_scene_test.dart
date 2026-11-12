@@ -122,10 +122,44 @@ void main() {
     await tester.tap(find.byType(FlipCard));
     await frames(tester, const Duration(milliseconds: 1200));
     expect(rec.sounds, contains(Sfx.legendaryReveal));
-    await tester.pump(const Duration(seconds: 1));
+    // Rick is also featured: image drop, then the rays.
+    await frames(tester, const Duration(seconds: 2));
     expect(finished, 1);
     await tester.pumpWidget(const SizedBox());
     await tester.pump(const Duration(milliseconds: 300));
+  });
+
+  testWidgets('featured: art drops into the card, then the name callout', (
+    tester,
+  ) async {
+    final r = resultFor(1); // Rick: featured + legendary
+    await pumpScene(tester, r);
+    await finishIntro(tester, r);
+    await tester.tap(find.byType(FlipCard));
+    await frames(tester, const Duration(milliseconds: 1150));
+    // Flip done: image is falling, art window still empty.
+    expect(find.byKey(const ValueKey('featured-drop')), findsOneWidget);
+    expect(find.byKey(const ValueKey('art-empty')), findsOneWidget);
+
+    await frames(tester, const Duration(milliseconds: 800));
+    expect(find.byKey(const ValueKey('art-empty')), findsNothing);
+    expect(find.text('Rick Sanchez!'), findsOneWidget);
+    await frames(tester, const Duration(seconds: 1));
+    expect(finished, 1);
+    await tester.pumpWidget(const SizedBox());
+    await tester.pump(const Duration(seconds: 1));
+  });
+
+  testWidgets('non-featured cards have no drop and no callout', (tester) async {
+    final r = resultFor(23);
+    await pumpScene(tester, r);
+    await finishIntro(tester, r);
+    await tester.tap(find.byType(FlipCard));
+    await frames(tester, const Duration(milliseconds: 800));
+    expect(find.byKey(const ValueKey('featured-drop')), findsNothing);
+    expect(find.byKey(const ValueKey('featured-callout')), findsNothing);
+    await frames(tester, const Duration(seconds: 1));
+    await tester.pumpWidget(const SizedBox());
   });
 
   testWidgets('reduced motion: one crossfade, same sounds, no shake', (

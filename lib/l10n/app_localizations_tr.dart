@@ -231,4 +231,30 @@ class AppLocalizationsTr extends AppLocalizations {
   String deckCount(int count) {
     return 'Deste $count/3';
   }
+
+  @override
+  String get signatureGenius => 'Dahi';
+
+  @override
+  String get signatureAwJeez => 'Aman tanrım!';
+
+  @override
+  String get signatureTeamSpirit => 'Takım ruhu';
+
+  @override
+  String get signatureMissionComplete => 'Görev tamam';
+
+  @override
+  String get signaturePickleArmor => 'Turşu zırhı';
+
+  @override
+  String get cardBackSignature => 'İmza yeteneği';
+
+  @override
+  String get featuredBadge => 'Öne çıkan karakter';
+
+  @override
+  String featuredCallout(String name) {
+    return '$name!';
+  }
 }

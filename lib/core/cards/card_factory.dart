@@ -1,6 +1,7 @@
 import '../entities/character.dart';
 import '../game/card_stats.dart';
 import '../game/card_type.dart';
+import '../game/featured.dart';
 import '../game/passives.dart';
 import '../game/rarity.dart';
 import 'game_card_data.dart';
@@ -22,6 +23,7 @@ abstract final class CardFactory {
       originName: c.originName,
       locationName: c.locationName,
       episodeCount: c.episodeCount,
+      signature: Featured.signatureOf(c.id),
     );
   }
 }

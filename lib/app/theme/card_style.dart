@@ -69,6 +69,10 @@ abstract final class CardMetrics {
   static const double padding = 8;
   static const double iconSize = 16;
 
+  /// Featured characters: portal-green inner line [GM §12.1].
+  static const double featuredLine = 2;
+  static const double featuredBadge = 20;
+
   /// Max 3D tilt in degrees (flutter_tilt `TiltConfig.angle`, SPEC §4.5).
   static const double tiltAngle = 6;
 

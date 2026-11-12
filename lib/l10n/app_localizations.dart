@@ -495,6 +495,54 @@ abstract class AppLocalizations {
   /// In tr, this message translates to:
   /// **'Deste {count}/3'**
   String deckCount(int count);
+
+  /// Rick signature [GM 12.2].
+  ///
+  /// In tr, this message translates to:
+  /// **'Dahi'**
+  String get signatureGenius;
+
+  /// Morty signature.
+  ///
+  /// In tr, this message translates to:
+  /// **'Aman tanrım!'**
+  String get signatureAwJeez;
+
+  /// Summer signature.
+  ///
+  /// In tr, this message translates to:
+  /// **'Takım ruhu'**
+  String get signatureTeamSpirit;
+
+  /// Mr. Meeseeks signature.
+  ///
+  /// In tr, this message translates to:
+  /// **'Görev tamam'**
+  String get signatureMissionComplete;
+
+  /// Pickle Rick signature.
+  ///
+  /// In tr, this message translates to:
+  /// **'Turşu zırhı'**
+  String get signaturePickleArmor;
+
+  /// Card back fact label for featured characters.
+  ///
+  /// In tr, this message translates to:
+  /// **'İmza yeteneği'**
+  String get cardBackSignature;
+
+  /// Accessibility label of the featured badge.
+  ///
+  /// In tr, this message translates to:
+  /// **'Öne çıkan karakter'**
+  String get featuredBadge;
+
+  /// Name callout when a featured character lands in its card.
+  ///
+  /// In tr, this message translates to:
+  /// **'{name}!'**
+  String featuredCallout(String name);
 }
 
 class _AppLocalizationsDelegate

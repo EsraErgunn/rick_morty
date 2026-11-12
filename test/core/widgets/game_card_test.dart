@@ -114,6 +114,27 @@ void main() {
     expect(size.height, closeTo(140, 0.01));
   });
 
+  testWidgets('featured cards (Rick) get the badge; others do not', (
+    tester,
+  ) async {
+    await _pumpCard(tester, 1);
+    expect(find.byKey(const ValueKey('featured-badge')), findsOneWidget);
+    await _pumpCard(tester, 71);
+    expect(find.byKey(const ValueKey('featured-badge')), findsNothing);
+  });
+
+  testWidgets('hideArt leaves the art window empty', (tester) async {
+    await tester.pumpWidget(
+      testApp(
+        SizedBox(
+          width: CardMetrics.designWidth,
+          child: GameCard(data: fixtureCard(1), hideArt: true),
+        ),
+      ),
+    );
+    expect(find.byKey(const ValueKey('art-empty')), findsOneWidget);
+  });
+
   testWidgets('golden: one card per rarity', (tester) async {
     tester.view.physicalSize = const Size(1140, 420);
     tester.view.devicePixelRatio = 1;

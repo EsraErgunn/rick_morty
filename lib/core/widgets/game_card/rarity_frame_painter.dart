@@ -27,10 +27,17 @@ Path cardShape(Rect rect, {required double notch}) {
 /// the body area in `voidRaised`, and the rare inner `paper` line.
 /// [bodyTop] is where the body starts (below the name plate).
 class RarityFramePainter extends CustomPainter {
-  const RarityFramePainter({required this.style, required this.bodyTop});
+  const RarityFramePainter({
+    required this.style,
+    required this.bodyTop,
+    this.featured = false,
+  });
 
   final RarityStyle style;
   final double bodyTop;
+
+  /// Featured characters get a portal-green inner line [GM §12.1].
+  final bool featured;
 
   Rect bodyRect(Size size) => Rect.fromLTRB(
     style.frameWidth,
@@ -61,6 +68,18 @@ class RarityFramePainter extends CustomPainter {
           ..strokeWidth = CardMetrics.innerLineWidth,
       );
     }
+    if (featured) {
+      canvas.drawPath(
+        cardShape(
+          body.inflate(CardMetrics.featuredLine / 2),
+          notch: style.notch / 2,
+        ),
+        Paint()
+          ..color = AppColors.portal
+          ..style = PaintingStyle.stroke
+          ..strokeWidth = CardMetrics.featuredLine,
+      );
+    }
     canvas
       ..drawPath(
         bodyShape,
@@ -80,7 +99,7 @@ class RarityFramePainter extends CustomPainter {
 
   @override
   bool shouldRepaint(RarityFramePainter old) =>
-      old.style != style || old.bodyTop != bodyTop;
+      old.style != style || old.bodyTop != bodyTop || old.featured != featured;
 }
 
 /// Legendary emblem: a small portal ring (SPEC §5.5).
@@ -99,6 +118,28 @@ class PortalEmblem extends StatelessWidget {
       boxShadow: const [
         BoxShadow(color: AppColors.portalHot, spreadRadius: -6),
       ],
+    ),
+  );
+}
+
+/// Featured badge: Material `stars` in ink on a portal disc [GM §12.1].
+class FeaturedBadge extends StatelessWidget {
+  const FeaturedBadge({super.key});
+
+  @override
+  Widget build(BuildContext context) => Container(
+    key: const ValueKey('featured-badge'),
+    width: CardMetrics.featuredBadge,
+    height: CardMetrics.featuredBadge,
+    decoration: BoxDecoration(
+      color: AppColors.portal,
+      shape: BoxShape.circle,
+      border: Border.all(color: AppColors.ink, width: AppOutline.thin),
+    ),
+    child: const Icon(
+      Icons.stars,
+      size: CardMetrics.featuredBadge - 6,
+      color: AppColors.ink,
     ),
   );
 }

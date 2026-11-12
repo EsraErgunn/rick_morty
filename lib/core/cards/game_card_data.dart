@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 
 import '../game/card_stats.dart';
 import '../game/card_type.dart';
+import '../game/featured.dart';
 import '../game/passives.dart';
 import '../game/rarity.dart';
 
@@ -21,6 +22,7 @@ final class GameCardData extends Equatable {
     required this.originName,
     required this.locationName,
     required this.episodeCount,
+    this.signature,
   });
 
   final int id;
@@ -38,6 +40,11 @@ final class GameCardData extends Equatable {
   final String locationName;
   final int episodeCount;
 
+  /// Set for featured characters [GM §12].
+  final Signature? signature;
+
+  bool get featured => signature != null;
+
   @override
   List<Object?> get props => [
     id,
@@ -52,5 +59,6 @@ final class GameCardData extends Equatable {
     originName,
     locationName,
     episodeCount,
+    signature,
   ];
 }

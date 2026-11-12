@@ -330,5 +330,42 @@
         "type": "int"
       }
     }
+  },
+  "signatureGenius": "Dahi",
+  "@signatureGenius": {
+    "description": "Rick signature [GM 12.2]."
+  },
+  "signatureAwJeez": "Aman tanrım!",
+  "@signatureAwJeez": {
+    "description": "Morty signature."
+  },
+  "signatureTeamSpirit": "Takım ruhu",
+  "@signatureTeamSpirit": {
+    "description": "Summer signature."
+  },
+  "signatureMissionComplete": "Görev tamam",
+  "@signatureMissionComplete": {
+    "description": "Mr. Meeseeks signature."
+  },
+  "signaturePickleArmor": "Turşu zırhı",
+  "@signaturePickleArmor": {
+    "description": "Pickle Rick signature."
+  },
+  "cardBackSignature": "İmza yeteneği",
+  "@cardBackSignature": {
+    "description": "Card back fact label for featured characters."
+  },
+  "featuredBadge": "Öne çıkan karakter",
+  "@featuredBadge": {
+    "description": "Accessibility label of the featured badge."
+  },
+  "featuredCallout": "{name}!",
+  "@featuredCallout": {
+    "description": "Name callout when a featured character lands in its card.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
   }
 }

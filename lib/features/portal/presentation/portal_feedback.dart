@@ -46,6 +46,9 @@ class PortalFeedback {
     }
   }
 
+  /// Featured image settles into its card [GM §12.3].
+  void featureSettle() => unawaited(haptics.play(HapticMoment.cardLand));
+
   void duplicateCoins() {
     unawaited(audio.play(Sfx.coin));
     unawaited(haptics.play(HapticMoment.coin));

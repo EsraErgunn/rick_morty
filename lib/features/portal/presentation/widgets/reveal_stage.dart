@@ -6,7 +6,10 @@ import '../../../../app/theme/card_style.dart';
 import '../../../../app/theme/motion.dart';
 import '../../../../app/theme/spacing.dart';
 import '../../../../app/theme/typography.dart';
+import '../../../../core/cards/game_card_data.dart';
 import '../../../../core/game/rarity.dart';
+import '../../../../core/widgets/game_card/card_art.dart';
+import '../../../../core/widgets/game_card/card_front.dart';
 import '../../../../core/widgets/portal/portal_view.dart';
 import '../../../../core/widgets/shader_cache.dart';
 import '../../../../l10n/app_localizations.dart';
@@ -31,6 +34,9 @@ class RevealStage extends StatelessWidget {
     required this.shaders,
     required this.card,
     required this.onTap,
+    this.featured,
+    this.drop = 0,
+    this.showCallout = false,
     super.key,
   });
 
@@ -54,6 +60,17 @@ class RevealStage extends StatelessWidget {
   /// The flip card (back first).
   final Widget card;
   final VoidCallback onTap;
+
+  /// Featured entrance [GM §12.3]: the card whose image drops in.
+  final GameCardData? featured;
+
+  /// 0..1 progress of the image drop.
+  final double drop;
+  final bool showCallout;
+
+  /// Share of [drop] spent falling; the rest is squash and settle.
+  static const double _dropFall = 0.6;
+  static const double _dropStartScale = 0.4;
 
   @override
   Widget build(BuildContext context) => LayoutBuilder(
@@ -145,6 +162,31 @@ class RevealStage extends StatelessWidget {
                   ),
                 ),
               ),
+            if (featured case final f? when drop > 0 && drop < 1)
+              _droppingArt(f, from: from, cardCenter: to, cardSize: cardSize),
+            if (featured case final f?)
+              Positioned(
+                left: 0,
+                right: 0,
+                top: portalSize + AppSpacing.xs,
+                child: AnimatedScale(
+                  scale: showCallout ? 1 : 0.6,
+                  duration: AppMotion.normal,
+                  curve: AppMotion.popIn,
+                  child: AnimatedOpacity(
+                    opacity: showCallout ? 1 : 0,
+                    duration: AppMotion.fast,
+                    child: FittedBox(
+                      fit: BoxFit.scaleDown,
+                      child: Text(
+                        AppLocalizations.of(context).featuredCallout(f.name),
+                        key: const ValueKey('featured-callout'),
+                        style: AppTypography.display,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
             Positioned(
               left: 0,
               right: 0,
@@ -164,4 +206,49 @@ class RevealStage extends StatelessWidget {
       );
     },
   );
+
+  /// The character image falling from the portal into the art window.
+  Widget _droppingArt(
+    GameCardData card, {
+    required Offset from,
+    required Offset cardCenter,
+    required Size cardSize,
+  }) {
+    final k = cardSize.width / CardMetrics.designWidth;
+    final art = CardFront.artRect(card);
+    final target = Rect.fromLTWH(
+      cardCenter.dx - cardSize.width / 2 + art.left * k,
+      cardCenter.dy - cardSize.height / 2 + art.top * k,
+      art.width * k,
+      art.height * k,
+    );
+    final start = Rect.fromCenter(
+      center: from,
+      width: target.width * _dropStartScale,
+      height: target.height * _dropStartScale,
+    );
+    var rect = target;
+    var (sx, sy) = (1.0, 1.0);
+    if (drop < _dropFall) {
+      rect = Rect.lerp(
+        start,
+        target,
+        AppMotion.fall.transform(drop / _dropFall),
+      )!;
+    } else {
+      (sx, sy) = RevealTimeline.squash((drop - _dropFall) / (1 - _dropFall));
+    }
+    return Positioned.fromRect(
+      rect: rect,
+      child: Transform.scale(
+        scaleX: sx,
+        scaleY: sy,
+        alignment: Alignment.bottomCenter,
+        child: ClipRect(
+          key: const ValueKey('featured-drop'),
+          child: CardArt(url: card.imageUrl, name: card.name),
+        ),
+      ),
+    );
+  }
 }

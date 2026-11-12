@@ -1,5 +1,6 @@
 import '../../../l10n/app_localizations.dart';
 import '../../game/card_type.dart';
+import '../../game/featured.dart';
 import '../../game/passives.dart';
 import '../../game/rarity.dart';
 
@@ -26,5 +27,13 @@ extension CardLabels on AppLocalizations {
     Passive.none => null,
     Passive.zombie => passiveZombie,
     Passive.uncertain => passiveUncertain,
+  };
+
+  String signatureName(Signature signature) => switch (signature) {
+    Signature.genius => signatureGenius,
+    Signature.awJeez => signatureAwJeez,
+    Signature.teamSpirit => signatureTeamSpirit,
+    Signature.missionComplete => signatureMissionComplete,
+    Signature.pickleArmor => signaturePickleArmor,
   };
 }

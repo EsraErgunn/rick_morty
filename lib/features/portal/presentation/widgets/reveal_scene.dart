@@ -55,6 +55,15 @@ class _RevealSceneState extends State<RevealScene>
     vsync: this,
     duration: AppMotion.slow,
   );
+
+  /// Featured entrance: the image falls into the empty art window.
+  late final bool _featured = widget.result.card.featured;
+  late final AnimationController _drop = AnimationController(
+    vsync: this,
+    duration: AppMotion.revealFall + AppMotion.revealSquash * 2,
+  );
+  late bool _artHidden = _featured;
+  bool _showCallout = false;
   final GlobalKey<FlipCardState> _flipKey = GlobalKey();
   final ValueNotifier<Offset> _holoTilt = ValueNotifier(Offset.zero);
   Timer? _hintTimer;
@@ -78,6 +87,9 @@ class _RevealSceneState extends State<RevealScene>
     });
     _rays.addStatusListener((s) {
       if (s == AnimationStatus.completed) widget.onFinished();
+    });
+    _drop.addStatusListener((s) {
+      if (s == AnimationStatus.completed) _onFeatureSettled();
     });
   }
 
@@ -136,14 +148,28 @@ class _RevealSceneState extends State<RevealScene>
   void _onFaceUp() {
     widget.feedback.flip(widget.result.card.rarity);
     if (widget.result.isDuplicate) widget.feedback.duplicateCoins();
-    unawaited(_rays.forward());
+    if (_featured && !_reduced) {
+      unawaited(_drop.forward());
+    } else {
+      if (_featured) _onFeatureSettled();
+      unawaited(_rays.forward());
+    }
+  }
+
+  void _onFeatureSettled() {
+    widget.feedback.featureSettle();
+    setState(() {
+      _artHidden = false;
+      _showCallout = true;
+    });
+    if (!_rays.isAnimating && _rays.value == 0) unawaited(_rays.forward());
   }
 
   @override
   void dispose() {
     _hintTimer?.cancel();
     _autoFlip?.cancel();
-    for (final c in [_intro, _hover, _sweep, _rays]) {
+    for (final c in [_intro, _hover, _sweep, _rays, _drop]) {
       c.dispose();
     }
     _holoTilt.dispose();
@@ -163,6 +189,7 @@ class _RevealSceneState extends State<RevealScene>
       onFlipped: (back) => back ? null : _onFaceUp(),
       front: GameCard(
         data: card,
+        hideArt: _artHidden,
         holo: HoloLayer(
           rarity: card.rarity,
           tilt: _holoTilt,
@@ -202,7 +229,7 @@ class _RevealSceneState extends State<RevealScene>
   }
 
   Widget _buildFull(BoxConstraints box) => AnimatedBuilder(
-    animation: Listenable.merge([_intro, _hover, _rays]),
+    animation: Listenable.merge([_intro, _hover, _rays, _drop]),
     builder: (context, _) => RevealStage(
       timeline: _timeline,
       t: _intro.value,
@@ -216,6 +243,9 @@ class _RevealSceneState extends State<RevealScene>
       shaders: widget.shaders,
       card: _card(startOnBack: true),
       onTap: _requestFlip,
+      featured: _featured ? widget.result.card : null,
+      drop: _drop.value,
+      showCallout: _showCallout,
     ),
   );
 }

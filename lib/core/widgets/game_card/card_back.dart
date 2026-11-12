@@ -6,6 +6,7 @@ import '../../../app/theme/spacing.dart';
 import '../../../app/theme/typography.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../cards/game_card_data.dart';
+import 'card_labels.dart';
 import 'game_card.dart';
 import 'rarity_frame_painter.dart';
 
@@ -41,6 +42,8 @@ class _Facts extends StatelessWidget {
       (l10n.cardBackOrigin, data.originName),
       (l10n.cardBackLocation, data.locationName),
       (l10n.cardBackEpisodes, '${data.episodeCount}'),
+      if (data.signature case final sig?)
+        (l10n.cardBackSignature, l10n.signatureName(sig)),
     ];
     return Padding(
       padding: const EdgeInsets.all(AppSpacing.lg),

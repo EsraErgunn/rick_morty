@@ -9,9 +9,17 @@ import 'rarity_frame_painter.dart';
 /// A 5:7 card. Laid out at [CardMetrics] design size and scaled to the
 /// space it gets, so it looks the same in a grid and on the detail page.
 class GameCard extends StatelessWidget {
-  const GameCard({required this.data, this.holo, super.key});
+  const GameCard({
+    required this.data,
+    this.holo,
+    this.hideArt = false,
+    super.key,
+  });
 
   final GameCardData data;
+
+  /// Empty art window (featured entrance).
+  final bool hideArt;
 
   /// Optional foil drawn over the face, clipped to the card shape
   /// (a `HoloLayer`).
@@ -24,7 +32,9 @@ class GameCard extends StatelessWidget {
       child: Stack(
         clipBehavior: Clip.none,
         children: [
-          Positioned.fill(child: CardFront(data: data)),
+          Positioned.fill(
+            child: CardFront(data: data, hideArt: hideArt),
+          ),
           if (overlay != null)
             Positioned.fill(
               child: ClipPath(
