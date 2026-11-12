@@ -46,6 +46,13 @@ abstract final class AppMotion {
   /// Reduced motion: the whole reveal is one crossfade.
   static const Duration revealReduced = slow;
 
+  /// Menu items enter one after another (SPEC §4.2).
+  static const Duration stagger = Duration(milliseconds: 40);
+
+  /// Empty-collection call to action breathes (scale 1.0 to 1.04).
+  static const Duration breathe = Duration(milliseconds: 1200);
+  static const double breatheScale = 1.04;
+
   /// Pop-in of new elements.
   static const Curve popIn = Curves.easeOutBack;
 

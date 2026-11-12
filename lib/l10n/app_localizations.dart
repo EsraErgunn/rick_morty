@@ -399,6 +399,30 @@ abstract class AppLocalizations {
   /// In tr, this message translates to:
   /// **'Portal açılamadı. Tekrar dene.'**
   String get portalError;
+
+  /// Main menu primary action.
+  ///
+  /// In tr, this message translates to:
+  /// **'Portalı aç'**
+  String get menuOpenPortal;
+
+  /// Shown while the battle entry is disabled (SPEC 2.2 AC2).
+  ///
+  /// In tr, this message translates to:
+  /// **'Destene 3 kart ekle'**
+  String get menuDeckHint;
+
+  /// Count next to a menu entry.
+  ///
+  /// In tr, this message translates to:
+  /// **'{owned}/{total}'**
+  String menuCount(int owned, int total);
+
+  /// Settings icon button tooltip.
+  ///
+  /// In tr, this message translates to:
+  /// **'Ayarlar'**
+  String get menuSettingsTooltip;
 }
 
 class _AppLocalizationsDelegate

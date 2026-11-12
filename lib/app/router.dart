@@ -55,6 +55,7 @@ GoRouter createRouter({
   TiltStream? tiltStream,
   ShaderCache? shaders,
   WidgetBuilder? portalPage,
+  WidgetBuilder? menuPage,
   bool debugRoutes = kDebugMode,
   String initialLocation = AppRoutes.splash,
 }) {
@@ -72,6 +73,7 @@ GoRouter createRouter({
       GoRoute(
         path: AppRoutes.menu,
         builder: (context, state) {
+          if (menuPage != null) return menuPage(context);
           final l10n = AppLocalizations.of(context);
           return PlaceholderPage(
             title: l10n.menuTitle,

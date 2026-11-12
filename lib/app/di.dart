@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:get_it/get_it.dart';
+import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:path_provider/path_provider.dart';
@@ -8,6 +9,7 @@ import 'package:path_provider/path_provider.dart';
 import '../core/audio/audio_backend.dart';
 import '../core/audio/audio_service.dart';
 import '../core/cards/card_factory.dart';
+import '../core/feedback/ui_feedback.dart';
 import '../core/haptics/haptics_service.dart';
 import '../core/cards/rarity_pool.dart';
 import '../core/network/dio_client.dart';
@@ -17,6 +19,10 @@ import '../core/storage/api_data_store.dart';
 import '../core/storage/hive_init.dart';
 import '../core/storage/player_store.dart';
 import '../core/widgets/shader_cache.dart';
+import '../features/menu/data/menu_repository_impl.dart';
+import '../features/menu/presentation/bloc/menu_bloc.dart';
+import '../features/menu/presentation/bloc/menu_event.dart';
+import '../features/menu/presentation/pages/menu_page.dart';
 import '../features/portal/data/portal_repository_impl.dart';
 import '../features/portal/domain/portal_repository.dart';
 import '../features/portal/presentation/bloc/portal_bloc.dart';
@@ -107,6 +113,31 @@ Future<void> configureDependencies({
         initialLocation: initialLocation,
         tiltStream: getIt(),
         shaders: getIt(),
+        menuPage: (context) => BlocProvider(
+          create: (_) => MenuBloc(
+            MenuRepositoryImpl(
+              apiData: getIt(),
+              player: getIt(),
+              collection: getIt(),
+            ),
+          )..add(const MenuStarted()),
+          child: MenuPage(
+            shaders: getIt(),
+            audio: getIt(),
+            feedback: UiFeedback(audio: getIt(), haptics: getIt()),
+            actions: MenuActions(
+              portal: () => context.go(AppRoutes.portal),
+              collection: () => context.go(AppRoutes.collection),
+              deck: () => context.go(AppRoutes.deck),
+              battle: () => context.go(AppRoutes.battle),
+              album: () => context.go(AppRoutes.album),
+              settings: () => context.go(AppRoutes.settings),
+              debugCardLab: kDebugMode
+                  ? () => context.go(AppRoutes.cardLab)
+                  : null,
+            ),
+          ),
+        ),
         portalPage: (context) => BlocProvider(
           create: (_) => PortalBloc(getIt())..add(const PortalStarted()),
           child: PortalPage(

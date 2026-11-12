@@ -253,5 +253,29 @@
   "portalError": "Portal açılamadı. Tekrar dene.",
   "@portalError": {
     "description": "Portal failed for a storage reason."
+  },
+  "menuOpenPortal": "Portalı aç",
+  "@menuOpenPortal": {
+    "description": "Main menu primary action."
+  },
+  "menuDeckHint": "Destene 3 kart ekle",
+  "@menuDeckHint": {
+    "description": "Shown while the battle entry is disabled (SPEC 2.2 AC2)."
+  },
+  "menuCount": "{owned}/{total}",
+  "@menuCount": {
+    "description": "Count next to a menu entry.",
+    "placeholders": {
+      "owned": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "menuSettingsTooltip": "Ayarlar",
+  "@menuSettingsTooltip": {
+    "description": "Settings icon button tooltip."
   }
 }

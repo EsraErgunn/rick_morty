@@ -179,4 +179,18 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get portalError => 'Portal açılamadı. Tekrar dene.';
+
+  @override
+  String get menuOpenPortal => 'Portalı aç';
+
+  @override
+  String get menuDeckHint => 'Destene 3 kart ekle';
+
+  @override
+  String menuCount(int owned, int total) {
+    return '$owned/$total';
+  }
+
+  @override
+  String get menuSettingsTooltip => 'Ayarlar';
 }
