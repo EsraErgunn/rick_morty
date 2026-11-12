@@ -31,8 +31,8 @@ final class RevealTimeline {
         AppMotion.revealFall,
         AppMotion.revealSquash * 3,
       ] {
-    final totalUs = _parts.fold(0, (sum, d) => sum + d.inMicroseconds);
-    total = Duration(microseconds: totalUs);
+    total = _parts.fold(Duration.zero, (sum, d) => sum + d);
+    final totalUs = total.inMicroseconds;
     var at = 0;
     final edges = <double>[0];
     for (final p in _parts) {
