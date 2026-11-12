@@ -11,7 +11,6 @@ Toolchain: Flutter 3.47.6 stable, Dart 3.13.5 (Mac and Windows machine).
 - **Open notes:**
   - Reference Android device: TBD. Device and iOS Simulator checks pending (Checkpoint A).
   - iOS Simulator install hang from T1 (see Known issue), retry at Checkpoint C. `pod install` + iOS build after T5 (new `generate: true`) to re-check on the Mac.
-  - Hive init path: `hive_ce` alone needs a directory; `hive_ce_flutter` or `path_provider` is not in the approved list. Decide before T12.
   - Golden `test/app/theme/goldens/glyph_sample.png` was generated on Windows; text rendering differs slightly on macOS, so it may fail there. If it does: regenerate on one agreed machine, or tag it and run goldens on that machine only.
   - To check on device (collected): T1 app opens; T3 to T6 see Checkpoint A.
 
@@ -416,6 +415,7 @@ Add this to the Week 3 battle engine task when the Week 3 plan is written. No co
 - Until then, iOS checks in this plan mean "build OK"; UI checks run on the Android device.
 
 ## Decisions (2026-11-11)
+0. (2026-11-12) Hive directory: `path_provider` added as a direct dependency (it was already in the lockfile through `cached_network_image` → `flutter_cache_manager`); `Hive.init(getApplicationSupportDirectory())`. Listed in `CLAUDE.md`.
 1. Packages approved and listed in `CLAUDE.md`: `fpdart`, `flutter_localizations`, `intl`, `build_runner`, `hive_ce_generator`, `flutter_lints`, `bloc_test`, `mocktail`.
 2. Reference Android device: see Devices. iOS real-device tests only at Week 2 end and Week 4.
 3. Card lab route approved, `kDebugMode` only.

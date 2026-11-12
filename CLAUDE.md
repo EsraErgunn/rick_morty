@@ -9,7 +9,7 @@ Game rules and formulas: the `rm-game-mechanics` skill (load it before touching 
 
 - Flutter (stable) · Dart 3 · **Android + iOS**
 - State: **flutter_bloc** (+ equatable) · DI: get_it · Routing: go_router
-- Network: dio · Local DB: hive_ce · Images: cached_network_image
+- Network: dio · Local DB: hive_ce (+ path_provider for the Hive directory) · Images: cached_network_image
 - Animation: flutter_animate, CustomPainter, **fragment shaders** (`shaders/*.frag`) · no Rive, no Flame
 - Card 3D tilt: flutter_tilt ^4.1.0 (driven by our `TiltStream`; its own sensor input is off)
 - Sensors: sensors_plus · Haptics: `HapticFeedback` · Audio: audioplayers
