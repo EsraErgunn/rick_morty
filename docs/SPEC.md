@@ -292,10 +292,26 @@ One accent: portal green. Rarity colors are semantic (they mean rarity and nothi
 | `portal` | `#8FE04A` | The only accent: portal, primary action, selection, progress |
 | `portalHot` | `#D4FF7A` | Portal core highlight, focus ring |
 | `danger` | `#FF5A4E` | Legendary portal (`uColor`), destructive actions, low HP |
-| `warn` | `#F7B731` | HP ≤ 50% (shares the legendary gold on purpose: "valuable / at risk") |
+| `warn` | `#FF9F43` | HP ≤ 50%. Orange, deliberately not the legendary gold (changed 2026-11-12: the shared `#F7B731` mixed "legendary" and "at risk") |
 | Rarity | `#9AA5B1` `#3FA9F5` `#A55EEA` `#F7B731` | Common, Rare, Epic, Legendary frames [GM §2] |
 
-Contrast: **not verified yet.** Measuring it is an acceptance criterion of the Week 1 theme task (§5.8). Text on `portal` uses `ink`, never white.
+In code the `void` token is `AppColors.voidBase` (`void` is a Dart keyword).
+
+Contrast, **measured 2026-11-12** (WCAG 2.x relative luminance, `test/app/theme/contrast_test.dart`). Thresholds: body text ≥ 4.5:1, display text / icons / non-text graphics ≥ 3:1.
+
+| Pair | Ratio | Need | |
+|---|---|---|---|
+| `paper` on `void` / `voidRaised` | 15.55 / 13.57 | 4.5 | ✅ |
+| `paperMuted` on `void` / `voidRaised` | 7.57 / 6.60 | 4.5 | ✅ |
+| `ink` on `portal` | 12.12 | 4.5 | ✅ |
+| `ink` on `warn` / `danger` | 9.65 / 6.40 | 4.5 | ✅ |
+| `ink` on common / rare / epic / legendary frame | 7.87 / 7.69 / 5.05 / 11.04 | 4.5 | ✅ |
+| `warn` / `danger` text on `void` | 8.97 / 5.95 | 4.5 | ✅ |
+| `portal` / `portalHot` on `void` | 11.27 / 16.03 | 3 | ✅ |
+| Frame on `voidRaised` body: common / rare / epic / legendary | 6.38 / 6.24 / 4.10 / 8.96 | 3 | ✅ |
+| ~~`paper` on rarity frames~~ | 2.13 / 2.17 / 3.31 / 1.52 | 4.5 | ❌ not used |
+
+**Text on any colored fill (`portal`, `warn`, `danger`, rarity frames) uses `ink`, never `paper` or white** (decided 2026-11-12). `ink` on epic (5.05) has the smallest margin: keep that text bold.
 Status is never color alone: low HP also shows the number; rarity also shows the rarity name; type shows an icon + label.
 
 ### 5.3 Typography
