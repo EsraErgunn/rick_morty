@@ -68,6 +68,12 @@ abstract final class CardMetrics {
   static const double emblemSize = 22;
   static const double padding = 8;
   static const double iconSize = 16;
+
+  /// Max 3D tilt in degrees (flutter_tilt `TiltConfig.angle`).
+  static const double tiltAngle = 12;
+
+  /// Max strength of the tilt light sheen (0..1).
+  static const double tiltLight = 0.2;
 }
 
 /// Material icon per card type (type is never shown by color alone).

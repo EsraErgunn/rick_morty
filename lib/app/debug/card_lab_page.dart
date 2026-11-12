@@ -10,11 +10,14 @@ import '../theme/spacing.dart';
 
 /// Debug-only screen (`/debug/card-lab`, registered only in debug builds):
 /// real synced characters through `CardFactory`, one per rarity and type.
-/// Tap a card to flip it.
+/// Tap a card to flip it; long press opens its detail page.
 class CardLabPage extends StatelessWidget {
-  const CardLabPage({required this.cards, super.key});
+  const CardLabPage({required this.cards, this.onOpen, super.key});
 
   final List<GameCardData> cards;
+
+  /// Long press: open the card detail (tilt + holo).
+  final ValueChanged<int>? onOpen;
 
   /// The ids of the test fixtures: all rarities, types and statuses.
   static const List<int> characterIds = [1, 2, 23, 63, 71, 82, 86, 309];
@@ -42,9 +45,12 @@ class CardLabPage extends StatelessWidget {
                 childAspectRatio: CardMetrics.aspect,
               ),
               itemCount: cards.length,
-              itemBuilder: (context, i) => FlipCard(
-                front: GameCard(data: cards[i]),
-                back: CardBack(facts: cards[i]),
+              itemBuilder: (context, i) => GestureDetector(
+                onLongPress: () => onOpen?.call(cards[i].id),
+                child: FlipCard(
+                  front: GameCard(data: cards[i]),
+                  back: CardBack(facts: cards[i]),
+                ),
               ),
             ),
     );

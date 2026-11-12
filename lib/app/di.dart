@@ -5,6 +5,7 @@ import 'package:path_provider/path_provider.dart';
 import '../core/cards/card_factory.dart';
 import '../core/cards/rarity_pool.dart';
 import '../core/network/dio_client.dart';
+import '../core/sensors/tilt_stream.dart';
 import '../core/storage/api_data_store.dart';
 import '../core/storage/hive_init.dart';
 import '../core/storage/player_store.dart';
@@ -46,9 +47,19 @@ Future<void> configureDependencies({String? storageDirectory}) async {
     ..registerLazySingleton<RarityPool>(
       () => RarityPool.fromCharacters(getIt<ApiDataStore>().characters),
     )
+    // The only tilt sensor subscription in the app (sensors rules).
+    ..registerLazySingleton<TiltStream>(
+      TiltStream.new,
+      dispose: (t) => t.dispose(),
+    )
     ..registerLazySingleton<GoRouter>(
       () => createRouter(
         syncRepository: getIt(),
+        tiltStream: getIt(),
+        cardById: (id) => switch (getIt<ApiDataStore>().character(id)) {
+          final c? => CardFactory.fromCharacter(c),
+          null => null,
+        },
         cardLabCards: () => [
           for (final id in CardLabPage.characterIds)
             if (getIt<ApiDataStore>().character(id) case final c?)

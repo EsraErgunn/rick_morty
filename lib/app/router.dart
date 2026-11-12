@@ -4,6 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 import '../core/cards/game_card_data.dart';
+import '../core/sensors/tilt_stream.dart';
+import '../features/collection/presentation/pages/card_detail_page.dart';
 import '../features/sync/domain/sync_repository.dart';
 import '../features/sync/presentation/bloc/sync_bloc.dart';
 import '../features/sync/presentation/bloc/sync_event.dart';
@@ -48,6 +50,8 @@ GoRoute _placeholder(
 GoRouter createRouter({
   required SyncRepository syncRepository,
   List<GameCardData> Function()? cardLabCards,
+  GameCardData? Function(int id)? cardById,
+  TiltStream? tiltStream,
   bool debugRoutes = kDebugMode,
   String initialLocation = AppRoutes.splash,
 }) {
@@ -82,9 +86,22 @@ GoRouter createRouter({
         AppRoutes.collection,
         (l10n, _) => l10n.collectionTitle,
         routes: [
-          _placeholder(
-            ':id',
-            (l10n, state) => l10n.cardDetailTitle(state.pathParameters['id']!),
+          GoRoute(
+            path: ':id',
+            builder: (context, state) {
+              final raw = state.pathParameters['id']!;
+              final id = int.tryParse(raw);
+              if (id == null || cardById == null || tiltStream == null) {
+                return PlaceholderPage(
+                  title: AppLocalizations.of(context).cardDetailTitle(raw),
+                );
+              }
+              return CardDetailPage(
+                id: id,
+                data: cardById(id),
+                tiltStream: tiltStream,
+              );
+            },
           ),
         ],
       ),
@@ -105,8 +122,10 @@ GoRouter createRouter({
       if (debugRoutes)
         GoRoute(
           path: AppRoutes.cardLab,
-          builder: (context, state) =>
-              CardLabPage(cards: cardLabCards?.call() ?? const []),
+          builder: (context, state) => CardLabPage(
+            cards: cardLabCards?.call() ?? const [],
+            onOpen: (id) => context.push(AppRoutes.cardDetail(id)),
+          ),
         ),
     ],
   );
