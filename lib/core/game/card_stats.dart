@@ -48,12 +48,29 @@ final class CardStats extends Equatable {
   static const double _varyMin = 0.85;
   static const double _varyRange = 0.30;
 
+  static const int _fmixC1 = 0x85EBCA6B;
+  static const int _fmixC2 = 0xC2B2AE35;
+
   /// Knuth multiplicative hash, low 32 bits. Dart native ints are 64-bit and
   /// wrap on overflow, which keeps the low 32 bits exact.
   static int hash(int n) => (n * _knuth) & _mask32;
 
+  /// murmur3 `fmix32` finalizer. Without it `hash(id * 31 + k)` is linear in
+  /// `k`, so a card's ATK, DEF and SPD rolls would be its HP roll shifted by
+  /// a fixed amount (all stat profiles on one curve).
+  static int mix(int h) {
+    var x = h & _mask32;
+    x ^= x >> 16;
+    x = (x * _fmixC1) & _mask32;
+    x ^= x >> 13;
+    x = (x * _fmixC2) & _mask32;
+    x ^= x >> 16;
+    return x;
+  }
+
   /// Deterministic value in [0, 1] for stat index [k] of character [id].
-  static double statRoll(int id, int k) => hash(id * _idStride + k) / _mask32;
+  static double statRoll(int id, int k) =>
+      mix(hash(id * _idStride + k)) / _mask32;
 
   static double _vary(double x) => _varyMin + _varyRange * x;
 

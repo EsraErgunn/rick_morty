@@ -69,12 +69,19 @@ Type multiplier (attacker vs defender):
 
 ```
 hash(n)   = (n * 2654435761) & 0xFFFFFFFF        // Knuth multiplicative hash
-r(id, k)  = hash(id * 31 + k) / 0xFFFFFFFF        // 0.0 – 1.0, k = stat index
+mix(h)    = murmur3 fmix32(h):                    // all steps & 0xFFFFFFFF
+              h ^= h >> 16; h *= 0x85EBCA6B; h ^= h >> 13; h *= 0xC2B2AE35; h ^= h >> 16
+r(id, k)  = mix(hash(id * 31 + k)) / 0xFFFFFFFF   // 0.0 – 1.0, k = stat index
 vary(x)   = 0.85 + 0.30 * x                       // ±15%
 
 base:  HP 100 · ATK 20 · DEF 12 · SPD 10
 stat = round(base * rarityMult * vary(r(id, k)))   // k: HP=0, ATK=1, DEF=2, SPD=3
 ```
+Why `mix` (added 2026-11-12, owner decision): `hash(id * 31 + k)` alone is linear in `k`, so every card's ATK / DEF / SPD roll was its HP roll shifted by a fixed 0.618 / 0.236 / 0.854 (mod 1); all stat profiles lay on one curve (corr(HP, ATK) = -0.41). With `mix` the rolls are independent (|corr| < 0.08 over ids 1–826).
+
+Reference values (tests): Rick (1, legendary) 152/33/17/17 · Morty (2, legendary) 140/26/16/15 · Conroy (71, common) 85/18/13/11 (HP/ATK/DEF/SPD).
+
+Base values (HP 100, ATK 20) are under review: equal cards need about 6 hits to faint each other; the Week 3 battle simulation decides whether the ATK/HP ratio changes (see `tasks/plan.md`).
 Star bonus (merge, stretch): each star ×1.10 on all stats (max 3 stars).
 
 Tests must check: same id → identical stats; legendary average > epic average > rare > common.
