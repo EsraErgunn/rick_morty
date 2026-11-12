@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math';
 
 import 'package:get_it/get_it.dart';
@@ -11,6 +12,7 @@ import '../core/audio/audio_service.dart';
 import '../core/cards/card_factory.dart';
 import '../core/feedback/ui_feedback.dart';
 import '../core/haptics/haptics_service.dart';
+import '../core/images/image_download_controller.dart';
 import '../core/cards/rarity_pool.dart';
 import '../core/network/dio_client.dart';
 import '../core/sensors/shake_detector.dart';
@@ -41,6 +43,7 @@ import '../features/settings/data/settings_repository_impl.dart';
 import '../features/settings/presentation/bloc/settings_bloc.dart';
 import '../features/settings/presentation/bloc/settings_event.dart';
 import '../features/settings/presentation/pages/settings_page.dart';
+import '../features/settings/presentation/widgets/image_download_tile.dart';
 import '../features/sync/data/remote_data_source.dart';
 import '../features/sync/data/sync_repository_impl.dart';
 import '../features/sync/domain/sync_repository.dart';
@@ -104,6 +107,11 @@ Future<void> configureDependencies({
       ShakeDetector.new,
       dispose: (d) => d.dispose(),
     )
+    // Image disk-cache downloads (SPEC §3 Images); survives page changes.
+    ..registerLazySingleton<ImageDownloadController>(
+      ImageDownloadController.new,
+      dispose: (c) => c.dispose(),
+    )
     // The only tilt sensor subscription in the app (sensors rules).
     ..registerLazySingleton<TiltStream>(
       TiltStream.new,
@@ -144,6 +152,17 @@ Future<void> configureDependencies({
             shaders: getIt(),
             audio: getIt(),
             feedback: UiFeedback(audio: getIt(), haptics: getIt()),
+            // Owned cards + deck art into the disk cache, in the background.
+            onShown: () {
+              final cards = getIt<CollectionRepository>();
+              unawaited(
+                getIt<ImageDownloadController>().warmUp([
+                  for (final e in cards.entries()) e.card.imageUrl,
+                  for (final id in cards.deck)
+                    if (cards.card(id) case final c?) c.imageUrl,
+                ]),
+              );
+            },
             actions: MenuActions(
               portal: () => context.go(AppRoutes.portal),
               collection: () => context.go(AppRoutes.collection),
@@ -166,6 +185,13 @@ Future<void> configureDependencies({
             haptics: getIt(),
             feedback: UiFeedback(audio: getIt(), haptics: getIt()),
             version: AppInfo.version,
+            extra: ImageDownloadTile(
+              controller: getIt(),
+              urls: () => [
+                for (final c in getIt<ApiDataStore>().characters) c.imageUrl,
+              ],
+              feedback: UiFeedback(audio: getIt(), haptics: getIt()),
+            ),
           ),
         ),
         portalPage: (context) => BlocProvider(

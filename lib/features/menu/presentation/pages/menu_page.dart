@@ -50,8 +50,12 @@ class MenuPage extends StatefulWidget {
     required this.audio,
     required this.feedback,
     required this.actions,
+    this.onShown,
     super.key,
   });
+
+  /// Called once when the menu opens (background image warm-up, T36).
+  final VoidCallback? onShown;
 
   final ShaderCache shaders;
   final AudioService audio;
@@ -67,6 +71,7 @@ class _MenuPageState extends State<MenuPage> {
   void initState() {
     super.initState();
     unawaited(widget.audio.playMusic(Music.menuLoop));
+    widget.onShown?.call();
   }
 
   VoidCallback _tap(VoidCallback go) => () {

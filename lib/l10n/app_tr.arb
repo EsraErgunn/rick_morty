@@ -448,5 +448,45 @@
   "settingsCredits": "Tüm sesler ve müzikler tools/audio ile prosedürel olarak üretildi.",
   "@settingsCredits": {
     "description": "Audio credits (SPEC 2.9 AC4)."
+  },
+  "settingsImages": "Tüm görselleri çevrimdışı için indir",
+  "@settingsImages": {
+    "description": "SPEC 2.9 AC5."
+  },
+  "settingsImagesProgress": "%{percent} · {done}/{total}",
+  "@settingsImagesProgress": {
+    "description": "Download progress.",
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      },
+      "done": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "settingsImagesStop": "Durdur",
+  "@settingsImagesStop": {
+    "description": "Cancel the download."
+  },
+  "settingsImagesDone": "İndirildi",
+  "@settingsImagesDone": {
+    "description": "All images are cached."
+  },
+  "settingsImagesFailed": "{count} görsel indirilemedi. Tekrar dene.",
+  "@settingsImagesFailed": {
+    "description": "Some downloads failed.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "settingsImagesStopped": "Durduruldu. Devam etmek için tekrar başlat.",
+  "@settingsImagesStopped": {
+    "description": "After Durdur."
   }
 }

@@ -657,6 +657,42 @@ abstract class AppLocalizations {
   /// In tr, this message translates to:
   /// **'Tüm sesler ve müzikler tools/audio ile prosedürel olarak üretildi.'**
   String get settingsCredits;
+
+  /// SPEC 2.9 AC5.
+  ///
+  /// In tr, this message translates to:
+  /// **'Tüm görselleri çevrimdışı için indir'**
+  String get settingsImages;
+
+  /// Download progress.
+  ///
+  /// In tr, this message translates to:
+  /// **'%{percent} · {done}/{total}'**
+  String settingsImagesProgress(int percent, int done, int total);
+
+  /// Cancel the download.
+  ///
+  /// In tr, this message translates to:
+  /// **'Durdur'**
+  String get settingsImagesStop;
+
+  /// All images are cached.
+  ///
+  /// In tr, this message translates to:
+  /// **'İndirildi'**
+  String get settingsImagesDone;
+
+  /// Some downloads failed.
+  ///
+  /// In tr, this message translates to:
+  /// **'{count} görsel indirilemedi. Tekrar dene.'**
+  String settingsImagesFailed(int count);
+
+  /// After Durdur.
+  ///
+  /// In tr, this message translates to:
+  /// **'Durduruldu. Devam etmek için tekrar başlat.'**
+  String get settingsImagesStopped;
 }
 
 class _AppLocalizationsDelegate

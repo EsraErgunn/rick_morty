@@ -319,4 +319,27 @@ class AppLocalizationsTr extends AppLocalizations {
   @override
   String get settingsCredits =>
       'Tüm sesler ve müzikler tools/audio ile prosedürel olarak üretildi.';
+
+  @override
+  String get settingsImages => 'Tüm görselleri çevrimdışı için indir';
+
+  @override
+  String settingsImagesProgress(int percent, int done, int total) {
+    return '%$percent · $done/$total';
+  }
+
+  @override
+  String get settingsImagesStop => 'Durdur';
+
+  @override
+  String get settingsImagesDone => 'İndirildi';
+
+  @override
+  String settingsImagesFailed(int count) {
+    return '$count görsel indirilemedi. Tekrar dene.';
+  }
+
+  @override
+  String get settingsImagesStopped =>
+      'Durduruldu. Devam etmek için tekrar başlat.';
 }
