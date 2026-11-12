@@ -148,5 +148,5 @@ void main() {
       find.byKey(const ValueKey('rarity-row')),
       matchesGoldenFile('goldens/game_card_rarities.png'),
     );
-  });
+  }, tags: ['golden']);
 }

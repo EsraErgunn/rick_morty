@@ -1,0 +1,8 @@
+# Golden images are rendered on Windows (reference platform). Text
+# rasterization differs on macOS, so goldens are skipped there.
+# Update them only on Windows: flutter test --update-goldens --tags golden
+tags:
+  golden:
+    on_platform:
+      mac-os:
+        skip: "Goldens use Windows as the reference platform (fonts differ on macOS)."

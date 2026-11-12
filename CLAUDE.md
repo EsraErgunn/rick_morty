@@ -95,4 +95,5 @@ Topic rules in `.claude/rules/` (architecture, animation & audio, testing) load 
 - Sensors do not work on most emulators/simulators: test shake and tilt on a real phone.
 - Fragment shaders must be listed under `flutter: shaders:` in `pubspec.yaml`.
 - iOS minimum version is **15.0** (`platform :ios, '15.0'` in `ios/Podfile`, matches Flutter's default). Raise it only if a plugin requires it, and update both the Podfile and the Xcode deployment target.
+- Golden tests are tagged `golden` and use **Windows as the reference platform** (font rasterization differs per OS). `dart_test.yaml` skips the tag on macOS automatically. Update goldens only on Windows: `flutter test --update-goldens --tags golden`. New golden tests must get `tags: ['golden']`.
 - Characters and images belong to Adult Swim: this is a non-commercial fan project (README must say so). Do not prepare store release.

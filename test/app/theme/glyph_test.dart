@@ -144,5 +144,5 @@ void main() {
       find.byKey(const ValueKey('sample')),
       matchesGoldenFile('goldens/glyph_sample.png'),
     );
-  });
+  }, tags: ['golden']);
 }
