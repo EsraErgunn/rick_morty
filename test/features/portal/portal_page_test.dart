@@ -149,21 +149,21 @@ void main() {
     await tester.pumpWidget(const SizedBox());
   });
 
-  testWidgets('tap flips the card: flip sound, legendary reveal, actions', (
-    tester,
-  ) async {
+  testWidgets('reveal: scene plays, tap flips, actions appear', (tester) async {
     await pumpPage(tester);
     await tester.tap(find.byKey(const ValueKey('portal-open-button')));
     await tester.pump();
+    // Legendary Rick: charge + burst + cinematic emerge + fall + land.
+    await tester.pump(const Duration(seconds: 3));
+    await tester.pump(const Duration(milliseconds: 100));
     await tester.tap(find.byType(FlipCard));
-    await tester.pump(const Duration(seconds: 1));
-    await tester.pump(const Duration(seconds: 1));
+    // Gold sweep, flip, rays, then the actions fade in.
+    await frames(tester, const Duration(milliseconds: 2500));
 
     expect(rec.sounds, containsAll([Sfx.cardFlip, Sfx.legendaryReveal]));
     expect(find.text('Yeni kart!'), findsOneWidget);
     expect(find.text('Tekrar aç'), findsOneWidget);
-    // Let the legendary haptic sequence (80 ms + 120 ms) finish.
-    await tester.pump(const Duration(milliseconds: 300));
     await tester.pumpWidget(const SizedBox());
+    await tester.pump(const Duration(seconds: 1));
   });
 }

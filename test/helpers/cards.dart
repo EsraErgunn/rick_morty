@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_test/flutter_test.dart';
 import 'package:portalcards/app/theme/app_theme.dart';
 import 'package:portalcards/app/theme/colors.dart';
 import 'package:portalcards/core/cards/card_factory.dart';
@@ -32,3 +33,12 @@ Widget testApp(Widget child, {bool reduceMotion = false}) => MaterialApp(
     child: Scaffold(body: child),
   ),
 );
+
+/// Advances [total] in 50 ms frames, so chained animations (one starting
+/// when another ends) all get frames, as on a device.
+Future<void> frames(WidgetTester tester, Duration total) async {
+  const step = Duration(milliseconds: 50);
+  for (var t = Duration.zero; t < total; t += step) {
+    await tester.pump(step);
+  }
+}
