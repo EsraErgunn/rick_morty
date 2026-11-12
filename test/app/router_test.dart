@@ -82,6 +82,40 @@ void main() {
     expect(find.text('Ana menü'), findsOneWidget);
   });
 
+  group('card lab (debug only)', () {
+    testWidgets('debug builds register /debug/card-lab with a menu link', (
+      tester,
+    ) async {
+      final router = await _pumpApp(tester);
+      router.go(AppRoutes.menu);
+      await tester.pumpAndSettle();
+      await tester.tap(
+        find.widgetWithText(OutlinedButton, 'Kart laboratuvarı'),
+      );
+      await tester.pumpAndSettle();
+
+      expect(router.state.uri.path, AppRoutes.cardLab);
+      expect(find.textContaining('Önce verileri indir'), findsOneWidget);
+    });
+
+    testWidgets('release builds have no card lab route and no link', (
+      tester,
+    ) async {
+      final router = createRouter(
+        syncRepository: FakeSyncRepository(hold: true),
+        debugRoutes: false,
+        initialLocation: AppRoutes.menu,
+      );
+      await tester.pumpWidget(PortalCardsApp(router: router));
+      await tester.pumpAndSettle();
+      expect(find.text('Kart laboratuvarı'), findsNothing);
+
+      router.go(AppRoutes.cardLab);
+      await tester.pumpAndSettle();
+      expect(find.text('Sayfa bulunamadı'), findsOneWidget);
+    });
+  });
+
   group('DI', () {
     final hiveDir = useTempHive();
 

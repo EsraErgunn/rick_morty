@@ -195,6 +195,144 @@ abstract class AppLocalizations {
   /// In tr, this message translates to:
   /// **'Sayfa bulunamadı'**
   String get notFoundTitle;
+
+  /// Rarity name: common.
+  ///
+  /// In tr, this message translates to:
+  /// **'Sıradan'**
+  String get rarityCommon;
+
+  /// Rarity name: rare.
+  ///
+  /// In tr, this message translates to:
+  /// **'Nadir'**
+  String get rarityRare;
+
+  /// Rarity name: epic.
+  ///
+  /// In tr, this message translates to:
+  /// **'Epik'**
+  String get rarityEpic;
+
+  /// Rarity name: legendary.
+  ///
+  /// In tr, this message translates to:
+  /// **'Efsanevi'**
+  String get rarityLegendary;
+
+  /// Card type: Human (also Humanoid).
+  ///
+  /// In tr, this message translates to:
+  /// **'İnsan'**
+  String get typeHuman;
+
+  /// Card type: Robot.
+  ///
+  /// In tr, this message translates to:
+  /// **'Robot'**
+  String get typeRobot;
+
+  /// Card type: Alien.
+  ///
+  /// In tr, this message translates to:
+  /// **'Uzaylı'**
+  String get typeAlien;
+
+  /// Card type: Beast (API species Animal).
+  ///
+  /// In tr, this message translates to:
+  /// **'Hayvan'**
+  String get typeBeast;
+
+  /// Card type: Myth (API species Mythological Creature).
+  ///
+  /// In tr, this message translates to:
+  /// **'Mitik'**
+  String get typeMyth;
+
+  /// Card type: Neutral (every other species).
+  ///
+  /// In tr, this message translates to:
+  /// **'Nötr'**
+  String get typeNeutral;
+
+  /// Passive of Dead characters.
+  ///
+  /// In tr, this message translates to:
+  /// **'Zombi'**
+  String get passiveZombie;
+
+  /// Passive of characters with unknown status.
+  ///
+  /// In tr, this message translates to:
+  /// **'Belirsiz'**
+  String get passiveUncertain;
+
+  /// Stat label: HP.
+  ///
+  /// In tr, this message translates to:
+  /// **'Can'**
+  String get statHp;
+
+  /// Stat label: attack.
+  ///
+  /// In tr, this message translates to:
+  /// **'Saldırı'**
+  String get statAtk;
+
+  /// Stat label: defense.
+  ///
+  /// In tr, this message translates to:
+  /// **'Savunma'**
+  String get statDef;
+
+  /// Stat label: speed.
+  ///
+  /// In tr, this message translates to:
+  /// **'Hız'**
+  String get statSpd;
+
+  /// Card back fact label: species.
+  ///
+  /// In tr, this message translates to:
+  /// **'Tür'**
+  String get cardBackSpecies;
+
+  /// Card back fact label: status.
+  ///
+  /// In tr, this message translates to:
+  /// **'Durum'**
+  String get cardBackStatus;
+
+  /// Card back fact label: origin.
+  ///
+  /// In tr, this message translates to:
+  /// **'Köken'**
+  String get cardBackOrigin;
+
+  /// Card back fact label: last known location.
+  ///
+  /// In tr, this message translates to:
+  /// **'Konum'**
+  String get cardBackLocation;
+
+  /// Card back fact label: number of episodes.
+  ///
+  /// In tr, this message translates to:
+  /// **'Bölüm sayısı'**
+  String get cardBackEpisodes;
+
+  /// Debug-only screen title.
+  ///
+  /// In tr, this message translates to:
+  /// **'Kart laboratuvarı'**
+  String get cardLabTitle;
+
+  /// Debug card lab when no characters are synced.
+  ///
+  /// In tr, this message translates to:
+  /// **'Önce verileri indir: kart laboratuvarı senkronize karakterleri kullanır.'**
+  String get cardLabEmpty;
 }
 
 class _AppLocalizationsDelegate

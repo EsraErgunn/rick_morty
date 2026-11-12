@@ -1,11 +1,15 @@
+import 'package:flutter/foundation.dart' show kDebugMode;
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
+import '../core/cards/game_card_data.dart';
 import '../features/sync/domain/sync_repository.dart';
 import '../features/sync/presentation/bloc/sync_bloc.dart';
 import '../features/sync/presentation/bloc/sync_event.dart';
 import '../features/sync/presentation/pages/splash_page.dart';
 import '../l10n/app_localizations.dart';
+import 'debug/card_lab_page.dart';
 import 'not_found_page.dart';
 import 'placeholder_page.dart';
 
@@ -19,6 +23,9 @@ abstract final class AppRoutes {
   static const String battle = '/battle';
   static const String album = '/album';
   static const String settings = '/settings';
+
+  /// Debug builds only (plan T17).
+  static const String cardLab = '/debug/card-lab';
 
   static String cardDetail(int id) => '$collection/$id';
   static String albumPage(int episodeId) => '$album/$episodeId';
@@ -40,6 +47,8 @@ GoRoute _placeholder(
 /// Routes from SPEC §2. Features not built yet point at a placeholder.
 GoRouter createRouter({
   required SyncRepository syncRepository,
+  List<GameCardData> Function()? cardLabCards,
+  bool debugRoutes = kDebugMode,
   String initialLocation = AppRoutes.splash,
 }) {
   return GoRouter(
@@ -53,7 +62,21 @@ GoRouter createRouter({
           child: SplashPage(onDone: () => context.go(AppRoutes.menu)),
         ),
       ),
-      _placeholder(AppRoutes.menu, (l10n, _) => l10n.menuTitle),
+      GoRoute(
+        path: AppRoutes.menu,
+        builder: (context, state) {
+          final l10n = AppLocalizations.of(context);
+          return PlaceholderPage(
+            title: l10n.menuTitle,
+            action: debugRoutes
+                ? OutlinedButton(
+                    onPressed: () => context.go(AppRoutes.cardLab),
+                    child: Text(l10n.cardLabTitle),
+                  )
+                : null,
+          );
+        },
+      ),
       _placeholder(AppRoutes.portal, (l10n, _) => l10n.portalTitle),
       _placeholder(
         AppRoutes.collection,
@@ -79,6 +102,12 @@ GoRouter createRouter({
         ],
       ),
       _placeholder(AppRoutes.settings, (l10n, _) => l10n.settingsTitle),
+      if (debugRoutes)
+        GoRoute(
+          path: AppRoutes.cardLab,
+          builder: (context, state) =>
+              CardLabPage(cards: cardLabCards?.call() ?? const []),
+        ),
     ],
   );
 }

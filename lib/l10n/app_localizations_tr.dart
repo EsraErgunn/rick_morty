@@ -68,4 +68,74 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get notFoundTitle => 'Sayfa bulunamadı';
+
+  @override
+  String get rarityCommon => 'Sıradan';
+
+  @override
+  String get rarityRare => 'Nadir';
+
+  @override
+  String get rarityEpic => 'Epik';
+
+  @override
+  String get rarityLegendary => 'Efsanevi';
+
+  @override
+  String get typeHuman => 'İnsan';
+
+  @override
+  String get typeRobot => 'Robot';
+
+  @override
+  String get typeAlien => 'Uzaylı';
+
+  @override
+  String get typeBeast => 'Hayvan';
+
+  @override
+  String get typeMyth => 'Mitik';
+
+  @override
+  String get typeNeutral => 'Nötr';
+
+  @override
+  String get passiveZombie => 'Zombi';
+
+  @override
+  String get passiveUncertain => 'Belirsiz';
+
+  @override
+  String get statHp => 'Can';
+
+  @override
+  String get statAtk => 'Saldırı';
+
+  @override
+  String get statDef => 'Savunma';
+
+  @override
+  String get statSpd => 'Hız';
+
+  @override
+  String get cardBackSpecies => 'Tür';
+
+  @override
+  String get cardBackStatus => 'Durum';
+
+  @override
+  String get cardBackOrigin => 'Köken';
+
+  @override
+  String get cardBackLocation => 'Konum';
+
+  @override
+  String get cardBackEpisodes => 'Bölüm sayısı';
+
+  @override
+  String get cardLabTitle => 'Kart laboratuvarı';
+
+  @override
+  String get cardLabEmpty =>
+      'Önce verileri indir: kart laboratuvarı senkronize karakterleri kullanır.';
 }

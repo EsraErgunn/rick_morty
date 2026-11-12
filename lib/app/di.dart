@@ -2,6 +2,7 @@ import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 import 'package:path_provider/path_provider.dart';
 
+import '../core/cards/card_factory.dart';
 import '../core/cards/rarity_pool.dart';
 import '../core/network/dio_client.dart';
 import '../core/storage/api_data_store.dart';
@@ -10,6 +11,7 @@ import '../core/storage/player_store.dart';
 import '../features/sync/data/remote_data_source.dart';
 import '../features/sync/data/sync_repository_impl.dart';
 import '../features/sync/domain/sync_repository.dart';
+import 'debug/card_lab_page.dart';
 import 'router.dart';
 
 /// The app's service locator. Only `main` and composition code (router)
@@ -45,6 +47,13 @@ Future<void> configureDependencies({String? storageDirectory}) async {
       () => RarityPool.fromCharacters(getIt<ApiDataStore>().characters),
     )
     ..registerLazySingleton<GoRouter>(
-      () => createRouter(syncRepository: getIt()),
+      () => createRouter(
+        syncRepository: getIt(),
+        cardLabCards: () => [
+          for (final id in CardLabPage.characterIds)
+            if (getIt<ApiDataStore>().character(id) case final c?)
+              CardFactory.fromCharacter(c),
+        ],
+      ),
     );
 }

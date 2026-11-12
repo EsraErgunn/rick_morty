@@ -93,5 +93,97 @@
   "notFoundTitle": "Sayfa bulunamadı",
   "@notFoundTitle": {
     "description": "Shown for an unknown route."
+  },
+  "rarityCommon": "Sıradan",
+  "@rarityCommon": {
+    "description": "Rarity name: common."
+  },
+  "rarityRare": "Nadir",
+  "@rarityRare": {
+    "description": "Rarity name: rare."
+  },
+  "rarityEpic": "Epik",
+  "@rarityEpic": {
+    "description": "Rarity name: epic."
+  },
+  "rarityLegendary": "Efsanevi",
+  "@rarityLegendary": {
+    "description": "Rarity name: legendary."
+  },
+  "typeHuman": "İnsan",
+  "@typeHuman": {
+    "description": "Card type: Human (also Humanoid)."
+  },
+  "typeRobot": "Robot",
+  "@typeRobot": {
+    "description": "Card type: Robot."
+  },
+  "typeAlien": "Uzaylı",
+  "@typeAlien": {
+    "description": "Card type: Alien."
+  },
+  "typeBeast": "Hayvan",
+  "@typeBeast": {
+    "description": "Card type: Beast (API species Animal)."
+  },
+  "typeMyth": "Mitik",
+  "@typeMyth": {
+    "description": "Card type: Myth (API species Mythological Creature)."
+  },
+  "typeNeutral": "Nötr",
+  "@typeNeutral": {
+    "description": "Card type: Neutral (every other species)."
+  },
+  "passiveZombie": "Zombi",
+  "@passiveZombie": {
+    "description": "Passive of Dead characters."
+  },
+  "passiveUncertain": "Belirsiz",
+  "@passiveUncertain": {
+    "description": "Passive of characters with unknown status."
+  },
+  "statHp": "Can",
+  "@statHp": {
+    "description": "Stat label: HP."
+  },
+  "statAtk": "Saldırı",
+  "@statAtk": {
+    "description": "Stat label: attack."
+  },
+  "statDef": "Savunma",
+  "@statDef": {
+    "description": "Stat label: defense."
+  },
+  "statSpd": "Hız",
+  "@statSpd": {
+    "description": "Stat label: speed."
+  },
+  "cardBackSpecies": "Tür",
+  "@cardBackSpecies": {
+    "description": "Card back fact label: species."
+  },
+  "cardBackStatus": "Durum",
+  "@cardBackStatus": {
+    "description": "Card back fact label: status."
+  },
+  "cardBackOrigin": "Köken",
+  "@cardBackOrigin": {
+    "description": "Card back fact label: origin."
+  },
+  "cardBackLocation": "Konum",
+  "@cardBackLocation": {
+    "description": "Card back fact label: last known location."
+  },
+  "cardBackEpisodes": "Bölüm sayısı",
+  "@cardBackEpisodes": {
+    "description": "Card back fact label: number of episodes."
+  },
+  "cardLabTitle": "Kart laboratuvarı",
+  "@cardLabTitle": {
+    "description": "Debug-only screen title."
+  },
+  "cardLabEmpty": "Önce verileri indir: kart laboratuvarı senkronize karakterleri kullanır.",
+  "@cardLabEmpty": {
+    "description": "Debug card lab when no characters are synced."
   }
 }

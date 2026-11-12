@@ -1,39 +1,17 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:portalcards/app/theme/app_theme.dart';
 import 'package:portalcards/app/theme/colors.dart';
 import 'package:portalcards/app/theme/spacing.dart';
 import 'package:portalcards/app/theme/typography.dart';
 
+import '../../helpers/fonts.dart';
 import 'ttf_reader.dart';
 
 /// SPEC §5.8 T1: Turkish glyphs in every weight of both fonts.
 const String turkish = 'ğşıİçöüĞŞÇÖÜ';
-
-const Map<String, List<String>> fontFiles = {
-  AppFonts.display: [
-    'assets/fonts/grandstander/Grandstander-Bold.ttf',
-    'assets/fonts/grandstander/Grandstander-Black.ttf',
-  ],
-  AppFonts.body: [
-    'assets/fonts/atkinson_hyperlegible_next/AtkinsonHyperlegibleNext-Regular.ttf',
-    'assets/fonts/atkinson_hyperlegible_next/AtkinsonHyperlegibleNext-Bold.ttf',
-  ],
-};
-
-Future<void> _loadFonts() async {
-  for (final entry in fontFiles.entries) {
-    final loader = FontLoader(entry.key);
-    for (final path in entry.value) {
-      final bytes = File(path).readAsBytesSync();
-      loader.addFont(Future.value(ByteData.sublistView(bytes)));
-    }
-    await loader.load();
-  }
-}
 
 void main() {
   group('bundled font files', () {
@@ -108,7 +86,7 @@ void main() {
   testWidgets('glyph sample renders in every style with its family', (
     tester,
   ) async {
-    await _loadFonts();
+    await loadAppFonts();
     const styles = <String, TextStyle>{
       'callout 900': AppTypography.callout,
       'display 900': AppTypography.display,
