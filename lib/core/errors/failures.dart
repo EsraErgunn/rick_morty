@@ -68,3 +68,8 @@ final class NotEnoughCoinsFailure extends Failure {
   @override
   List<Object?> get props => [message, needed, balance];
 }
+
+/// The deck already has 3 cards (SPEC assumption 2); nothing changed.
+final class DeckFullFailure extends Failure {
+  const DeckFullFailure() : super('deck full');
+}

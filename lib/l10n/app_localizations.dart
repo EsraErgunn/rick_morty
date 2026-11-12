@@ -423,6 +423,78 @@ abstract class AppLocalizations {
   /// In tr, this message translates to:
   /// **'Ayarlar'**
   String get menuSettingsTooltip;
+
+  /// SPEC 2.4 AC4.
+  ///
+  /// In tr, this message translates to:
+  /// **'Henüz kartın yok. İlk portalını aç.'**
+  String get collectionEmpty;
+
+  /// Filters hide every card.
+  ///
+  /// In tr, this message translates to:
+  /// **'Bu filtreye uyan kart yok.'**
+  String get collectionFilteredEmpty;
+
+  /// Filter chip: clear all filters.
+  ///
+  /// In tr, this message translates to:
+  /// **'Hepsi'**
+  String get collectionAll;
+
+  /// Sort: rarity, highest first.
+  ///
+  /// In tr, this message translates to:
+  /// **'Nadirlik'**
+  String get collectionSortRarity;
+
+  /// Sort: name A to Z.
+  ///
+  /// In tr, this message translates to:
+  /// **'İsim'**
+  String get collectionSortName;
+
+  /// Sort: newest first.
+  ///
+  /// In tr, this message translates to:
+  /// **'En yeni'**
+  String get collectionSortNewest;
+
+  /// Sort menu tooltip.
+  ///
+  /// In tr, this message translates to:
+  /// **'Sırala'**
+  String get collectionSortTooltip;
+
+  /// Card detail action.
+  ///
+  /// In tr, this message translates to:
+  /// **'Desteye ekle'**
+  String get deckAdd;
+
+  /// Card detail action.
+  ///
+  /// In tr, this message translates to:
+  /// **'Desteden çıkar'**
+  String get deckRemove;
+
+  /// Why adding is disabled.
+  ///
+  /// In tr, this message translates to:
+  /// **'Deste dolu (3/3)'**
+  String get deckFull;
+
+  /// Card detail for a card not in the collection.
+  ///
+  /// In tr, this message translates to:
+  /// **'Bu karta henüz sahip değilsin.'**
+  String get deckNotOwned;
+
+  /// Deck size chip on the card detail.
+  ///
+  /// In tr, this message translates to:
+  /// **'Deste {count}/3'**
+  String deckCount(int count);
 }
 
 class _AppLocalizationsDelegate

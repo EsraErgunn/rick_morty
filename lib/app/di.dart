@@ -19,6 +19,14 @@ import '../core/storage/api_data_store.dart';
 import '../core/storage/hive_init.dart';
 import '../core/storage/player_store.dart';
 import '../core/widgets/shader_cache.dart';
+import '../features/collection/data/collection_repository_impl.dart';
+import '../features/collection/domain/collection_repository.dart';
+import '../features/collection/presentation/bloc/card_detail_bloc.dart';
+import '../features/collection/presentation/bloc/card_detail_event.dart';
+import '../features/collection/presentation/bloc/collection_bloc.dart';
+import '../features/collection/presentation/bloc/collection_event.dart';
+import '../features/collection/presentation/pages/card_detail_page.dart';
+import '../features/collection/presentation/pages/collection_page.dart';
 import '../features/menu/data/menu_repository_impl.dart';
 import '../features/menu/presentation/bloc/menu_bloc.dart';
 import '../features/menu/presentation/bloc/menu_event.dart';
@@ -98,6 +106,13 @@ Future<void> configureDependencies({
     )
     // The app's only unseeded Random is created here, in composition code;
     // game logic always receives it (architecture rules).
+    ..registerLazySingleton<CollectionRepository>(
+      () => CollectionRepositoryImpl(
+        apiData: getIt(),
+        player: getIt(),
+        collection: getIt(),
+      ),
+    )
     ..registerLazySingleton<PortalRepository>(
       () => PortalRepositoryImpl(
         apiData: getIt(),
@@ -111,8 +126,6 @@ Future<void> configureDependencies({
       () => createRouter(
         syncRepository: getIt(),
         initialLocation: initialLocation,
-        tiltStream: getIt(),
-        shaders: getIt(),
         menuPage: (context) => BlocProvider(
           create: (_) => MenuBloc(
             MenuRepositoryImpl(
@@ -149,10 +162,25 @@ Future<void> configureDependencies({
             onGoToCollection: () => context.go(AppRoutes.collection),
           ),
         ),
-        cardById: (id) => switch (getIt<ApiDataStore>().character(id)) {
-          final c? => CardFactory.fromCharacter(c),
-          null => null,
-        },
+        collectionPage: (context) => BlocProvider(
+          create: (_) =>
+              CollectionBloc(getIt())..add(const CollectionStarted()),
+          child: CollectionPage(
+            feedback: UiFeedback(audio: getIt(), haptics: getIt()),
+            onOpenCard: (id) => context.push(AppRoutes.cardDetail(id)),
+            onOpenPortal: () => context.go(AppRoutes.portal),
+          ),
+        ),
+        cardDetailPage: (context, id) => BlocProvider(
+          create: (_) =>
+              CardDetailBloc(getIt(), id)..add(const CardDetailStarted()),
+          child: CardDetailPage(
+            id: id,
+            tiltStream: getIt(),
+            shaders: getIt(),
+            feedback: UiFeedback(audio: getIt(), haptics: getIt()),
+          ),
+        ),
         cardLabCards: () => [
           for (final id in CardLabPage.characterIds)
             if (getIt<ApiDataStore>().character(id) case final c?)

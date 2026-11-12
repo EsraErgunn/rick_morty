@@ -69,8 +69,8 @@ abstract final class CardMetrics {
   static const double padding = 8;
   static const double iconSize = 16;
 
-  /// Max 3D tilt in degrees (flutter_tilt `TiltConfig.angle`).
-  static const double tiltAngle = 12;
+  /// Max 3D tilt in degrees (flutter_tilt `TiltConfig.angle`, SPEC §4.5).
+  static const double tiltAngle = 6;
 
   /// Max strength of the tilt light sheen (0..1).
   static const double tiltLight = 0.2;

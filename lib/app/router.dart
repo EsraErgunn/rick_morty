@@ -4,9 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 import '../core/cards/game_card_data.dart';
-import '../core/sensors/tilt_stream.dart';
-import '../core/widgets/shader_cache.dart';
-import '../features/collection/presentation/pages/card_detail_page.dart';
 import '../features/sync/domain/sync_repository.dart';
 import '../features/sync/presentation/bloc/sync_bloc.dart';
 import '../features/sync/presentation/bloc/sync_event.dart';
@@ -51,9 +48,8 @@ GoRoute _placeholder(
 GoRouter createRouter({
   required SyncRepository syncRepository,
   List<GameCardData> Function()? cardLabCards,
-  GameCardData? Function(int id)? cardById,
-  TiltStream? tiltStream,
-  ShaderCache? shaders,
+  WidgetBuilder? collectionPage,
+  Widget Function(BuildContext context, int id)? cardDetailPage,
   WidgetBuilder? portalPage,
   WidgetBuilder? menuPage,
   bool debugRoutes = kDebugMode,
@@ -93,29 +89,25 @@ GoRouter createRouter({
         )
       else
         _placeholder(AppRoutes.portal, (l10n, _) => l10n.portalTitle),
-      _placeholder(
-        AppRoutes.collection,
-        (l10n, _) => l10n.collectionTitle,
+      GoRoute(
+        path: AppRoutes.collection,
+        builder: (context, state) =>
+            collectionPage?.call(context) ??
+            PlaceholderPage(
+              title: AppLocalizations.of(context).collectionTitle,
+            ),
         routes: [
           GoRoute(
             path: ':id',
             builder: (context, state) {
               final raw = state.pathParameters['id']!;
               final id = int.tryParse(raw);
-              if (id == null ||
-                  cardById == null ||
-                  tiltStream == null ||
-                  shaders == null) {
+              if (id == null || cardDetailPage == null) {
                 return PlaceholderPage(
                   title: AppLocalizations.of(context).cardDetailTitle(raw),
                 );
               }
-              return CardDetailPage(
-                id: id,
-                data: cardById(id),
-                tiltStream: tiltStream,
-                shaders: shaders,
-              );
+              return cardDetailPage(context, id);
             },
           ),
         ],

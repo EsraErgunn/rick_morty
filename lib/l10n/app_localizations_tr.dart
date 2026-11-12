@@ -193,4 +193,42 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get menuSettingsTooltip => 'Ayarlar';
+
+  @override
+  String get collectionEmpty => 'Henüz kartın yok. İlk portalını aç.';
+
+  @override
+  String get collectionFilteredEmpty => 'Bu filtreye uyan kart yok.';
+
+  @override
+  String get collectionAll => 'Hepsi';
+
+  @override
+  String get collectionSortRarity => 'Nadirlik';
+
+  @override
+  String get collectionSortName => 'İsim';
+
+  @override
+  String get collectionSortNewest => 'En yeni';
+
+  @override
+  String get collectionSortTooltip => 'Sırala';
+
+  @override
+  String get deckAdd => 'Desteye ekle';
+
+  @override
+  String get deckRemove => 'Desteden çıkar';
+
+  @override
+  String get deckFull => 'Deste dolu (3/3)';
+
+  @override
+  String get deckNotOwned => 'Bu karta henüz sahip değilsin.';
+
+  @override
+  String deckCount(int count) {
+    return 'Deste $count/3';
+  }
 }

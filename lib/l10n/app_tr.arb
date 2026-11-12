@@ -277,5 +277,58 @@
   "menuSettingsTooltip": "Ayarlar",
   "@menuSettingsTooltip": {
     "description": "Settings icon button tooltip."
+  },
+  "collectionEmpty": "Henüz kartın yok. İlk portalını aç.",
+  "@collectionEmpty": {
+    "description": "SPEC 2.4 AC4."
+  },
+  "collectionFilteredEmpty": "Bu filtreye uyan kart yok.",
+  "@collectionFilteredEmpty": {
+    "description": "Filters hide every card."
+  },
+  "collectionAll": "Hepsi",
+  "@collectionAll": {
+    "description": "Filter chip: clear all filters."
+  },
+  "collectionSortRarity": "Nadirlik",
+  "@collectionSortRarity": {
+    "description": "Sort: rarity, highest first."
+  },
+  "collectionSortName": "İsim",
+  "@collectionSortName": {
+    "description": "Sort: name A to Z."
+  },
+  "collectionSortNewest": "En yeni",
+  "@collectionSortNewest": {
+    "description": "Sort: newest first."
+  },
+  "collectionSortTooltip": "Sırala",
+  "@collectionSortTooltip": {
+    "description": "Sort menu tooltip."
+  },
+  "deckAdd": "Desteye ekle",
+  "@deckAdd": {
+    "description": "Card detail action."
+  },
+  "deckRemove": "Desteden çıkar",
+  "@deckRemove": {
+    "description": "Card detail action."
+  },
+  "deckFull": "Deste dolu (3/3)",
+  "@deckFull": {
+    "description": "Why adding is disabled."
+  },
+  "deckNotOwned": "Bu karta henüz sahip değilsin.",
+  "@deckNotOwned": {
+    "description": "Card detail for a card not in the collection."
+  },
+  "deckCount": "Deste {count}/3",
+  "@deckCount": {
+    "description": "Deck size chip on the card detail.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
   }
 }
