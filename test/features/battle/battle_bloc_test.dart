@@ -56,7 +56,7 @@ class FakeBattleRepository implements BattleRepository {
 }
 
 BattleBloc _bloc(FakeBattleRepository repo, {int seed = 7}) =>
-    BattleBloc(repository: repo, random: Random(seed), battleId: 'b1');
+    BattleBloc(repository: repo, random: Random(seed), newBattleId: () => 'b1');
 
 /// Replays everything queued, the way the page does.
 void _drain(BattleBloc bloc) {

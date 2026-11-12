@@ -522,5 +522,135 @@
   "deckHint": "Karta dokun: desteye ekle. Slota dokun: çıkar.",
   "@deckHint": {
     "description": "Deck builder hint."
+  },
+  "battleStart": "Başla",
+  "@battleStart": {
+    "description": "Pre-battle start button."
+  },
+  "battleOpponent": "Rakip",
+  "@battleOpponent": {
+    "description": "Pre-battle label above the enemy team."
+  },
+  "battleYourDeck": "Destem",
+  "@battleYourDeck": {
+    "description": "Pre-battle label above the player's deck."
+  },
+  "battleTier": "Kademe {tier} · {wins} galibiyet",
+  "@battleTier": {
+    "description": "Difficulty tier and wins.",
+    "placeholders": {
+      "tier": {
+        "type": "int"
+      },
+      "wins": {
+        "type": "int"
+      }
+    }
+  },
+  "battleYourTurn": "Senin sıran: saldıracak kartı seç",
+  "@battleYourTurn": {
+    "description": "Turn label, player picks an attacker."
+  },
+  "battlePickTarget": "Hedefi seç",
+  "@battlePickTarget": {
+    "description": "Turn label after an attacker is selected."
+  },
+  "battleEnemyTurn": "Rakip düşünüyor",
+  "@battleEnemyTurn": {
+    "description": "Turn label during the enemy turn."
+  },
+  "battleCrit": "KRİTİK!",
+  "@battleCrit": {
+    "description": "Critical hit callout."
+  },
+  "battleGenius": "DAHİ!",
+  "@battleGenius": {
+    "description": "Rick's critical hit callout."
+  },
+  "battleSuperEffective": "SÜPER ETKİLİ!",
+  "@battleSuperEffective": {
+    "description": "Super effective banner."
+  },
+  "battleNotEffective": "Pek etkili değil…",
+  "@battleNotEffective": {
+    "description": "Not very effective note."
+  },
+  "battleDodge": "KAÇTI!",
+  "@battleDodge": {
+    "description": "Myth dodge callout."
+  },
+  "battleRevive": "Zombi! Geri döndü",
+  "@battleRevive": {
+    "description": "Zombi revive callout."
+  },
+  "battleVictory": "Kazandın!",
+  "@battleVictory": {
+    "description": "Victory title."
+  },
+  "battleDefeat": "Kaybettin",
+  "@battleDefeat": {
+    "description": "Defeat title."
+  },
+  "battleDraw": "Berabere",
+  "@battleDraw": {
+    "description": "Draw title."
+  },
+  "battleReward": "+{coins} coin",
+  "@battleReward": {
+    "description": "Coins won.",
+    "placeholders": {
+      "coins": {
+        "type": "int"
+      }
+    }
+  },
+  "battleTierUp": "Kademe atladın! Artık kademe {tier}",
+  "@battleTierUp": {
+    "description": "Tier up note.",
+    "placeholders": {
+      "tier": {
+        "type": "int"
+      }
+    }
+  },
+  "battleAgain": "Yeni savaş",
+  "@battleAgain": {
+    "description": "Result screen: start another battle."
+  },
+  "battleBackToMenu": "Menüye dön",
+  "@battleBackToMenu": {
+    "description": "Result screen: back to menu."
+  },
+  "battleLeaveTitle": "Savaştan çıkılsın mı?",
+  "@battleLeaveTitle": {
+    "description": "Leave dialog title."
+  },
+  "battleLeaveBody": "Bu savaş yenilgi sayılır.",
+  "@battleLeaveBody": {
+    "description": "Leave dialog body."
+  },
+  "battleLeaveConfirm": "Çık",
+  "@battleLeaveConfirm": {
+    "description": "Leave dialog confirm."
+  },
+  "battleLeaveCancel": "Devam et",
+  "@battleLeaveCancel": {
+    "description": "Leave dialog cancel."
+  },
+  "battleNoDeck": "Savaşmak için destende 3 kart olmalı.",
+  "@battleNoDeck": {
+    "description": "Shown when the deck is not full."
+  },
+  "battleGoToDeck": "Desteye git",
+  "@battleGoToDeck": {
+    "description": "Button to the deck builder."
+  },
+  "battleSpeed": "2×",
+  "@battleSpeed": {
+    "description": "Replay speed toggle."
+  },
+  "battleLeave": "Savaştan çık",
+  "@battleLeave": {
+    "description": "Leave button tooltip."
   }
 }

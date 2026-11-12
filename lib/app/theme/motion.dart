@@ -57,6 +57,21 @@ abstract final class AppMotion {
   static const Duration demoTapWindow = Duration(seconds: 3);
 
   /// Pop-in of new elements.
+  /// Battle (SPEC §4.7): cards deal in with this stagger.
+  static const Duration battleDealStagger = Duration(milliseconds: 80);
+
+  /// Gap after each replayed event; a whole turn stays ≤ 1.6 s.
+  static const Duration battleGap = fast;
+
+  /// A hit, dodge or faint holds the replay this long (`normal` + gap).
+  static const Duration battleHit = Duration(milliseconds: 450);
+
+  /// Reduced motion: every replay step is a short fade.
+  static const Duration battleReduced = fast;
+
+  /// The 2× toggle divides replay durations by this.
+  static const int battleFastFactor = 2;
+
   static const Curve popIn = Curves.easeOutBack;
 
   /// Movement between positions, card flip.

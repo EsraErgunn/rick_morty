@@ -723,6 +723,174 @@ abstract class AppLocalizations {
   /// In tr, this message translates to:
   /// **'Karta dokun: desteye ekle. Slota dokun: çıkar.'**
   String get deckHint;
+
+  /// Pre-battle start button.
+  ///
+  /// In tr, this message translates to:
+  /// **'Başla'**
+  String get battleStart;
+
+  /// Pre-battle label above the enemy team.
+  ///
+  /// In tr, this message translates to:
+  /// **'Rakip'**
+  String get battleOpponent;
+
+  /// Pre-battle label above the player's deck.
+  ///
+  /// In tr, this message translates to:
+  /// **'Destem'**
+  String get battleYourDeck;
+
+  /// Difficulty tier and wins.
+  ///
+  /// In tr, this message translates to:
+  /// **'Kademe {tier} · {wins} galibiyet'**
+  String battleTier(int tier, int wins);
+
+  /// Turn label, player picks an attacker.
+  ///
+  /// In tr, this message translates to:
+  /// **'Senin sıran: saldıracak kartı seç'**
+  String get battleYourTurn;
+
+  /// Turn label after an attacker is selected.
+  ///
+  /// In tr, this message translates to:
+  /// **'Hedefi seç'**
+  String get battlePickTarget;
+
+  /// Turn label during the enemy turn.
+  ///
+  /// In tr, this message translates to:
+  /// **'Rakip düşünüyor'**
+  String get battleEnemyTurn;
+
+  /// Critical hit callout.
+  ///
+  /// In tr, this message translates to:
+  /// **'KRİTİK!'**
+  String get battleCrit;
+
+  /// Rick's critical hit callout.
+  ///
+  /// In tr, this message translates to:
+  /// **'DAHİ!'**
+  String get battleGenius;
+
+  /// Super effective banner.
+  ///
+  /// In tr, this message translates to:
+  /// **'SÜPER ETKİLİ!'**
+  String get battleSuperEffective;
+
+  /// Not very effective note.
+  ///
+  /// In tr, this message translates to:
+  /// **'Pek etkili değil…'**
+  String get battleNotEffective;
+
+  /// Myth dodge callout.
+  ///
+  /// In tr, this message translates to:
+  /// **'KAÇTI!'**
+  String get battleDodge;
+
+  /// Zombi revive callout.
+  ///
+  /// In tr, this message translates to:
+  /// **'Zombi! Geri döndü'**
+  String get battleRevive;
+
+  /// Victory title.
+  ///
+  /// In tr, this message translates to:
+  /// **'Kazandın!'**
+  String get battleVictory;
+
+  /// Defeat title.
+  ///
+  /// In tr, this message translates to:
+  /// **'Kaybettin'**
+  String get battleDefeat;
+
+  /// Draw title.
+  ///
+  /// In tr, this message translates to:
+  /// **'Berabere'**
+  String get battleDraw;
+
+  /// Coins won.
+  ///
+  /// In tr, this message translates to:
+  /// **'+{coins} coin'**
+  String battleReward(int coins);
+
+  /// Tier up note.
+  ///
+  /// In tr, this message translates to:
+  /// **'Kademe atladın! Artık kademe {tier}'**
+  String battleTierUp(int tier);
+
+  /// Result screen: start another battle.
+  ///
+  /// In tr, this message translates to:
+  /// **'Yeni savaş'**
+  String get battleAgain;
+
+  /// Result screen: back to menu.
+  ///
+  /// In tr, this message translates to:
+  /// **'Menüye dön'**
+  String get battleBackToMenu;
+
+  /// Leave dialog title.
+  ///
+  /// In tr, this message translates to:
+  /// **'Savaştan çıkılsın mı?'**
+  String get battleLeaveTitle;
+
+  /// Leave dialog body.
+  ///
+  /// In tr, this message translates to:
+  /// **'Bu savaş yenilgi sayılır.'**
+  String get battleLeaveBody;
+
+  /// Leave dialog confirm.
+  ///
+  /// In tr, this message translates to:
+  /// **'Çık'**
+  String get battleLeaveConfirm;
+
+  /// Leave dialog cancel.
+  ///
+  /// In tr, this message translates to:
+  /// **'Devam et'**
+  String get battleLeaveCancel;
+
+  /// Shown when the deck is not full.
+  ///
+  /// In tr, this message translates to:
+  /// **'Savaşmak için destende 3 kart olmalı.'**
+  String get battleNoDeck;
+
+  /// Button to the deck builder.
+  ///
+  /// In tr, this message translates to:
+  /// **'Desteye git'**
+  String get battleGoToDeck;
+
+  /// Replay speed toggle.
+  ///
+  /// In tr, this message translates to:
+  /// **'2×'**
+  String get battleSpeed;
+
+  /// Leave button tooltip.
+  ///
+  /// In tr, this message translates to:
+  /// **'Savaştan çık'**
+  String get battleLeave;
 }
 
 class _AppLocalizationsDelegate

@@ -9,14 +9,14 @@ import '../../domain/battle_repository.dart';
 import 'battle_event.dart';
 import 'battle_state.dart';
 
-/// One battle (SPEC §2.7). The engine resolves whole turns at once; the
+/// One battle (SPEC §2.7); [BattleOpened] starts a new one. The engine resolves whole turns at once; the
 /// page replays the queued events one by one and answers each with
 /// [BattleReplayAdvanced]. Input is accepted only in [BattlePhase.choosing].
 class BattleBloc extends Bloc<BattleUiEvent, BattleViewState> {
   BattleBloc({
     required this._repository,
     required this._random,
-    required this._battleId,
+    required this._newBattleId,
   }) : super(const BattleViewState()) {
     on<BattleOpened>(_onOpened);
     on<BattleStartPressed>(_onStart);
@@ -30,18 +30,23 @@ class BattleBloc extends Bloc<BattleUiEvent, BattleViewState> {
 
   final BattleRepository _repository;
   final Random _random;
-  final String _battleId;
+
+  /// A fresh id per battle, so rewards are paid once per battle.
+  final String Function() _newBattleId;
+  String _battleId = '';
 
   static const int teamSize = 3;
 
   void _onOpened(BattleOpened e, Emitter<BattleViewState> emit) {
+    _battleId = _newBattleId();
     final deck = _repository.deck();
+    final fresh = BattleViewState(fast: state.fast);
     if (deck.length < teamSize) {
-      emit(state.copyWith(phase: BattlePhase.noDeck, playerCards: deck));
+      emit(fresh.copyWith(phase: BattlePhase.noDeck, playerCards: deck));
       return;
     }
     emit(
-      state.copyWith(
+      fresh.copyWith(
         phase: BattlePhase.preBattle,
         playerCards: deck,
         enemyCards: _repository.opponents(_random),

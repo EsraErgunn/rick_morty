@@ -359,4 +359,94 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get deckHint => 'Karta dokun: desteye ekle. Slota dokun: çıkar.';
+
+  @override
+  String get battleStart => 'Başla';
+
+  @override
+  String get battleOpponent => 'Rakip';
+
+  @override
+  String get battleYourDeck => 'Destem';
+
+  @override
+  String battleTier(int tier, int wins) {
+    return 'Kademe $tier · $wins galibiyet';
+  }
+
+  @override
+  String get battleYourTurn => 'Senin sıran: saldıracak kartı seç';
+
+  @override
+  String get battlePickTarget => 'Hedefi seç';
+
+  @override
+  String get battleEnemyTurn => 'Rakip düşünüyor';
+
+  @override
+  String get battleCrit => 'KRİTİK!';
+
+  @override
+  String get battleGenius => 'DAHİ!';
+
+  @override
+  String get battleSuperEffective => 'SÜPER ETKİLİ!';
+
+  @override
+  String get battleNotEffective => 'Pek etkili değil…';
+
+  @override
+  String get battleDodge => 'KAÇTI!';
+
+  @override
+  String get battleRevive => 'Zombi! Geri döndü';
+
+  @override
+  String get battleVictory => 'Kazandın!';
+
+  @override
+  String get battleDefeat => 'Kaybettin';
+
+  @override
+  String get battleDraw => 'Berabere';
+
+  @override
+  String battleReward(int coins) {
+    return '+$coins coin';
+  }
+
+  @override
+  String battleTierUp(int tier) {
+    return 'Kademe atladın! Artık kademe $tier';
+  }
+
+  @override
+  String get battleAgain => 'Yeni savaş';
+
+  @override
+  String get battleBackToMenu => 'Menüye dön';
+
+  @override
+  String get battleLeaveTitle => 'Savaştan çıkılsın mı?';
+
+  @override
+  String get battleLeaveBody => 'Bu savaş yenilgi sayılır.';
+
+  @override
+  String get battleLeaveConfirm => 'Çık';
+
+  @override
+  String get battleLeaveCancel => 'Devam et';
+
+  @override
+  String get battleNoDeck => 'Savaşmak için destende 3 kart olmalı.';
+
+  @override
+  String get battleGoToDeck => 'Desteye git';
+
+  @override
+  String get battleSpeed => '2×';
+
+  @override
+  String get battleLeave => 'Savaştan çık';
 }

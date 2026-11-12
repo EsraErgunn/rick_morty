@@ -82,6 +82,15 @@ abstract final class AppSizes {
   static const double hoverBob = 2;
 
   /// Icon sizes.
+  /// Battle: selected card lift, attack lunge, damage number rise,
+  /// faint drop, HP bar height.
+  static const double battleLift = 8;
+  static const double battleLunge = 28;
+  static const double battleNumberRise = 40;
+  static const double battleFaintDrop = 12;
+  static const double battleFaintTilt = 0.12;
+  static const double hpBar = 8;
+
   static const double iconSmall = 20;
   static const double iconLarge = 40;
 }

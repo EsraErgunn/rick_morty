@@ -56,6 +56,7 @@ GoRouter createRouter({
   WidgetBuilder? menuPage,
   WidgetBuilder? settingsPage,
   WidgetBuilder? deckPage,
+  WidgetBuilder? battlePage,
   bool debugRoutes = kDebugMode,
   String initialLocation = AppRoutes.splash,
 }) {
@@ -126,7 +127,13 @@ GoRouter createRouter({
         )
       else
         _placeholder(AppRoutes.deck, (l10n, _) => l10n.deckTitle),
-      _placeholder(AppRoutes.battle, (l10n, _) => l10n.battleTitle),
+      if (battlePage != null)
+        GoRoute(
+          path: AppRoutes.battle,
+          builder: (context, _) => battlePage(context),
+        )
+      else
+        _placeholder(AppRoutes.battle, (l10n, _) => l10n.battleTitle),
       _placeholder(
         AppRoutes.album,
         (l10n, _) => l10n.albumTitle,

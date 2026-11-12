@@ -29,6 +29,12 @@ import '../features/collection/presentation/bloc/collection_bloc.dart';
 import '../features/collection/presentation/bloc/collection_event.dart';
 import '../features/collection/presentation/pages/card_detail_page.dart';
 import '../features/collection/presentation/pages/collection_page.dart';
+import '../features/battle/data/battle_repository_impl.dart';
+import '../features/battle/domain/battle_repository.dart';
+import '../features/battle/presentation/battle_feedback.dart';
+import '../features/battle/presentation/bloc/battle_bloc.dart';
+import '../features/battle/presentation/bloc/battle_event.dart';
+import '../features/battle/presentation/pages/battle_page.dart';
 import '../features/deck/presentation/bloc/deck_bloc.dart';
 import '../features/deck/presentation/bloc/deck_event.dart';
 import '../features/deck/presentation/pages/deck_page.dart';
@@ -122,6 +128,13 @@ Future<void> configureDependencies({
     )
     // The app's only unseeded Random is created here, in composition code;
     // game logic always receives it (architecture rules).
+    ..registerLazySingleton<BattleRepository>(
+      () => BattleRepositoryImpl(
+        apiData: getIt(),
+        player: getIt(),
+        pool: getIt(),
+      ),
+    )
     ..registerLazySingleton<CollectionRepository>(
       () => CollectionRepositoryImpl(
         apiData: getIt(),
@@ -177,6 +190,18 @@ Future<void> configureDependencies({
                   ? () => context.go(AppRoutes.cardLab)
                   : null,
             ),
+          ),
+        ),
+        battlePage: (context) => BlocProvider(
+          create: (_) => BattleBloc(
+            repository: getIt(),
+            random: Random(),
+            newBattleId: () => DateTime.now().microsecondsSinceEpoch.toString(),
+          )..add(const BattleOpened()),
+          child: BattlePage(
+            feedback: BattleFeedback(audio: getIt(), haptics: getIt()),
+            onExit: () => context.go(AppRoutes.menu),
+            onGoToDeck: () => context.go(AppRoutes.deck),
           ),
         ),
         deckPage: (context) => BlocProvider(
