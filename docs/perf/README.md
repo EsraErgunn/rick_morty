@@ -27,12 +27,12 @@ What to look at if it fails: a tall **raster** bar means the shader or the blend
 too expensive (cut the star grid, drop the foil, or lower the sheen area); a tall
 **UI** bar means a rebuild per frame (the holo should only repaint, never rebuild).
 
-**Open point (decide at Checkpoint C):** the card lab and its menu link exist only in
-debug builds, so a `--profile` build has no way to reach a card yet. Options:
-1. A profile-only start route via `--dart-define=START_ROUTE=/collection/1`
-   (read in `main`, ignored in release). Small, reusable for later perf runs.
-2. No code: for the measurement run only, change `initialLocation` locally to
-   `/collection/1` and do not commit it.
+**Reaching a card in profile:** the card lab and its menu link exist only in
+debug builds. Options:
+1. **Chosen (2026-11-12):** `flutter run --profile --dart-define=START_ROUTE=/collection/1`
+   (`lib/app/start_route.dart`; debug/profile only, release ignores it, tested). The app
+   skips the splash then, so sync once in a debug run first (Hive data stays).
+2. (Not used) change `initialLocation` locally for the run, without committing.
 
 ## B. Quick check without DevTools
 

@@ -24,7 +24,10 @@ final GetIt getIt = GetIt.instance;
 /// [storageDirectory] overrides the Hive directory (tests); the app uses
 /// `getApplicationSupportDirectory()`.
 /// Tests call `await getIt.reset()` and then this again.
-Future<void> configureDependencies({String? storageDirectory}) async {
+Future<void> configureDependencies({
+  String? storageDirectory,
+  String initialLocation = AppRoutes.splash,
+}) async {
   initHive(storageDirectory ?? (await getApplicationSupportDirectory()).path);
 
   final apiData = await ApiDataStore.open();
@@ -60,6 +63,7 @@ Future<void> configureDependencies({String? storageDirectory}) async {
     ..registerLazySingleton<GoRouter>(
       () => createRouter(
         syncRepository: getIt(),
+        initialLocation: initialLocation,
         tiltStream: getIt(),
         shaders: getIt(),
         cardById: (id) => switch (getIt<ApiDataStore>().character(id)) {
