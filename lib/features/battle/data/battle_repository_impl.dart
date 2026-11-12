@@ -34,8 +34,7 @@ class BattleRepositoryImpl implements BattleRepository {
 
   @override
   List<GameCardData> deck() => [
-    for (final id in _player.state.deck)
-      ?_card(id),
+    for (final id in _player.state.deck) ?_card(id),
   ];
 
   @override
