@@ -5,6 +5,7 @@ import 'package:path_provider/path_provider.dart';
 import '../core/audio/audio_backend.dart';
 import '../core/audio/audio_service.dart';
 import '../core/cards/card_factory.dart';
+import '../core/haptics/haptics_service.dart';
 import '../core/cards/rarity_pool.dart';
 import '../core/network/dio_client.dart';
 import '../core/sensors/tilt_stream.dart';
@@ -64,6 +65,10 @@ Future<void> configureDependencies({
         settings: player.state.settings,
       ),
       dispose: (a) => a.detachLifecycle(),
+    )
+    // All vibration goes through HapticsService (rules).
+    ..registerLazySingleton<HapticsService>(
+      () => HapticsService(settings: player.state.settings),
     )
     // The only tilt sensor subscription in the app (sensors rules).
     ..registerLazySingleton<TiltStream>(
