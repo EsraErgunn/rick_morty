@@ -5,17 +5,20 @@ import 'package:portalcards/app/app.dart';
 import 'package:portalcards/app/di.dart';
 import 'package:portalcards/app/router.dart';
 
+import '../core/storage/hive_test_helper.dart';
+import '../features/sync/fake_sync_repository.dart';
+
 Future<GoRouter> _pumpApp(WidgetTester tester) async {
-  final router = createRouter();
+  final router = createRouter(syncRepository: FakeSyncRepository(hold: true));
   await tester.pumpWidget(PortalCardsApp(router: router));
-  await tester.pumpAndSettle();
+  // Splash keeps syncing (held), so its portal never settles: pump once.
+  await tester.pump();
   return router;
 }
 
 void main() {
-  /// Every route in SPEC §2 → its placeholder title.
+  /// Every placeholder route in SPEC §2 → its title (splash is real now).
   final routes = <String, String>{
-    AppRoutes.splash: 'Yükleniyor',
     AppRoutes.menu: 'Ana menü',
     AppRoutes.portal: 'Portal',
     AppRoutes.collection: 'Koleksiyon',
@@ -28,18 +31,21 @@ void main() {
   };
 
   test('route paths match SPEC 2', () {
-    expect(routes.keys, [
-      '/splash',
-      '/',
-      '/portal',
-      '/collection',
-      '/collection/1',
-      '/deck',
-      '/battle',
-      '/album',
-      '/album/28',
-      '/settings',
-    ]);
+    expect(
+      [AppRoutes.splash, ...routes.keys],
+      [
+        '/splash',
+        '/',
+        '/portal',
+        '/collection',
+        '/collection/1',
+        '/deck',
+        '/battle',
+        '/album',
+        '/album/28',
+        '/settings',
+      ],
+    );
   });
 
   for (final MapEntry(key: path, value: title) in routes.entries) {
@@ -56,6 +62,8 @@ void main() {
   testWidgets('starts on /splash', (tester) async {
     final router = await _pumpApp(tester);
     expect(router.state.uri.path, AppRoutes.splash);
+    expect(find.text('Evrenler indiriliyor'), findsOneWidget);
+    await tester.pumpWidget(const SizedBox()); // dispose loader timers
   });
 
   testWidgets('unknown route shows "Sayfa bulunamadı" and returns to menu', (
@@ -75,10 +83,12 @@ void main() {
   });
 
   group('DI', () {
+    final hiveDir = useTempHive();
+
     tearDown(() => getIt.reset());
 
-    test('registers the router', () async {
-      await configureDependencies();
+    test('registers the router, starting on /splash', () async {
+      await configureDependencies(storageDirectory: hiveDir());
       expect(getIt.isRegistered<GoRouter>(), isTrue);
       expect(
         getIt<GoRouter>().routeInformationProvider.value.uri.path,
@@ -87,10 +97,10 @@ void main() {
     });
 
     test('can be reset and configured again', () async {
-      await configureDependencies();
+      await configureDependencies(storageDirectory: hiveDir());
       final first = getIt<GoRouter>();
       await getIt.reset();
-      await configureDependencies();
+      await configureDependencies(storageDirectory: hiveDir());
 
       expect(getIt<GoRouter>(), isNot(same(first)));
     });

@@ -54,3 +54,15 @@ abstract final class AppDepth {
 
   static const Offset shadow = Offset(shadowOffset, shadowOffset);
 }
+
+/// Fixed component sizes.
+abstract final class AppSizes {
+  /// Portal on the splash screen (shrinks to fit narrow screens).
+  static const double splashPortal = 220;
+
+  /// Height of progress bars.
+  static const double progressBar = 12;
+
+  /// Max width of centered content blocks (text, bars, buttons).
+  static const double contentMaxWidth = 320;
+}

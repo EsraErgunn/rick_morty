@@ -4,9 +4,43 @@
   "@appTitle": {
     "description": "App name. Kept in English: it is the working title of the game."
   },
-  "splashTitle": "Yükleniyor",
-  "@splashTitle": {
-    "description": "Splash screen title while the first sync runs."
+  "syncInProgress": "Evrenler indiriliyor",
+  "@syncInProgress": {
+    "description": "Splash status line while the first sync downloads data."
+  },
+  "syncPercent": "%{percent}",
+  "@syncPercent": {
+    "description": "Sync progress percentage, Turkish style (sign before the number).",
+    "placeholders": {
+      "percent": {
+        "type": "int",
+        "example": "42"
+      }
+    }
+  },
+  "syncCount": "{downloaded} / {total}",
+  "@syncCount": {
+    "description": "Items downloaded out of total during sync.",
+    "placeholders": {
+      "downloaded": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "syncConnectionError": "Bağlantı koptu. Kaldığın yerden devam edeceğiz.",
+  "@syncConnectionError": {
+    "description": "SPEC 2.1 AC3: network failure during sync."
+  },
+  "syncStorageError": "Veriler kaydedilemedi. Tekrar dene.",
+  "@syncStorageError": {
+    "description": "Sync failed for a non-network reason (storage or bad data)."
+  },
+  "retry": "Tekrar dene",
+  "@retry": {
+    "description": "Retry button."
   },
   "menuTitle": "Ana menü",
   "@menuTitle": {

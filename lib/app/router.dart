@@ -1,5 +1,10 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
+import '../features/sync/domain/sync_repository.dart';
+import '../features/sync/presentation/bloc/sync_bloc.dart';
+import '../features/sync/presentation/bloc/sync_event.dart';
+import '../features/sync/presentation/pages/splash_page.dart';
 import '../l10n/app_localizations.dart';
 import 'not_found_page.dart';
 import 'placeholder_page.dart';
@@ -32,13 +37,22 @@ GoRoute _placeholder(
       PlaceholderPage(title: title(AppLocalizations.of(context), state)),
 );
 
-/// Every route points at a placeholder until its feature task replaces it.
-GoRouter createRouter({String initialLocation = AppRoutes.splash}) {
+/// Routes from SPEC §2. Features not built yet point at a placeholder.
+GoRouter createRouter({
+  required SyncRepository syncRepository,
+  String initialLocation = AppRoutes.splash,
+}) {
   return GoRouter(
     initialLocation: initialLocation,
     errorBuilder: (context, state) => const NotFoundPage(),
     routes: [
-      _placeholder(AppRoutes.splash, (l10n, _) => l10n.splashTitle),
+      GoRoute(
+        path: AppRoutes.splash,
+        builder: (context, state) => BlocProvider(
+          create: (_) => SyncBloc(syncRepository)..add(const SyncStarted()),
+          child: SplashPage(onDone: () => context.go(AppRoutes.menu)),
+        ),
+      ),
       _placeholder(AppRoutes.menu, (l10n, _) => l10n.menuTitle),
       _placeholder(AppRoutes.portal, (l10n, _) => l10n.portalTitle),
       _placeholder(

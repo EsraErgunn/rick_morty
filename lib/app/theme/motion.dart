@@ -16,6 +16,15 @@ abstract final class AppMotion {
   /// Portal opening, legendary reveal. The minimum; sequences may run longer.
   static const Duration cinematic = Duration(milliseconds: 1500);
 
+  /// A loader is shown only if loading takes longer than this (no flicker).
+  static const Duration loaderShowDelay = Duration(milliseconds: 300);
+
+  /// Once shown, a loader stays at least this long.
+  static const Duration loaderMinVisible = slow;
+
+  /// One full turn of the waiting portal.
+  static const Duration portalSpin = Duration(milliseconds: 3200);
+
   /// Pop-in of new elements.
   static const Curve popIn = Curves.easeOutBack;
 

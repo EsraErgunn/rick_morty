@@ -100,11 +100,41 @@ abstract class AppLocalizations {
   /// **'Portal Cards'**
   String get appTitle;
 
-  /// Splash screen title while the first sync runs.
+  /// Splash status line while the first sync downloads data.
   ///
   /// In tr, this message translates to:
-  /// **'Yükleniyor'**
-  String get splashTitle;
+  /// **'Evrenler indiriliyor'**
+  String get syncInProgress;
+
+  /// Sync progress percentage, Turkish style (sign before the number).
+  ///
+  /// In tr, this message translates to:
+  /// **'%{percent}'**
+  String syncPercent(int percent);
+
+  /// Items downloaded out of total during sync.
+  ///
+  /// In tr, this message translates to:
+  /// **'{downloaded} / {total}'**
+  String syncCount(int downloaded, int total);
+
+  /// SPEC 2.1 AC3: network failure during sync.
+  ///
+  /// In tr, this message translates to:
+  /// **'Bağlantı koptu. Kaldığın yerden devam edeceğiz.'**
+  String get syncConnectionError;
+
+  /// Sync failed for a non-network reason (storage or bad data).
+  ///
+  /// In tr, this message translates to:
+  /// **'Veriler kaydedilemedi. Tekrar dene.'**
+  String get syncStorageError;
+
+  /// Retry button.
+  ///
+  /// In tr, this message translates to:
+  /// **'Tekrar dene'**
+  String get retry;
 
   /// Main menu screen title; also the label of buttons that go back to it.
   ///

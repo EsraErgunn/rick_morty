@@ -13,7 +13,27 @@ class AppLocalizationsTr extends AppLocalizations {
   String get appTitle => 'Portal Cards';
 
   @override
-  String get splashTitle => 'Yükleniyor';
+  String get syncInProgress => 'Evrenler indiriliyor';
+
+  @override
+  String syncPercent(int percent) {
+    return '%$percent';
+  }
+
+  @override
+  String syncCount(int downloaded, int total) {
+    return '$downloaded / $total';
+  }
+
+  @override
+  String get syncConnectionError =>
+      'Bağlantı koptu. Kaldığın yerden devam edeceğiz.';
+
+  @override
+  String get syncStorageError => 'Veriler kaydedilemedi. Tekrar dene.';
+
+  @override
+  String get retry => 'Tekrar dene';
 
   @override
   String get menuTitle => 'Ana menü';
