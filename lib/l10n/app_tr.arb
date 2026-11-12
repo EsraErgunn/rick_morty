@@ -488,5 +488,39 @@
   "settingsImagesStopped": "Durduruldu. Devam etmek için tekrar başlat.",
   "@settingsImagesStopped": {
     "description": "After Durdur."
+  },
+  "deckSlotEmpty": "Boş",
+  "@deckSlotEmpty": {
+    "description": "Empty deck slot."
+  },
+  "deckTotals": "Can {hp} · Saldırı {atk} · Savunma {def} · Hız {spd}",
+  "@deckTotals": {
+    "description": "Deck totals (sum HP/ATK/DEF, average SPD).",
+    "placeholders": {
+      "hp": {
+        "type": "int"
+      },
+      "atk": {
+        "type": "int"
+      },
+      "def": {
+        "type": "int"
+      },
+      "spd": {
+        "type": "int"
+      }
+    }
+  },
+  "deckCoverage": "Tip üçgeni",
+  "@deckCoverage": {
+    "description": "Type triangle coverage label."
+  },
+  "deckNoCards": "Henüz kartın yok. Önce portal aç.",
+  "@deckNoCards": {
+    "description": "Deck builder with an empty collection."
+  },
+  "deckHint": "Karta dokun: desteye ekle. Slota dokun: çıkar.",
+  "@deckHint": {
+    "description": "Deck builder hint."
   }
 }

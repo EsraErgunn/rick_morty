@@ -693,6 +693,36 @@ abstract class AppLocalizations {
   /// In tr, this message translates to:
   /// **'Durduruldu. Devam etmek için tekrar başlat.'**
   String get settingsImagesStopped;
+
+  /// Empty deck slot.
+  ///
+  /// In tr, this message translates to:
+  /// **'Boş'**
+  String get deckSlotEmpty;
+
+  /// Deck totals (sum HP/ATK/DEF, average SPD).
+  ///
+  /// In tr, this message translates to:
+  /// **'Can {hp} · Saldırı {atk} · Savunma {def} · Hız {spd}'**
+  String deckTotals(int hp, int atk, int def, int spd);
+
+  /// Type triangle coverage label.
+  ///
+  /// In tr, this message translates to:
+  /// **'Tip üçgeni'**
+  String get deckCoverage;
+
+  /// Deck builder with an empty collection.
+  ///
+  /// In tr, this message translates to:
+  /// **'Henüz kartın yok. Önce portal aç.'**
+  String get deckNoCards;
+
+  /// Deck builder hint.
+  ///
+  /// In tr, this message translates to:
+  /// **'Karta dokun: desteye ekle. Slota dokun: çıkar.'**
+  String get deckHint;
 }
 
 class _AppLocalizationsDelegate

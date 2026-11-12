@@ -342,4 +342,21 @@ class AppLocalizationsTr extends AppLocalizations {
   @override
   String get settingsImagesStopped =>
       'Durduruldu. Devam etmek için tekrar başlat.';
+
+  @override
+  String get deckSlotEmpty => 'Boş';
+
+  @override
+  String deckTotals(int hp, int atk, int def, int spd) {
+    return 'Can $hp · Saldırı $atk · Savunma $def · Hız $spd';
+  }
+
+  @override
+  String get deckCoverage => 'Tip üçgeni';
+
+  @override
+  String get deckNoCards => 'Henüz kartın yok. Önce portal aç.';
+
+  @override
+  String get deckHint => 'Karta dokun: desteye ekle. Slota dokun: çıkar.';
 }

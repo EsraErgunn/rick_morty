@@ -35,7 +35,7 @@ class BattleRepositoryImpl implements BattleRepository {
   @override
   List<GameCardData> deck() => [
     for (final id in _player.state.deck)
-      if (_card(id) case final c?) c,
+      ?_card(id),
   ];
 
   @override
@@ -51,7 +51,7 @@ class BattleRepositoryImpl implements BattleRepository {
       wins: wins,
       random: random,
     ))
-      if (_card(id) case final c?) c,
+      ?_card(id),
   ];
 
   @override

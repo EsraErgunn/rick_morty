@@ -55,6 +55,7 @@ GoRouter createRouter({
   ShaderCache? shaders,
   WidgetBuilder? menuPage,
   WidgetBuilder? settingsPage,
+  WidgetBuilder? deckPage,
   bool debugRoutes = kDebugMode,
   String initialLocation = AppRoutes.splash,
 }) {
@@ -118,7 +119,13 @@ GoRouter createRouter({
           ),
         ],
       ),
-      _placeholder(AppRoutes.deck, (l10n, _) => l10n.deckTitle),
+      if (deckPage != null)
+        GoRoute(
+          path: AppRoutes.deck,
+          builder: (context, _) => deckPage(context),
+        )
+      else
+        _placeholder(AppRoutes.deck, (l10n, _) => l10n.deckTitle),
       _placeholder(AppRoutes.battle, (l10n, _) => l10n.battleTitle),
       _placeholder(
         AppRoutes.album,

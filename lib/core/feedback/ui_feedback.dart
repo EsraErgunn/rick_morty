@@ -36,4 +36,10 @@ class UiFeedback {
     unawaited(audio.play(Sfx.cardFlip));
     unawaited(haptics.play(HapticMoment.cardFlip));
   }
+
+  /// Something got complete (deck full): `rare_reveal` + medium haptic.
+  void success() {
+    unawaited(audio.play(Sfx.rareReveal));
+    unawaited(haptics.play(HapticMoment.rareReveal));
+  }
 }

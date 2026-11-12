@@ -29,6 +29,9 @@ import '../features/collection/presentation/bloc/collection_bloc.dart';
 import '../features/collection/presentation/bloc/collection_event.dart';
 import '../features/collection/presentation/pages/card_detail_page.dart';
 import '../features/collection/presentation/pages/collection_page.dart';
+import '../features/deck/presentation/bloc/deck_bloc.dart';
+import '../features/deck/presentation/bloc/deck_event.dart';
+import '../features/deck/presentation/pages/deck_page.dart';
 import '../features/menu/data/menu_repository_impl.dart';
 import '../features/menu/presentation/bloc/menu_bloc.dart';
 import '../features/menu/presentation/bloc/menu_event.dart';
@@ -174,6 +177,12 @@ Future<void> configureDependencies({
                   ? () => context.go(AppRoutes.cardLab)
                   : null,
             ),
+          ),
+        ),
+        deckPage: (context) => BlocProvider(
+          create: (_) => DeckBloc(getIt())..add(const DeckStarted()),
+          child: DeckPage(
+            feedback: UiFeedback(audio: getIt(), haptics: getIt()),
           ),
         ),
         settingsPage: (context) => BlocProvider(
