@@ -3,7 +3,8 @@ import 'dart:io';
 import 'package:flutter_test/flutter_test.dart';
 
 /// SPEC §5.8 T3 / plan T4: no hex color, duration or font size literal
-/// outside `lib/app/theme/`. Generated l10n code is skipped.
+/// outside `lib/app/theme/`. Generated l10n code and network timing
+/// constants (`lib/core/network/`) are skipped.
 void main() {
   final forbidden = <String, RegExp>{
     'hex color': RegExp(r'Color\(0x'),
@@ -13,7 +14,10 @@ void main() {
 
   bool skipped(String path) {
     final p = path.replaceAll(r'\', '/');
+    // Network timeouts and backoff are not design tokens (named constants
+    // in core/network instead).
     return p.startsWith('lib/app/theme/') ||
+        p.startsWith('lib/core/network/') ||
         p.startsWith('lib/l10n/') ||
         p.endsWith('.g.dart');
   }
