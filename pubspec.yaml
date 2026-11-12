@@ -87,6 +87,10 @@ flutter:
   # For details regarding adding assets from package dependencies, see
   # https://flutter.dev/to/asset-from-package
 
+  # Fragment shaders (animation rules).
+  shaders:
+    - shaders/holo.frag
+
   # SIL OFL 1.1 fonts (SPEC §5.3); license files sit next to each family.
   fonts:
     - family: Grandstander

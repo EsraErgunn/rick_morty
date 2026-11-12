@@ -6,6 +6,8 @@ import '../../../../core/sensors/tilt_stream.dart';
 import '../../../../core/widgets/game_card/card_back.dart';
 import '../../../../core/widgets/game_card/flip_card.dart';
 import '../../../../core/widgets/game_card/game_card.dart';
+import '../../../../core/widgets/game_card/holo_layer.dart';
+import '../../../../core/widgets/game_card/shader_cache.dart';
 import '../../../../core/widgets/game_card/tilting_game_card.dart';
 import '../../../../l10n/app_localizations.dart';
 
@@ -17,6 +19,7 @@ class CardDetailPage extends StatelessWidget {
     required this.id,
     required this.data,
     required this.tiltStream,
+    required this.shaders,
     super.key,
   });
 
@@ -25,6 +28,7 @@ class CardDetailPage extends StatelessWidget {
   /// Null if the character is not in local storage.
   final GameCardData? data;
   final TiltStream tiltStream;
+  final ShaderCache shaders;
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +46,14 @@ class CardDetailPage extends StatelessWidget {
                   child: TiltingGameCard(
                     tiltStream: tiltStream,
                     builder: (context, tilt) => FlipCard(
-                      front: GameCard(data: card),
+                      front: GameCard(
+                        data: card,
+                        holo: HoloLayer(
+                          rarity: card.rarity,
+                          tilt: tilt,
+                          shaders: shaders,
+                        ),
+                      ),
                       back: CardBack(facts: card),
                     ),
                   ),

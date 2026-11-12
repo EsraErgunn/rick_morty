@@ -9,6 +9,7 @@ import '../core/sensors/tilt_stream.dart';
 import '../core/storage/api_data_store.dart';
 import '../core/storage/hive_init.dart';
 import '../core/storage/player_store.dart';
+import '../core/widgets/game_card/shader_cache.dart';
 import '../features/sync/data/remote_data_source.dart';
 import '../features/sync/data/sync_repository_impl.dart';
 import '../features/sync/domain/sync_repository.dart';
@@ -29,12 +30,16 @@ Future<void> configureDependencies({String? storageDirectory}) async {
   final apiData = await ApiDataStore.open();
   final player = await PlayerStore.open();
   final collection = await CollectionStore.open();
+  // Shaders load once per run, before any card needs them.
+  final shaders = ShaderCache();
+  await shaders.load();
 
   getIt
     ..registerLazySingleton<ApiClient>(ApiClient.new, dispose: (c) => c.close())
     ..registerSingleton<ApiDataStore>(apiData)
     ..registerSingleton<PlayerStore>(player)
     ..registerSingleton<CollectionStore>(collection)
+    ..registerSingleton<ShaderCache>(shaders)
     ..registerLazySingleton<SyncRemoteDataSource>(
       () => ApiSyncRemoteDataSource(getIt()),
     )
@@ -56,6 +61,7 @@ Future<void> configureDependencies({String? storageDirectory}) async {
       () => createRouter(
         syncRepository: getIt(),
         tiltStream: getIt(),
+        shaders: getIt(),
         cardById: (id) => switch (getIt<ApiDataStore>().character(id)) {
           final c? => CardFactory.fromCharacter(c),
           null => null,

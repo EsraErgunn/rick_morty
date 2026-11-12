@@ -1,18 +1,56 @@
 import 'package:flutter/material.dart';
 
 import '../../../app/theme/card_style.dart';
+import '../../../app/theme/spacing.dart';
 import '../../cards/game_card_data.dart';
 import 'card_front.dart';
+import 'rarity_frame_painter.dart';
 
 /// A 5:7 card. Laid out at [CardMetrics] design size and scaled to the
 /// space it gets, so it looks the same in a grid and on the detail page.
 class GameCard extends StatelessWidget {
-  const GameCard({required this.data, super.key});
+  const GameCard({required this.data, this.holo, super.key});
 
   final GameCardData data;
 
+  /// Optional foil drawn over the face, clipped to the card shape
+  /// (a `HoloLayer`).
+  final Widget? holo;
+
   @override
-  Widget build(BuildContext context) => CardSizer(child: CardFront(data: data));
+  Widget build(BuildContext context) {
+    final overlay = holo;
+    return CardSizer(
+      child: Stack(
+        clipBehavior: Clip.none,
+        children: [
+          Positioned.fill(child: CardFront(data: data)),
+          if (overlay != null)
+            Positioned.fill(
+              child: ClipPath(
+                clipper: _CardClipper(RarityStyle.of(data.rarity).notch),
+                child: overlay,
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+}
+
+class _CardClipper extends CustomClipper<Path> {
+  const _CardClipper(this.notch);
+
+  final double notch;
+
+  @override
+  Path getClip(Size size) => cardShape(
+    (Offset.zero & size).deflate(AppOutline.thick / 2),
+    notch: notch,
+  );
+
+  @override
+  bool shouldReclip(_CardClipper old) => old.notch != notch;
 }
 
 /// Scales a design-size card face to the available space (5:7).

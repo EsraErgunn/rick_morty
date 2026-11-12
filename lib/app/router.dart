@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 
 import '../core/cards/game_card_data.dart';
 import '../core/sensors/tilt_stream.dart';
+import '../core/widgets/game_card/shader_cache.dart';
 import '../features/collection/presentation/pages/card_detail_page.dart';
 import '../features/sync/domain/sync_repository.dart';
 import '../features/sync/presentation/bloc/sync_bloc.dart';
@@ -52,6 +53,7 @@ GoRouter createRouter({
   List<GameCardData> Function()? cardLabCards,
   GameCardData? Function(int id)? cardById,
   TiltStream? tiltStream,
+  ShaderCache? shaders,
   bool debugRoutes = kDebugMode,
   String initialLocation = AppRoutes.splash,
 }) {
@@ -91,7 +93,10 @@ GoRouter createRouter({
             builder: (context, state) {
               final raw = state.pathParameters['id']!;
               final id = int.tryParse(raw);
-              if (id == null || cardById == null || tiltStream == null) {
+              if (id == null ||
+                  cardById == null ||
+                  tiltStream == null ||
+                  shaders == null) {
                 return PlaceholderPage(
                   title: AppLocalizations.of(context).cardDetailTitle(raw),
                 );
@@ -100,6 +105,7 @@ GoRouter createRouter({
                 id: id,
                 data: cardById(id),
                 tiltStream: tiltStream,
+                shaders: shaders,
               );
             },
           ),
