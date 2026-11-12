@@ -123,4 +123,33 @@ void main() {
     await tester.pump(AppMotion.fast);
     expect(done, 1);
   });
+
+  testWidgets(
+    'already synced: navigates even if no further frame is ever drawn',
+    (tester) async {
+      await pumpSplash(tester, FakeSyncRepository());
+      // Like a device whose frame pipeline stalls after the first frame:
+      // only time passes (timers + microtasks), no pump, no frame.
+      await tester.binding.delayed(AppMotion.splashExitLimit);
+      expect(done, 1);
+      await tester.pump(const Duration(seconds: 2));
+      expect(done, 1, reason: 'navigates exactly once');
+    },
+  );
+
+  testWidgets('slow sync: a stalled close animation still navigates', (
+    tester,
+  ) async {
+    final repo = FakeSyncRepository(hold: true);
+    await pumpSplash(tester, repo);
+    await tester.pump(AppMotion.loaderShowDelay);
+    await tester.pump(const Duration(seconds: 1));
+    repo.release();
+    await tester.pump(); // the listener runs; then frames stop
+    expect(done, 0);
+    await tester.binding.delayed(AppMotion.splashExitLimit);
+    expect(done, 1);
+    await tester.pump(const Duration(seconds: 2));
+    expect(done, 1);
+  });
 }

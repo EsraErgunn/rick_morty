@@ -125,9 +125,12 @@ class _PortalLoaderState extends State<PortalLoader>
   void _settle() {
     if (_settled) return;
     _settled = true;
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (mounted && !widget.active) widget.onSettled?.call();
-    });
+    WidgetsBinding.instance
+      ..addPostFrameCallback((_) {
+        if (mounted && !widget.active) widget.onSettled?.call();
+      })
+      // A post-frame callback needs a frame; make sure one comes.
+      ..scheduleFrame();
   }
 
   @override

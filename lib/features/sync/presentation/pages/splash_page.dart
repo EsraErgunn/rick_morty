@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -33,14 +35,38 @@ class SplashPage extends StatefulWidget {
 
 class _SplashPageState extends State<SplashPage> {
   bool _loaderActive = true;
+  bool _done = false;
+  Timer? _fallback;
+
+  /// Navigates once, whichever comes first: the loader settled, or the
+  /// fallback timer (which needs no frame, so a stalled frame pipeline can
+  /// never keep the app on the splash).
+  void _finish() {
+    if (_done || !mounted) return;
+    _done = true;
+    _fallback?.cancel();
+    widget.onDone();
+  }
+
+  @override
+  void dispose() {
+    _fallback?.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return BlocListener<SyncBloc, SyncState>(
       listenWhen: (a, b) => a.status != b.status,
       listener: (context, state) {
-        // Navigation waits for the loader to settle (see onSettled).
-        setState(() => _loaderActive = state.status != SyncStatus.success);
+        // Navigation waits for the loader to settle (see onSettled), but
+        // never longer than the loader could take to close.
+        final success = state.status == SyncStatus.success;
+        if (success) {
+          _fallback?.cancel();
+          _fallback = Timer(AppMotion.splashExitLimit, _finish);
+        }
+        setState(() => _loaderActive = !success);
       },
       child: Scaffold(
         // The art's green glow is at its center; with BoxFit.cover that is
@@ -59,7 +85,7 @@ class _SplashPageState extends State<SplashPage> {
                         intensity: state.status == SyncStatus.failure
                             ? SplashPage.dimIntensity
                             : 1,
-                        onSettled: widget.onDone,
+                        onSettled: _finish,
                         shaders: widget.shaders,
                       ),
                     ),

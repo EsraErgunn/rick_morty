@@ -23,6 +23,10 @@ abstract final class AppMotion {
   static const Duration loaderMinVisible = slow;
 
   /// One full turn of the waiting portal.
+  /// Longest the splash waits for the loader to close after a successful
+  /// sync (min visible + close + margin); then it navigates anyway.
+  static const Duration splashExitLimit = Duration(milliseconds: 1500);
+
   static const Duration portalSpin = Duration(milliseconds: 3200);
 
   /// Shake hint: one swing; three swings then [hintPause] (SPEC §4.3).
