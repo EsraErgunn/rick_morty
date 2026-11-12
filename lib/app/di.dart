@@ -2,6 +2,8 @@ import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 import 'package:path_provider/path_provider.dart';
 
+import '../core/audio/audio_backend.dart';
+import '../core/audio/audio_service.dart';
 import '../core/cards/card_factory.dart';
 import '../core/cards/rarity_pool.dart';
 import '../core/network/dio_client.dart';
@@ -54,6 +56,14 @@ Future<void> configureDependencies({
     // (portal, Week 2). A later re-sync must reset it (SPEC §3).
     ..registerLazySingleton<RarityPool>(
       () => RarityPool.fromCharacters(getIt<ApiDataStore>().characters),
+    )
+    // All sound goes through AudioService (rules); preloaded in main().
+    ..registerLazySingleton<AudioService>(
+      () => AudioService(
+        backend: AudioplayersBackend(),
+        settings: player.state.settings,
+      ),
+      dispose: (a) => a.detachLifecycle(),
     )
     // The only tilt sensor subscription in the app (sensors rules).
     ..registerLazySingleton<TiltStream>(
