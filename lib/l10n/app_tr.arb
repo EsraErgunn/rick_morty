@@ -1,0 +1,7 @@
+{
+  "@@locale": "tr",
+  "appTitle": "Portal Cards",
+  "@appTitle": {
+    "description": "App name. Kept in English: it is the working title of the game."
+  }
+}
