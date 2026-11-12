@@ -42,6 +42,8 @@ class HpBar extends StatelessWidget {
             alignment: Alignment.centerLeft,
             child: FractionallySizedBox(
               widthFactor: ratio,
+              // Without it the empty fill box collapses to zero height.
+              heightFactor: 1,
               child: DecoratedBox(
                 decoration: BoxDecoration(
                   color: colorFor(ratio),

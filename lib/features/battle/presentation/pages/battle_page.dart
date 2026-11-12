@@ -109,58 +109,61 @@ class _BattlePageState extends State<BattlePage> {
                 ),
             ],
           ),
-          body: switch (state.phase) {
-            BattlePhase.loading => const SizedBox.shrink(),
-            BattlePhase.noDeck => Center(
-              child: Padding(
-                padding: const EdgeInsets.all(AppSpacing.gutter),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      l10n.battleNoDeck,
-                      textAlign: TextAlign.center,
-                      style: AppTypography.body,
-                    ),
-                    const SizedBox(height: AppSpacing.md),
-                    FilledButton(
-                      onPressed: widget.onGoToDeck,
-                      child: Text(l10n.battleGoToDeck),
-                    ),
-                  ],
+          body: SafeArea(
+            top: false,
+            child: switch (state.phase) {
+              BattlePhase.loading => const SizedBox.shrink(),
+              BattlePhase.noDeck => Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(AppSpacing.gutter),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        l10n.battleNoDeck,
+                        textAlign: TextAlign.center,
+                        style: AppTypography.body,
+                      ),
+                      const SizedBox(height: AppSpacing.md),
+                      FilledButton(
+                        onPressed: widget.onGoToDeck,
+                        child: Text(l10n.battleGoToDeck),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-            BattlePhase.preBattle => PreBattleView(
-              state: state,
-              onStart: () {
-                widget.feedback.select();
-                bloc.add(const BattleStartPressed());
-              },
-            ),
-            BattlePhase.choosing || BattlePhase.replaying => BattleStage(
-              state: state,
-              feedback: widget.feedback,
-              onAdvance: () => bloc.add(const BattleReplayAdvanced()),
-              onCardTap: (side, i) {
-                if (state.inputBlocked) return;
-                if (!state.view!.cards(side)[i].alive) return;
-                if (side == Side.enemy && state.selected == null) return;
-                widget.feedback.select();
-                bloc.add(BattleCardTapped(side, i));
-              },
-            ),
-            BattlePhase.finished => BattleResultView(
-              result: state.result ?? BattleResult.defeat,
-              reward: state.reward,
-              onAgain: () {
-                widget.feedback.select();
-                bloc.add(const BattleOpened());
-              },
-              onExit: widget.onExit,
-              onCoinTick: widget.feedback.coinTick,
-            ),
-          },
+              BattlePhase.preBattle => PreBattleView(
+                state: state,
+                onStart: () {
+                  widget.feedback.select();
+                  bloc.add(const BattleStartPressed());
+                },
+              ),
+              BattlePhase.choosing || BattlePhase.replaying => BattleStage(
+                state: state,
+                feedback: widget.feedback,
+                onAdvance: () => bloc.add(const BattleReplayAdvanced()),
+                onCardTap: (side, i) {
+                  if (state.inputBlocked) return;
+                  if (!state.view!.cards(side)[i].alive) return;
+                  if (side == Side.enemy && state.selected == null) return;
+                  widget.feedback.select();
+                  bloc.add(BattleCardTapped(side, i));
+                },
+              ),
+              BattlePhase.finished => BattleResultView(
+                result: state.result ?? BattleResult.defeat,
+                reward: state.reward,
+                onAgain: () {
+                  widget.feedback.select();
+                  bloc.add(const BattleOpened());
+                },
+                onExit: widget.onExit,
+                onCoinTick: widget.feedback.coinTick,
+              ),
+            },
+          ),
         ),
       ),
     );

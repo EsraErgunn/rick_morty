@@ -297,6 +297,23 @@ void main() {
   });
 
   group('HpBar', () {
+    testWidgets('the fill is visible: full HP fills the bar', (tester) async {
+      await tester.pumpWidget(
+        testApp(
+          const Center(
+            child: SizedBox(width: 100, child: HpBar(hp: 50, maxHp: 50)),
+          ),
+        ),
+      );
+      final fill = find.descendant(
+        of: find.byType(FractionallySizedBox),
+        matching: find.byType(DecoratedBox),
+      );
+      final size = tester.getSize(fill.first);
+      expect(size.height, greaterThan(0));
+      expect(size.width, greaterThan(90));
+    });
+
     test('portal green, yellow ≤ 50 %, red ≤ 20 %', () {
       expect(HpBar.colorFor(0.8), AppColors.portal);
       expect(HpBar.colorFor(0.5), AppColors.warn);
