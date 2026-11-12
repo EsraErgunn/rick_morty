@@ -253,6 +253,7 @@ T1 create ─┬─ T2 deps/lints ─┬─ T3 color+motion tokens ── T4 fon
 - [ ] Frame width, color and corner style per rarity match SPEC §5.5.
 - [ ] Text shows name, type icon + label, rarity name, 2×2 stats (tabular), passive name (never color alone).
 - [ ] Image error shows the silhouette with the name.
+- [ ] Card lab cards are built from the T7 fixtures through `CardFactory` / `core/game` (real rarity, type, stats, passive); no hand-written sample data (owner note 2026-11-12: the palette preview's placeholder cards were wrong, e.g. Morty must be legendary).
 **Verification:** widget tests per rarity (frame color + texts found); golden images for 4 rarities; a "card lab" route (`/debug/card-lab`) shows all four; the route is registered only when `kDebugMode` is true, so it does not exist in release builds (checked by a router test).
 **Dependencies:** T4, T16
 **Files:** `lib/core/widgets/game_card/game_card.dart`, `card_front.dart`, `rarity_frame_painter.dart`, `test/core/widgets/game_card_test.dart`
@@ -339,6 +340,14 @@ T1 create ─┬─ T2 deps/lints ─┬─ T3 color+motion tokens ── T4 fon
 - `pod install`: OK (4 pods). It failed first with `Encoding::CompatibilityError` because the shell had no UTF-8 locale; fixed by `LANG`/`LC_ALL=en_US.UTF-8` (now in the owner's `~/.zshrc`). `ios/Podfile` sets `platform :ios, '15.0'`. Remaining CocoaPods warning about the Profile base configuration is the known, harmless Flutter one.
 - **APK build: to be re-verified at home.** The first `flutter build apk --debug` ran 20+ min (first Gradle build with native plugins) and was stopped when the session ended. Afterwards `./gradlew assembleDebug` (with `JAVA_HOME` = Android Studio JBR) finished `BUILD SUCCESSFUL in 56s`, but `flutter build apk --debug` itself was stopped again before finishing. Note: `./gradlew` from a plain shell fails with "Unable to locate a Java Runtime" because `JAVA_HOME` is not set; `flutter` finds the JBR on its own.
 - `lib/` folder skeleton: not created on purpose (empty folders are not committed; each folder gets its first file in a later task).
+
+### Environment: Windows machine (2026-11-12)
+- Flutter SDK at `C:\flutter` pinned to **3.47.6** (`git checkout 3.47.6`; it was 3.38.3 / Dart 3.10.1, which fails `pub get` on `sdk: ^3.13.5`). No iOS work on this machine (`pod install`, iOS builds run on the Mac).
+- **Avast HTTPS scanning breaks Gradle downloads.** Avast re-signs TLS with its own root (`CN=Avast Web/Mail Shield Root`); Windows trusts it, Android Studio's JBR does not → `PKIX path building failed`. The JBR has no `SunMSCAPI`, so `trustStoreType=Windows-ROOT` does not work.
+- Fix (machine-level, nothing in the repo): a copy of the JBR `cacerts` with the Avast root imported, at `C:\Users\Lenovo\.gradle\truststore\cacerts-avast` (password `changeit`), used via `C:\Users\Lenovo\.gradle\gradle.properties`:
+  `systemProp.javax.net.ssl.trustStore=C:/Users/Lenovo/.gradle/truststore/cacerts-avast` and `systemProp.javax.net.ssl.trustStorePassword=changeit`.
+- **Redo when:** Avast regenerates its root certificate, or an Android Studio update changes the JBR (its own new CA certs are then missing from the copy). Steps: export the Avast root from `Cert:\LocalMachine\Root` to `.cer`, copy `<Android Studio>\jbr\lib\security\cacerts`, `keytool -importcert -noprompt -alias avast-web-mail-shield-root -file avast-root.cer -keystore cacerts-avast -storepass changeit`, then delete any `*.part`/`*.lck` under `~/.gradle/wrapper/dists/`.
+- Alternative: an Avast exclusion for `services.gradle.org`, `dl.google.com`, `repo.maven.apache.org`, `plugins.gradle.org` (then remove the two `systemProp` lines).
 
 ### Known issue: iOS Simulator install hangs (retry at Checkpoint C)
 - The iPhone 17 simulator boots (`simctl bootstatus`: booted), but `xcrun simctl install` hung for 8+ minutes and `simctl launch` timed out.
