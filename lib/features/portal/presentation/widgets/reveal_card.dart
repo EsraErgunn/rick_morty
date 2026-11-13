@@ -9,7 +9,8 @@ import 'reveal_effects.dart';
 import 'reveal_timeline.dart';
 
 /// Where the card is and how it is deformed at timeline point [t]
-/// (SPEC §4.3): emerge (scale 0.1 → 1, 1.5 turns), gravity fall, squash.
+/// (SPEC §4.3): emerge (scale 0.1 → 1 with a big overshoot, 2.5 Y turns
+/// plus one in-plane spin), gravity fall, squash.
 class RevealCardPose {
   const RevealCardPose({
     required this.center,
@@ -18,6 +19,7 @@ class RevealCardPose {
     required this.squash,
     required this.visible,
     required this.shadow,
+    this.spin = 0,
   });
 
   factory RevealCardPose.at(
@@ -31,8 +33,10 @@ class RevealCardPose {
     final l = timeline.land.progress(t);
     return RevealCardPose(
       center: Offset.lerp(from, to, f)!,
-      scale: _minScale + (1 - _minScale) * e,
+      scale:
+          _minScale + (1 - _minScale) * e + _overshoot * math.sin(math.pi * e),
       turn: _turns * 2 * math.pi * (1 - e),
+      spin: 2 * math.pi * (1 - e),
       squash: RevealTimeline.squash(l),
       visible: t >= timeline.emerge.start,
       shadow: t < timeline.fall.start ? 0 : (f * 0.8 + (l > 0 ? 0.2 : 0)),
@@ -40,7 +44,13 @@ class RevealCardPose {
   }
 
   static const double _minScale = 0.1;
-  static const double _turns = 1.5;
+  static const double _turns = 2.5;
+
+  /// Extra size halfway through the emerge: the card bursts out big.
+  static const double _overshoot = 0.45;
+
+  /// In-plane rotation in radians (one turn, unwinding to 0).
+  final double spin;
 
   final Offset center;
   final double scale;
@@ -61,6 +71,7 @@ class RevealCardPose {
       ..translateByDouble(0, bottomShift, 0, 1)
       ..scaleByDouble(sx * scale, sy * scale, 1, 1)
       ..setEntry(3, 2, AppMotion.perspective)
+      ..rotateZ(spin)
       ..rotateY(turn);
   }
 }

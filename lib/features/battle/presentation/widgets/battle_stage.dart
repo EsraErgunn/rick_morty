@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -36,7 +37,11 @@ class BattleStage extends StatefulWidget {
   State<BattleStage> createState() => _BattleStageState();
 }
 
-class _BattleStageState extends State<BattleStage> {
+class _BattleStageState extends State<BattleStage>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _shake = AnimationController(vsync: this);
+  double _shakeAmp = 0;
+  static const int _shakeWaves = 5;
   Timer? _timer;
   int _played = -1;
   final Map<(Side, int), SlotFx> _fx = {};
@@ -57,6 +62,7 @@ class _BattleStageState extends State<BattleStage> {
 
   @override
   void dispose() {
+    _shake.dispose();
     _timer?.cancel();
     super.dispose();
   }
@@ -77,12 +83,19 @@ class _BattleStageState extends State<BattleStage> {
           motion: value.motion,
           tick: _tick,
           popup: value.popup,
+          delay: value.delay,
         );
       }
       if (cue.band != null) _band = cue.band!.withTick(_tick);
     });
     widget.feedback.event(event);
     final reduced = MediaQuery.disableAnimationsOf(context);
+    if (cue.stageShake > 0 && !reduced) {
+      _shakeAmp = cue.stageShake;
+      _shake
+        ..duration = cue.duration * _speed
+        ..forward(from: 0);
+    }
     final wait = reduced ? AppMotion.battleReduced : cue.duration * _speed;
     _timer?.cancel();
     _timer = Timer(wait, widget.onAdvance);
@@ -108,6 +121,10 @@ class _BattleStageState extends State<BattleStage> {
                       side: side,
                       fx: _fx[(side, i)] ?? const SlotFx(),
                       speed: _speed,
+                      // Different float phases, so the team never bobs in sync.
+                      idlePhase:
+                          (i / cards.length + (side == Side.enemy ? 0.5 : 0)) %
+                          1,
                       selected: side == Side.player && s.selected == i,
                       targetable:
                           choosing &&
@@ -155,7 +172,7 @@ class _BattleStageState extends State<BattleStage> {
         : s.selected == null
         ? l10n.battleYourTurn
         : l10n.battlePickTarget;
-    return Padding(
+    final stage = Padding(
       padding: const EdgeInsets.all(AppSpacing.gutter),
       child: Column(
         children: [
@@ -171,6 +188,21 @@ class _BattleStageState extends State<BattleStage> {
           ArenaPlatform(child: _row(Side.player)),
         ],
       ),
+    );
+    return AnimatedBuilder(
+      animation: _shake,
+      builder: (context, child) {
+        final v = _shake.isAnimating ? _shake.value : 1.0;
+        final fade = 1 - v;
+        return Transform.translate(
+          offset: Offset(
+            _shakeAmp * math.sin(v * math.pi * 2 * _shakeWaves) * fade,
+            _shakeAmp * 0.5 * math.cos(v * math.pi * 2 * _shakeWaves) * fade,
+          ),
+          child: child,
+        );
+      },
+      child: stage,
     );
   }
 }

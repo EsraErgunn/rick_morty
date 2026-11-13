@@ -57,7 +57,9 @@ class _ArenaBackgroundState extends State<ArenaBackground>
           builder: (context, c) {
             final size = c.maxWidth * AppSizes.arenaPortalShare;
             return OverflowBox(
+              minWidth: size,
               maxWidth: size,
+              minHeight: size,
               maxHeight: size,
               child: SizedBox.square(
                 dimension: size,

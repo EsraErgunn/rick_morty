@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../../app/theme/card_style.dart';
 import '../../../../app/theme/spacing.dart';
 import '../../../../core/widgets/game_card/game_card.dart';
+import '../../../../core/widgets/floating.dart';
 import '../../domain/collection_repository.dart';
 
 /// Hero tag shared by the grid cell and the card detail (SPEC §4.4).
@@ -38,7 +39,10 @@ class CollectionGrid extends StatelessWidget {
         onTap: () => onOpen(card.id),
         child: Hero(
           tag: cardHeroTag(card.id),
-          child: RepaintBoundary(child: GameCard(data: card)),
+          child: Floating(
+            phase: Floating.phaseFor(i),
+            child: RepaintBoundary(child: GameCard(data: card)),
+          ),
         ),
       );
     },

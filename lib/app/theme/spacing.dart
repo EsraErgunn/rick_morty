@@ -92,7 +92,9 @@ abstract final class AppSizes {
 
   /// Battle character animation (SPEC §4.7, delivery polish).
   static const double battleIdleFloat = 5;
+  static const double gridFloat = 3;
   static const double battleWindUp = 14;
+  static const double battleDash = 84;
   static const double battleHop = 22;
   static const double battleLungeSpin = 0.14;
   static const double battleSquash = 0.16;

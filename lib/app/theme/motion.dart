@@ -80,6 +80,21 @@ abstract final class AppMotion {
   /// The 2× toggle divides replay durations by this.
   static const int battleFastFactor = 2;
 
+  /// Attack: wind-up, leap, impact, return. The hit event starts at
+  /// [battleAttackImpact], while the attacker is still on the target.
+  static const Duration battleAttack = Duration(milliseconds: 700);
+  static const Duration battleAttackImpact = Duration(milliseconds: 400);
+
+  /// Crit / super-effective hit: bigger shake and flashing light.
+  static const Duration battleHeavyHit = slow;
+
+  /// Faint: the card spins, shrinks and is pulled into a small portal.
+  static const Duration battleFaint = Duration(milliseconds: 900);
+
+  /// Victory: the winners hop one after another.
+  static const Duration battleVictory = Duration(milliseconds: 1200);
+  static const Duration battleVictoryStagger = Duration(milliseconds: 160);
+
   /// One turn of the arena's background portal (slow, behind the cards).
   static const Duration arenaSpin = Duration(seconds: 40);
 

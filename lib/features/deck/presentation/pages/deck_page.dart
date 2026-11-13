@@ -9,6 +9,7 @@ import '../../../../core/feedback/ui_feedback.dart';
 import '../../../../core/game/card_type.dart';
 import '../../../../core/widgets/game_card/card_labels.dart';
 import '../../../../core/widgets/game_card/game_card.dart';
+import '../../../../core/widgets/floating.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../bloc/deck_bloc.dart';
 import '../bloc/deck_event.dart';
@@ -95,9 +96,12 @@ class DeckPage extends StatelessWidget {
                           return GestureDetector(
                             key: ValueKey('owned-${card.id}'),
                             onTap: () => bloc.add(DeckCardTapped(card.id)),
-                            child: Opacity(
-                              opacity: inDeck ? 0.35 : 1,
-                              child: GameCard(data: card),
+                            child: Floating(
+                              phase: Floating.phaseFor(i),
+                              child: Opacity(
+                                opacity: inDeck ? 0.35 : 1,
+                                child: GameCard(data: card),
+                              ),
                             ),
                           );
                         },
