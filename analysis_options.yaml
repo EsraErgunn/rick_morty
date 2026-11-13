@@ -12,6 +12,7 @@ analyzer:
     - android/**
     - ios/**
     - "**/*.g.dart"
+    - macos/**
 
 linter:
   rules:
