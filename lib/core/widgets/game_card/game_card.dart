@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart' show ValueListenable;
 import 'package:flutter/material.dart';
 
 import '../../../app/theme/card_style.dart';
@@ -13,8 +14,16 @@ class GameCard extends StatelessWidget {
     required this.data,
     this.holo,
     this.hideArt = false,
+    this.tilt,
+    this.characterOut = false,
     super.key,
   });
+
+  /// Card tilt for the 2.5D parallax (see [CardFront.tilt]).
+  final ValueListenable<Offset>? tilt;
+
+  /// The 2.5D character has left the card (see [CardFront.characterOut]).
+  final bool characterOut;
 
   final GameCardData data;
 
@@ -33,7 +42,12 @@ class GameCard extends StatelessWidget {
         clipBehavior: Clip.none,
         children: [
           Positioned.fill(
-            child: CardFront(data: data, hideArt: hideArt),
+            child: CardFront(
+              data: data,
+              hideArt: hideArt,
+              tilt: tilt,
+              characterOut: characterOut,
+            ),
           ),
           if (overlay != null)
             Positioned.fill(

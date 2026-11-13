@@ -95,6 +95,7 @@ class CardDetailPage extends StatelessWidget {
         onFlipped: (_) => feedback.cardFlip(),
         front: GameCard(
           data: card,
+          tilt: tilt,
           holo: HoloLayer(rarity: card.rarity, tilt: tilt, shaders: shaders),
         ),
         back: CardBack(facts: card),

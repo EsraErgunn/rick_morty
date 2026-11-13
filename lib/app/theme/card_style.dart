@@ -73,6 +73,25 @@ abstract final class CardMetrics {
   static const double featuredLine = 2;
   static const double featuredBadge = 20;
 
+  /// Featured 2.5D art: the cut-out character is drawn this much larger
+  /// than the art window width and rises this far above its top edge.
+  static const double featuredCutoutScale = 1.1;
+  static const double featuredPopOut = 12;
+
+  /// Tilt parallax in design units at full tilt: the character moves
+  /// against the background (background deeper, character nearer).
+  static const double featuredParallaxBack = 3;
+  static const double featuredParallaxFront = 9;
+
+  /// The background is drawn this much larger so its edges never show.
+  static const double featuredBackOverscan = 1.06;
+
+  /// Background brightness behind the cut-out (depth cue).
+  static const double featuredBackBrightness = 0.7;
+
+  /// Art window brightness while the character is out of the card.
+  static const double featuredEmptyArt = 0.35;
+
   /// Max 3D tilt in degrees (flutter_tilt `TiltConfig.angle`, SPEC §4.5).
   static const double tiltAngle = 6;
 

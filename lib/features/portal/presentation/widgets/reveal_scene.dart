@@ -190,6 +190,7 @@ class _RevealSceneState extends State<RevealScene>
       front: GameCard(
         data: card,
         hideArt: _artHidden,
+        tilt: _holoTilt,
         holo: HoloLayer(
           rarity: card.rarity,
           tilt: _holoTilt,

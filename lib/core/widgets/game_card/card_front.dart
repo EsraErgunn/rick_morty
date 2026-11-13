@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart' show ValueListenable;
 import 'package:flutter/material.dart';
 
 import '../../../app/theme/card_style.dart';
@@ -8,17 +9,35 @@ import '../../../l10n/app_localizations.dart';
 import '../../cards/game_card_data.dart';
 import 'card_art.dart';
 import 'card_labels.dart';
+import 'featured_art.dart';
 import 'rarity_frame_painter.dart';
 
 /// Front face at design size (SPEC §5.5): name plate, art, type + rarity
 /// row, 2x2 stats, passive. Text on the frame is `ink`, on the body `paper`.
+///
+/// Rick ([FeaturedArt.has]) is 2.5D: the background and the cut-out character
+/// are separate layers; the character rises above the art window and moves
+/// more than the background when the card tilts ([tilt]).
 class CardFront extends StatelessWidget {
-  const CardFront({required this.data, this.hideArt = false, super.key});
+  const CardFront({
+    required this.data,
+    this.hideArt = false,
+    this.tilt,
+    this.characterOut = false,
+    super.key,
+  });
 
   final GameCardData data;
 
   /// Empty art window (featured entrance: the image falls in later).
   final bool hideArt;
+
+  /// Card tilt for the featured parallax (null: layers rest).
+  final ValueListenable<Offset>? tilt;
+
+  /// 2.5D card: the character has left the card (battle reaction); the
+  /// cut-out is hidden and the window dims.
+  final bool characterOut;
 
   static const double plateHeight = 36;
 
@@ -57,9 +76,55 @@ class CardFront extends StatelessWidget {
       key: ValueKey('card-front-${data.rarity.name}'),
       painter: painter,
       child: Stack(
-        // The legendary emblem sits half above the top edge.
+        // The legendary emblem sits half above the top edge; the body comes
+        // first so the featured head passes under the name plate text.
         clipBehavior: Clip.none,
         children: [
+          Positioned.fromRect(
+            rect: body.deflate(AppOutline.thin),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(style.notch / 2),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  SizedBox(
+                    height: body.height * CardMetrics.artShare,
+                    child: hideArt
+                        ? const ColoredBox(
+                            key: ValueKey('art-empty'),
+                            color: AppColors.ink,
+                          )
+                        : FeaturedArt.has(data.id)
+                        ? FeaturedBackground(
+                            data: data,
+                            tilt: tilt,
+                            empty: characterOut,
+                          )
+                        : CardArt(
+                            url: data.imageUrl,
+                            name: data.name,
+                            rarity: data.rarity,
+                          ),
+                  ),
+                  const Divider(
+                    height: AppOutline.thin,
+                    thickness: AppOutline.thin,
+                    color: AppColors.ink,
+                  ),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: CardMetrics.padding,
+                        vertical: AppSpacing.xxs,
+                      ),
+                      child: _CardInfo(data: data, passive: passive),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          if (FeaturedArt.has(data.id) && !hideArt && !characterOut) _cutout(),
           Positioned(
             // Room for the featured badge on both sides keeps the name
             // centered and clear of the badge.
@@ -96,45 +161,25 @@ class CardFront extends StatelessWidget {
               right: 0,
               child: Center(child: PortalEmblem()),
             ),
-          Positioned.fromRect(
-            rect: body.deflate(AppOutline.thin),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(style.notch / 2),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  SizedBox(
-                    height: body.height * CardMetrics.artShare,
-                    child: hideArt
-                        ? const ColoredBox(
-                            key: ValueKey('art-empty'),
-                            color: AppColors.ink,
-                          )
-                        : CardArt(
-                            url: data.imageUrl,
-                            name: data.name,
-                            rarity: data.rarity,
-                          ),
-                  ),
-                  const Divider(
-                    height: AppOutline.thin,
-                    thickness: AppOutline.thin,
-                    color: AppColors.ink,
-                  ),
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: CardMetrics.padding,
-                        vertical: AppSpacing.xxs,
-                      ),
-                      child: _CardInfo(data: data, passive: passive),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
         ],
+      ),
+    );
+  }
+}
+
+extension on CardFront {
+  Widget _cutout() {
+    final art = CardFront.artRect(data);
+    final rect = FeaturedArt.cutoutRect(art);
+    return Positioned.fromRect(
+      rect: rect,
+      child: IgnorePointer(
+        child: FeaturedCutout(
+          key: const ValueKey('featured-cutout'),
+          id: data.id,
+          window: art.shift(-rect.topLeft),
+          tilt: tilt,
+        ),
       ),
     );
   }
