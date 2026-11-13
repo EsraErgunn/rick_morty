@@ -24,6 +24,10 @@ abstract interface class CollectionRepository {
   static const int deckSize = 3;
 
   List<CollectionEntry> entries();
+
+  /// Fires whenever the stored data behind this repository changes.
+  Stream<void> get changes;
+
   int get totalCharacters;
 
   /// Any synced character (card lab and detail), owned or not.

@@ -11,6 +11,11 @@ final class DeckStarted extends DeckEvent {
   const DeckStarted();
 }
 
+/// Stored cards or deck changed (here or on another screen).
+final class DeckDataChanged extends DeckEvent {
+  const DeckDataChanged();
+}
+
 /// An owned card tapped: it goes into the first empty slot.
 final class DeckCardTapped extends DeckEvent {
   const DeckCardTapped(this.id);

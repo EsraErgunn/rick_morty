@@ -1,5 +1,6 @@
 import '../../../core/storage/api_data_store.dart';
 import '../../../core/storage/player_store.dart';
+import '../../../core/storage/store_changes.dart';
 import '../domain/menu_repository.dart';
 
 class MenuRepositoryImpl implements MenuRepository {
@@ -12,6 +13,10 @@ class MenuRepositoryImpl implements MenuRepository {
   final ApiDataStore _apiData;
   final PlayerStore _player;
   final CollectionStore _collection;
+
+  @override
+  Stream<void> get changes =>
+      mergeChanges([_player.changes, _collection.changes]);
 
   @override
   MenuSummary load() {

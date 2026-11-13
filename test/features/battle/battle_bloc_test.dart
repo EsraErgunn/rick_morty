@@ -14,6 +14,9 @@ import 'package:portalcards/features/battle/presentation/bloc/battle_state.dart'
 import '../../helpers/cards.dart';
 
 class FakeBattleRepository implements BattleRepository {
+  @override
+  Stream<void> get changes => const Stream.empty();
+
   FakeBattleRepository({List<int> deck = const [1, 2, 23]})
     : _deck = [for (final id in deck) fixtureCard(id)];
 

@@ -20,6 +20,11 @@ class PlayerStore {
 
   PlayerState get state => _box.get(_key)!;
 
+  /// Fires after every write (coins, deck, settings, progress). The single
+  /// source screens listen to, so a screen kept under another one never
+  /// shows stale data.
+  Stream<void> get changes => _box.watch().map((_) {});
+
   Future<void> save(PlayerState state) => _box.put(_key, state);
 
   Future<PlayerState> update(PlayerState Function(PlayerState) change) async {
@@ -47,6 +52,9 @@ class CollectionStore {
   Set<int> get ownedIds => _box.keys.cast<int>().toSet();
 
   Iterable<OwnedCard> get cards => _box.values;
+
+  /// Fires after every write (a card won, a copy added, a reset).
+  Stream<void> get changes => _box.watch().map((_) {});
 
   /// Adds one copy; the first copy records [at].
   Future<OwnedCard> addCopy(int characterId, DateTime at) async {

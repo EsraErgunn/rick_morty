@@ -38,6 +38,9 @@ final _t0 = DateTime.utc(2026, 11, 12);
 /// In-memory repository for widget tests (Hive file I/O does not run
 /// inside the widget tester's fake async zone).
 class _MemoryRepo implements CollectionRepository {
+  @override
+  Stream<void> get changes => const Stream.empty();
+
   _MemoryRepo({List<int> owned = const [], List<int> deck = const []})
     : _owned = [...owned],
       _deck = [...deck];

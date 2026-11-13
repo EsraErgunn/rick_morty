@@ -5,6 +5,7 @@ import '../../../core/cards/game_card_data.dart';
 import '../../../core/errors/failures.dart';
 import '../../../core/storage/api_data_store.dart';
 import '../../../core/storage/player_store.dart';
+import '../../../core/storage/store_changes.dart';
 import '../domain/collection_repository.dart';
 
 class CollectionRepositoryImpl implements CollectionRepository {
@@ -17,6 +18,10 @@ class CollectionRepositoryImpl implements CollectionRepository {
   final ApiDataStore _apiData;
   final PlayerStore _player;
   final CollectionStore _collection;
+
+  @override
+  Stream<void> get changes =>
+      mergeChanges([_player.changes, _collection.changes]);
 
   @override
   List<CollectionEntry> entries() => [

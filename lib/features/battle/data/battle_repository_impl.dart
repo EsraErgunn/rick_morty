@@ -33,6 +33,9 @@ class BattleRepositoryImpl implements BattleRepository {
   };
 
   @override
+  Stream<void> get changes => _player.changes;
+
+  @override
   List<GameCardData> deck() => [
     for (final id in _player.state.deck) ?_card(id),
   ];

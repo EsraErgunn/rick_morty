@@ -36,4 +36,7 @@ final class MenuSummary extends Equatable {
 
 abstract interface class MenuRepository {
   MenuSummary load();
+
+  /// Fires whenever the stored data behind this repository changes.
+  Stream<void> get changes;
 }

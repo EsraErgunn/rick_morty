@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -26,9 +27,14 @@ class BattleBloc extends Bloc<BattleUiEvent, BattleViewState> {
       (e, emit) => emit(state.copyWith(fast: !state.fast)),
     );
     on<BattleLeft>(_onLeft);
+    on<BattleDeckChanged>(_onDeckChanged);
+    _changes = _repository.changes.listen(
+      (_) => add(const BattleDeckChanged()),
+    );
   }
 
   final BattleRepository _repository;
+  late final StreamSubscription<void> _changes;
   final Random _random;
 
   /// A fresh id per battle, so rewards are paid once per battle.
@@ -54,6 +60,28 @@ class BattleBloc extends Bloc<BattleUiEvent, BattleViewState> {
         wins: _repository.wins,
       ),
     );
+  }
+
+  /// Before the battle: show the current deck. A deck that just became full
+  /// gets an opponent; an existing opponent is kept. Ignored once the battle
+  /// has started (the battle's own reward write lands here too).
+  void _onDeckChanged(BattleDeckChanged e, Emitter<BattleViewState> emit) {
+    final phase = state.phase;
+    if (phase != BattlePhase.noDeck && phase != BattlePhase.preBattle) return;
+    final deck = _repository.deck();
+    if (deck.length < teamSize) {
+      emit(state.copyWith(phase: BattlePhase.noDeck, playerCards: deck));
+    } else if (phase == BattlePhase.noDeck) {
+      _onOpened(const BattleOpened(), emit);
+    } else {
+      emit(state.copyWith(playerCards: deck));
+    }
+  }
+
+  @override
+  Future<void> close() async {
+    await _changes.cancel();
+    return super.close();
   }
 
   Future<void> _onStart(

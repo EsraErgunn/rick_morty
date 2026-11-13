@@ -24,6 +24,9 @@ import '../../helpers/fake_audio.dart';
 final _t0 = DateTime.utc(2026, 11, 12);
 
 class _MemoryRepo implements CollectionRepository {
+  @override
+  Stream<void> get changes => const Stream.empty();
+
   _MemoryRepo({List<int> owned = const [], List<int> deck = const []})
     : _owned = [...owned],
       _deck = [...deck];

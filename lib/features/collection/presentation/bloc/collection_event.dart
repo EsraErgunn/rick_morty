@@ -16,6 +16,11 @@ final class CollectionStarted extends CollectionEvent {
   const CollectionStarted();
 }
 
+/// Stored cards or deck changed (a portal, the card detail, a reset).
+final class CollectionDataChanged extends CollectionEvent {
+  const CollectionDataChanged();
+}
+
 /// A rarity chip tapped: add or remove it from the filter.
 final class CollectionRarityToggled extends CollectionEvent {
   const CollectionRarityToggled(this.rarity);

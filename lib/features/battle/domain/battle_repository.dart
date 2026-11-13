@@ -42,6 +42,9 @@ abstract interface class BattleRepository {
   /// The player's deck as cards (empty slots skipped).
   List<GameCardData> deck();
 
+  /// Fires whenever the player's stored data (deck, coins, wins) changes.
+  Stream<void> get changes;
+
   int get wins;
   int get tier;
 

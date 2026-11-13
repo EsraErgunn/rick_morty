@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../collection/domain/collection_repository.dart';
@@ -8,15 +10,9 @@ import 'deck_state.dart';
 /// duplicates, saved at once. Uses the collection's deck storage.
 class DeckBloc extends Bloc<DeckEvent, DeckState> {
   DeckBloc(this._repository) : super(const DeckState()) {
-    on<DeckStarted>(
-      (e, emit) => emit(
-        state.copyWith(
-          status: DeckStatus.success,
-          owned: [for (final entry in _repository.entries()) entry.card],
-          deck: _repository.deck,
-        ),
-      ),
-    );
+    on<DeckStarted>(_load);
+    on<DeckDataChanged>(_load);
+    _changes = _repository.changes.listen((_) => add(const DeckDataChanged()));
     on<DeckCardTapped>((e, emit) async {
       if (state.deck.contains(e.id) || state.complete) return;
       final r = await _repository.toggleDeck(e.id);
@@ -48,4 +44,19 @@ class DeckBloc extends Bloc<DeckEvent, DeckState> {
   }
 
   final CollectionRepository _repository;
+  late final StreamSubscription<void> _changes;
+
+  void _load(DeckEvent e, Emitter<DeckState> emit) => emit(
+    state.copyWith(
+      status: DeckStatus.success,
+      owned: [for (final entry in _repository.entries()) entry.card],
+      deck: _repository.deck,
+    ),
+  );
+
+  @override
+  Future<void> close() async {
+    await _changes.cancel();
+    return super.close();
+  }
 }

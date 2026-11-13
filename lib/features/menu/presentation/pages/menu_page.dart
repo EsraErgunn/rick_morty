@@ -86,7 +86,11 @@ class _MenuPageState extends State<MenuPage> {
         a.summary != null &&
         b.summary != null &&
         a.summary!.coins != b.summary!.coins,
-    listener: (context, state) => widget.feedback.coins(),
+    // The summary also refreshes while another screen covers the menu
+    // (portal, battle, settings); the coin sound plays only when it shows.
+    listener: (context, state) {
+      if (ModalRoute.isCurrentOf(context) ?? true) widget.feedback.coins();
+    },
     builder: (context, state) {
       final s = state.summary;
       if (s == null) return const Scaffold();

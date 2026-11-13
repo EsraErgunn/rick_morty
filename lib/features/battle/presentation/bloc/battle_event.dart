@@ -14,6 +14,11 @@ final class BattleOpened extends BattleUiEvent {
   const BattleOpened();
 }
 
+/// The stored deck changed. Applied only before the battle starts.
+final class BattleDeckChanged extends BattleUiEvent {
+  const BattleDeckChanged();
+}
+
 /// "Başla" on the pre-battle screen.
 final class BattleStartPressed extends BattleUiEvent {
   const BattleStartPressed();

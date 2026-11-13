@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -20,9 +22,13 @@ class _Repo implements MenuRepository {
   _Repo(this.summary);
 
   MenuSummary summary;
+  final changed = StreamController<void>.broadcast();
 
   @override
   MenuSummary load() => summary;
+
+  @override
+  Stream<void> get changes => changed.stream;
 }
 
 MenuSummary _summary({int owned = 0, int deck = 0, int coins = 300}) =>
@@ -45,6 +51,24 @@ void main() {
     act: (b) => b.add(const MenuStarted()),
     expect: () => [
       MenuState(status: MenuStatus.success, summary: _summary(owned: 3)),
+    ],
+  );
+
+  final changing = _Repo(_summary());
+  blocTest<MenuBloc, MenuState>(
+    'a stored change reloads the summary without MenuStarted',
+    setUp: () => changing.summary = _summary(),
+    build: () => MenuBloc(changing),
+    act: (b) async {
+      b.add(const MenuStarted());
+      await pumpEventQueue();
+      changing
+        ..summary = _summary(coins: 200)
+        ..changed.add(null);
+    },
+    expect: () => [
+      MenuState(status: MenuStatus.success, summary: _summary()),
+      MenuState(status: MenuStatus.success, summary: _summary(coins: 200)),
     ],
   );
 
@@ -142,6 +166,32 @@ void main() {
         .add(const MenuStarted());
     await frames(tester, const Duration(seconds: 1));
     expect(backend.sfx.map((e) => e.$1), contains(Sfx.coin));
+    await tester.pumpWidget(const SizedBox());
+    await tester.pump(const Duration(seconds: 1));
+  });
+
+  testWidgets('covered by another screen: refreshes silently, shows the '
+      'new balance on return', (tester) async {
+    final repo = await pumpMenu(tester, _summary());
+    final navigator = tester.state<NavigatorState>(find.byType(Navigator));
+    unawaited(
+      navigator.push(
+        MaterialPageRoute<void>(
+          builder: (_) => const Scaffold(body: Text('portal')),
+        ),
+      ),
+    );
+    await frames(tester, const Duration(seconds: 1));
+
+    repo
+      ..summary = _summary(coins: 200)
+      ..changed.add(null);
+    await frames(tester, const Duration(seconds: 1));
+    expect(backend.sfx.map((e) => e.$1), isNot(contains(Sfx.coin)));
+
+    navigator.pop();
+    await frames(tester, const Duration(seconds: 2));
+    expect(find.text('200'), findsOneWidget);
     await tester.pumpWidget(const SizedBox());
     await tester.pump(const Duration(seconds: 1));
   });
