@@ -120,6 +120,17 @@ abstract final class AppSizes {
   static const double confettiSpread = 150;
   static const double confettiFall = 180;
 
+  /// First-launch intro (onboarding).
+  static const double onboardingArt = 260;
+  static const double onboardingPortal = 180;
+  static const double onboardingCard = 96;
+  static const double onboardingHeroCard = 140;
+  static const double onboardingFanTilt = 0.18;
+  static const double onboardingTypeDisc = 64;
+  static const double onboardingDot = 8;
+  static const double onboardingDotActive = 24;
+  static const double onboardingWiggle = 0.25;
+
   static const double hpBar = 8;
 
   /// Minimum touch target (Material / accessibility).

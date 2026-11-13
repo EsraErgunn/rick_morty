@@ -67,6 +67,7 @@ class PlayerState extends Equatable {
     this.wins = 0,
     this.portalsOpened = 0,
     this.shakeHintSeen = false,
+    this.onboardingSeen = false,
     this.completedAlbums = const [],
     this.demoUnlocked = false,
     this.forceNextLegendary = false,
@@ -94,6 +95,10 @@ class PlayerState extends Equatable {
   final int portalsOpened;
   @HiveField(5)
   final bool shakeHintSeen;
+
+  /// The first-launch intro was shown (or skipped) once.
+  @HiveField(15)
+  final bool onboardingSeen;
 
   /// Episode ids whose album reward was paid.
   @HiveField(6)
@@ -134,6 +139,7 @@ class PlayerState extends Equatable {
     int? wins,
     int? portalsOpened,
     bool? shakeHintSeen,
+    bool? onboardingSeen,
     List<int>? completedAlbums,
     bool? demoUnlocked,
     bool? forceNextLegendary,
@@ -150,6 +156,7 @@ class PlayerState extends Equatable {
     wins: wins ?? this.wins,
     portalsOpened: portalsOpened ?? this.portalsOpened,
     shakeHintSeen: shakeHintSeen ?? this.shakeHintSeen,
+    onboardingSeen: onboardingSeen ?? this.onboardingSeen,
     completedAlbums: completedAlbums ?? this.completedAlbums,
     demoUnlocked: demoUnlocked ?? this.demoUnlocked,
     forceNextLegendary: forceNextLegendary ?? this.forceNextLegendary,
@@ -169,6 +176,7 @@ class PlayerState extends Equatable {
     wins,
     portalsOpened,
     shakeHintSeen,
+    onboardingSeen,
     completedAlbums,
     demoUnlocked,
     forceNextLegendary,

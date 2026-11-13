@@ -945,6 +945,84 @@ abstract class AppLocalizations {
   /// In tr, this message translates to:
   /// **'Bu… bu imkânsız, Morty!'**
   String get rickDefeatLine;
+
+  /// Intro: skip button, top right.
+  ///
+  /// In tr, this message translates to:
+  /// **'Geç'**
+  String get onboardingSkip;
+
+  /// Intro: next page button.
+  ///
+  /// In tr, this message translates to:
+  /// **'İleri'**
+  String get onboardingNext;
+
+  /// Intro: last page button, goes to the menu.
+  ///
+  /// In tr, this message translates to:
+  /// **'Başla'**
+  String get onboardingStart;
+
+  /// Intro: screen reader label of the page dots.
+  ///
+  /// In tr, this message translates to:
+  /// **'Sayfa {page} / {total}'**
+  String onboardingPageLabel(int page, int total);
+
+  /// Intro page 1 title.
+  ///
+  /// In tr, this message translates to:
+  /// **'Portalı aç'**
+  String get onboardingPortalTitle;
+
+  /// Intro page 1 sentence.
+  ///
+  /// In tr, this message translates to:
+  /// **'Telefonu salla ya da butona bas; Rick and Morty evreninden kart çıkar.'**
+  String get onboardingPortalBody;
+
+  /// Intro page 2 title.
+  ///
+  /// In tr, this message translates to:
+  /// **'Kartlarını topla'**
+  String get onboardingCardsTitle;
+
+  /// Intro page 2 sentence.
+  ///
+  /// In tr, this message translates to:
+  /// **'Sıradandan efsaneviye her nadirliğin kendi çerçevesi var; telefonu eğince kart parlar.'**
+  String get onboardingCardsBody;
+
+  /// Intro page 3 title.
+  ///
+  /// In tr, this message translates to:
+  /// **'Desteni kur'**
+  String get onboardingDeckTitle;
+
+  /// Intro page 3 sentence.
+  ///
+  /// In tr, this message translates to:
+  /// **'3 kart seç. Tip üçgeni: İnsan → Robot → Uzaylı → İnsan.'**
+  String get onboardingDeckBody;
+
+  /// Intro page 4 title.
+  ///
+  /// In tr, this message translates to:
+  /// **'Savaş ve kazan'**
+  String get onboardingBattleTitle;
+
+  /// Intro page 4 sentence.
+  ///
+  /// In tr, this message translates to:
+  /// **'Kazandığın coin\'lerle yeni portallar aç.'**
+  String get onboardingBattleBody;
+
+  /// Settings: opens the first-launch intro again (demo).
+  ///
+  /// In tr, this message translates to:
+  /// **'Tanıtımı tekrar göster'**
+  String get settingsReplayIntro;
 }
 
 class _AppLocalizationsDelegate

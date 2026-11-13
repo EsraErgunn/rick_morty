@@ -717,5 +717,65 @@
   "rickDefeatLine": "Bu… bu imkânsız, Morty!",
   "@rickDefeatLine": {
     "description": "Rick's speech bubble when his side loses a battle."
+  },
+  "onboardingSkip": "Geç",
+  "@onboardingSkip": {
+    "description": "Intro: skip button, top right."
+  },
+  "onboardingNext": "İleri",
+  "@onboardingNext": {
+    "description": "Intro: next page button."
+  },
+  "onboardingStart": "Başla",
+  "@onboardingStart": {
+    "description": "Intro: last page button, goes to the menu."
+  },
+  "onboardingPageLabel": "Sayfa {page} / {total}",
+  "@onboardingPageLabel": {
+    "description": "Intro: screen reader label of the page dots.",
+    "placeholders": {
+      "page": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "onboardingPortalTitle": "Portalı aç",
+  "@onboardingPortalTitle": {
+    "description": "Intro page 1 title."
+  },
+  "onboardingPortalBody": "Telefonu salla ya da butona bas; Rick and Morty evreninden kart çıkar.",
+  "@onboardingPortalBody": {
+    "description": "Intro page 1 sentence."
+  },
+  "onboardingCardsTitle": "Kartlarını topla",
+  "@onboardingCardsTitle": {
+    "description": "Intro page 2 title."
+  },
+  "onboardingCardsBody": "Sıradandan efsaneviye her nadirliğin kendi çerçevesi var; telefonu eğince kart parlar.",
+  "@onboardingCardsBody": {
+    "description": "Intro page 2 sentence."
+  },
+  "onboardingDeckTitle": "Desteni kur",
+  "@onboardingDeckTitle": {
+    "description": "Intro page 3 title."
+  },
+  "onboardingDeckBody": "3 kart seç. Tip üçgeni: İnsan → Robot → Uzaylı → İnsan.",
+  "@onboardingDeckBody": {
+    "description": "Intro page 3 sentence."
+  },
+  "onboardingBattleTitle": "Savaş ve kazan",
+  "@onboardingBattleTitle": {
+    "description": "Intro page 4 title."
+  },
+  "onboardingBattleBody": "Kazandığın coin'lerle yeni portallar aç.",
+  "@onboardingBattleBody": {
+    "description": "Intro page 4 sentence."
+  },
+  "settingsReplayIntro": "Tanıtımı tekrar göster",
+  "@settingsReplayIntro": {
+    "description": "Settings: opens the first-launch intro again (demo)."
   }
 }

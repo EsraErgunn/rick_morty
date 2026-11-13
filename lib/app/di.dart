@@ -48,6 +48,10 @@ import '../features/menu/data/menu_repository_impl.dart';
 import '../features/menu/presentation/bloc/menu_bloc.dart';
 import '../features/menu/presentation/bloc/menu_event.dart';
 import '../features/menu/presentation/pages/menu_page.dart';
+import '../features/onboarding/data/onboarding_repository_impl.dart';
+import '../features/onboarding/presentation/bloc/onboarding_bloc.dart';
+import '../features/onboarding/presentation/bloc/onboarding_event.dart';
+import '../features/onboarding/presentation/pages/onboarding_page.dart';
 import '../features/portal/data/portal_repository_impl.dart';
 import '../features/portal/domain/portal_repository.dart';
 import '../features/portal/presentation/bloc/portal_bloc.dart';
@@ -171,6 +175,19 @@ Future<void> configureDependencies({
         syncRepository: getIt(),
         initialLocation: initialLocation,
         shaders: getIt(),
+        onboardingSeen: () => getIt<PlayerStore>().state.onboardingSeen,
+        onboardingPage: (context) => BlocProvider(
+          create: (_) => OnboardingBloc(
+            OnboardingRepositoryImpl(player: getIt(), apiData: getIt()),
+          )..add(const OnboardingStarted()),
+          child: OnboardingPage(
+            audio: getIt(),
+            feedback: UiFeedback(audio: getIt(), haptics: getIt()),
+            tiltStream: getIt(),
+            shaders: getIt(),
+            onDone: () => context.go(AppRoutes.menu),
+          ),
+        ),
         menuPage: (context) => BlocProvider(
           create: (_) => MenuBloc(
             MenuRepositoryImpl(
@@ -234,6 +251,7 @@ Future<void> configureDependencies({
             haptics: getIt(),
             feedback: UiFeedback(audio: getIt(), haptics: getIt()),
             version: AppInfo.version,
+            onReplayIntro: () => context.go(AppRoutes.onboarding),
             extra: ImageDownloadTile(
               controller: getIt(),
               urls: () => [

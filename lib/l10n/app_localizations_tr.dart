@@ -485,4 +485,49 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get rickDefeatLine => 'Bu… bu imkânsız, Morty!';
+
+  @override
+  String get onboardingSkip => 'Geç';
+
+  @override
+  String get onboardingNext => 'İleri';
+
+  @override
+  String get onboardingStart => 'Başla';
+
+  @override
+  String onboardingPageLabel(int page, int total) {
+    return 'Sayfa $page / $total';
+  }
+
+  @override
+  String get onboardingPortalTitle => 'Portalı aç';
+
+  @override
+  String get onboardingPortalBody =>
+      'Telefonu salla ya da butona bas; Rick and Morty evreninden kart çıkar.';
+
+  @override
+  String get onboardingCardsTitle => 'Kartlarını topla';
+
+  @override
+  String get onboardingCardsBody =>
+      'Sıradandan efsaneviye her nadirliğin kendi çerçevesi var; telefonu eğince kart parlar.';
+
+  @override
+  String get onboardingDeckTitle => 'Desteni kur';
+
+  @override
+  String get onboardingDeckBody =>
+      '3 kart seç. Tip üçgeni: İnsan → Robot → Uzaylı → İnsan.';
+
+  @override
+  String get onboardingBattleTitle => 'Savaş ve kazan';
+
+  @override
+  String get onboardingBattleBody =>
+      'Kazandığın coin\'lerle yeni portallar aç.';
+
+  @override
+  String get settingsReplayIntro => 'Tanıtımı tekrar göster';
 }

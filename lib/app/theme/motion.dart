@@ -99,6 +99,10 @@ abstract final class AppMotion {
   /// battle end holds the replay this long so the reaction can finish.
   static const Duration battleRickReaction = Duration(milliseconds: 2000);
 
+  /// Intro: one loop of a page illustration (shake wiggle, type cycle,
+  /// battle clash).
+  static const Duration onboardingLoop = Duration(milliseconds: 2400);
+
   /// Idle float of a battle card (one up-down cycle); phases differ per slot.
   static const Duration battleIdle = Duration(milliseconds: 2400);
 

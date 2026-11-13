@@ -17,6 +17,9 @@ import 'placeholder_page.dart';
 /// Route paths from SPEC §2. Build links with these, never with raw strings.
 abstract final class AppRoutes {
   static const String splash = '/splash';
+
+  /// First-launch intro (shown once, replayable from Settings).
+  static const String onboarding = '/onboarding';
   static const String menu = '/';
   static const String portal = '/portal';
   static const String collection = '/collection';
@@ -58,6 +61,8 @@ GoRouter createRouter({
   WidgetBuilder? deckPage,
   WidgetBuilder? battlePage,
   WidgetBuilder? albumPage,
+  WidgetBuilder? onboardingPage,
+  bool Function()? onboardingSeen,
   Widget Function(BuildContext context, int episodeId)? albumEpisodePage,
   bool debugRoutes = kDebugMode,
   String initialLocation = AppRoutes.splash,
@@ -74,11 +79,20 @@ GoRouter createRouter({
         builder: (context, state) => BlocProvider(
           create: (_) => SyncBloc(syncRepository)..add(const SyncStarted()),
           child: SplashPage(
-            onDone: () => context.go(AppRoutes.menu),
+            onDone: () => context.go(
+              onboardingPage != null && !(onboardingSeen?.call() ?? true)
+                  ? AppRoutes.onboarding
+                  : AppRoutes.menu,
+            ),
             shaders: shaders,
           ),
         ),
       ),
+      if (onboardingPage != null)
+        GoRoute(
+          path: AppRoutes.onboarding,
+          builder: (context, state) => onboardingPage(context),
+        ),
       GoRoute(
         path: AppRoutes.menu,
         builder: (context, state) {
