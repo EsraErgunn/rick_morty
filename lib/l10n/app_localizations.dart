@@ -1035,6 +1035,12 @@ abstract class AppLocalizations {
   /// In tr, this message translates to:
   /// **'Tüm kartlar, sınırsız coin, her portal efsanevi, en yüksek kademe. Kapatınca gerçek ilerlemen geri gelir.'**
   String get settingsGodModeHint;
+
+  /// Launch showcase: tap anywhere to continue.
+  ///
+  /// In tr, this message translates to:
+  /// **'Dokun ve devam et'**
+  String get showcaseHint;
 }
 
 class _AppLocalizationsDelegate

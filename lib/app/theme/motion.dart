@@ -99,6 +99,11 @@ abstract final class AppMotion {
   /// sonu, tepki bitebilsin diye tekrar oynatmayı bu kadar bekletir.
   static const Duration battleRickReaction = Duration(milliseconds: 2000);
 
+  /// Açılış vitrini: Rick'in kartı portaldan düşer, sonra bu süre sonunda
+  /// kendiliğinden menüye geçilir.
+  static const Duration showcaseDrop = Duration(milliseconds: 900);
+  static const Duration showcaseAutoAdvance = Duration(seconds: 4);
+
   /// Tanıtım: bir sayfa görselinin bir döngüsü (sallama kıpırtısı, tip döngüsü,
   /// savaş çarpışması).
   static const Duration onboardingLoop = Duration(milliseconds: 2400);

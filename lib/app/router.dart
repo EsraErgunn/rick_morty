@@ -18,6 +18,9 @@ import 'placeholder_page.dart';
 abstract final class AppRoutes {
   static const String splash = '/splash';
 
+  /// Açılış vitrini: her açılışta menüden önce Rick'in 2.5D kartı.
+  static const String showcase = '/showcase';
+
   /// İlk açılış tanıtımı (bir kez gösterilir, Ayarlar'dan tekrar açılabilir).
   static const String onboarding = '/onboarding';
   static const String menu = '/';
@@ -62,6 +65,7 @@ GoRouter createRouter({
   WidgetBuilder? battlePage,
   WidgetBuilder? albumPage,
   WidgetBuilder? onboardingPage,
+  Widget Function(BuildContext context, VoidCallback onDone)? showcasePage,
   bool Function()? onboardingSeen,
   Widget Function(BuildContext context, int episodeId)? albumEpisodePage,
   bool debugRoutes = kDebugMode,
@@ -80,14 +84,22 @@ GoRouter createRouter({
           create: (_) => SyncBloc(syncRepository)..add(const SyncStarted()),
           child: SplashPage(
             onDone: () => context.go(
-              onboardingPage != null && !(onboardingSeen?.call() ?? true)
-                  ? AppRoutes.onboarding
-                  : AppRoutes.menu,
+              showcasePage != null
+                  ? AppRoutes.showcase
+                  : afterShowcase(onboardingPage, onboardingSeen),
             ),
             shaders: shaders,
           ),
         ),
       ),
+      if (showcasePage != null)
+        GoRoute(
+          path: AppRoutes.showcase,
+          builder: (context, state) => showcasePage(
+            context,
+            () => context.go(afterShowcase(onboardingPage, onboardingSeen)),
+          ),
+        ),
       if (onboardingPage != null)
         GoRoute(
           path: AppRoutes.onboarding,
@@ -174,6 +186,12 @@ GoRouter createRouter({
     ],
   );
 }
+
+/// Vitrinden sonra: tanıtım henüz görülmediyse tanıtım, yoksa menü.
+String afterShowcase(WidgetBuilder? onboardingPage, bool Function()? seen) =>
+    onboardingPage != null && !(seen?.call() ?? true)
+    ? AppRoutes.onboarding
+    : AppRoutes.menu;
 
 /// '/portal' → 'portal' (menü rotasının bir alt rotası).
 String _child(String path) => path.substring(1);

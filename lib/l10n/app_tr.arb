@@ -785,5 +785,9 @@
   "settingsGodModeHint": "Tüm kartlar, sınırsız coin, her portal efsanevi, en yüksek kademe. Kapatınca gerçek ilerlemen geri gelir.",
   "@settingsGodModeHint": {
     "description": "Demo panel: what god mode does."
+  },
+  "showcaseHint": "Dokun ve devam et",
+  "@showcaseHint": {
+    "description": "Launch showcase: tap anywhere to continue."
   }
 }

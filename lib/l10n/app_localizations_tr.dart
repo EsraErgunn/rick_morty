@@ -537,4 +537,7 @@ class AppLocalizationsTr extends AppLocalizations {
   @override
   String get settingsGodModeHint =>
       'Tüm kartlar, sınırsız coin, her portal efsanevi, en yüksek kademe. Kapatınca gerçek ilerlemen geri gelir.';
+
+  @override
+  String get showcaseHint => 'Dokun ve devam et';
 }

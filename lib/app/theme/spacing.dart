@@ -120,6 +120,11 @@ abstract final class AppSizes {
   static const double confettiSpread = 150;
   static const double confettiFall = 180;
 
+  /// Açılış vitrini: Rick'in kart genişliği, portal boyutu, düşüş yüksekliği.
+  static const double showcaseCard = 220;
+  static const double showcasePortal = 140;
+  static const double showcaseDropHeight = 260;
+
   /// İlk açılış tanıtımı (onboarding).
   static const double onboardingArt = 260;
   static const double onboardingPortal = 180;

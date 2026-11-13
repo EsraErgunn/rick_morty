@@ -60,6 +60,7 @@ import '../features/portal/presentation/bloc/portal_event.dart';
 import '../features/portal/presentation/pages/portal_page.dart';
 import '../features/portal/presentation/portal_feedback.dart';
 import '../features/settings/data/settings_repository_impl.dart';
+import '../features/showcase/presentation/pages/showcase_page.dart';
 import '../features/settings/presentation/bloc/settings_bloc.dart';
 import '../features/settings/presentation/bloc/settings_event.dart';
 import '../features/settings/presentation/pages/settings_page.dart';
@@ -179,6 +180,19 @@ Future<void> configureDependencies({
         initialLocation: initialLocation,
         shaders: getIt(),
         onboardingSeen: () => getIt<PlayerStore>().state.onboardingSeen,
+        showcasePage: (context, onDone) => ShowcasePage(
+          card: switch (getIt<ApiDataStore>().character(
+            ShowcasePage.characterId,
+          )) {
+            final c? => CardFactory.fromCharacter(c),
+            null => null,
+          },
+          audio: getIt(),
+          feedback: UiFeedback(audio: getIt(), haptics: getIt()),
+          tiltStream: getIt(),
+          shaders: getIt(),
+          onDone: onDone,
+        ),
         onboardingPage: (context) => BlocProvider(
           create: (_) => OnboardingBloc(
             OnboardingRepositoryImpl(player: getIt(), apiData: getIt()),
