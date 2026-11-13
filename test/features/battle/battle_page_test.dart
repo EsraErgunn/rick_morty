@@ -80,8 +80,8 @@ void main() {
     await frames(tester, const Duration(seconds: 2));
   }
 
-  /// Plays until the result screen: first alive attacker on first alive
-  /// enemy, replaying everything in between.
+  /// Sonuç ekranına kadar oynar: ilk canlı saldıran ilk canlı rakibe,
+  /// aradaki her şeyi tekrar oynatarak.
   Future<void> playOut(WidgetTester tester, BattleBloc bloc) async {
     for (var i = 0; i < 60 && bloc.state.phase != BattlePhase.finished; i++) {
       if (bloc.state.phase == BattlePhase.choosing) {
@@ -144,13 +144,13 @@ void main() {
     expect(bloc.state.phase, BattlePhase.replaying);
     expect(find.text('-'), findsNothing);
 
-    // Input is blocked mid-replay.
+    // Tekrar oynatma sırasında girdi engellidir.
     final queued = bloc.state.queue.length;
     await tester.tap(find.byKey(const ValueKey('player-1')));
     await tester.pump();
     expect(bloc.state.selected, isNull);
 
-    // Two turns stay within 2 × 1.6 s.
+    // İki tur 2 × 1,6 sn içinde kalır.
     await frames(tester, const Duration(milliseconds: 3200));
     expect(bloc.state.phase, BattlePhase.choosing);
     expect(queued, greaterThan(4));

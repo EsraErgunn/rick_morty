@@ -40,7 +40,7 @@ void main() {
     test('revives with 30% of max HP', () {
       expect(Passives.zombieReviveHp(100), 30);
       expect(Passives.zombieReviveHp(94), 28); // 28.2
-      expect(Passives.zombieReviveHp(135), 41); // 40.5 rounds up
+      expect(Passives.zombieReviveHp(135), 41); // 40.5 yukarı yuvarlanır
     });
 
     test('revives with at least 1 HP', () {

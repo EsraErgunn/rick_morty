@@ -99,7 +99,7 @@ void main() {
         InitialArt(name: name, rarity: fixtureCard(23).rarity);
     await _pumpCard(tester, 23);
     expect(find.byKey(const ValueKey('art-initial')), findsOneWidget);
-    expect(find.text('Arcade Alien'), findsNWidgets(2)); // plate + art
+    expect(find.text('Arcade Alien'), findsNWidgets(2)); // plaka + görsel
     expect(find.text('A'), findsOneWidget);
     final disc = tester.widget<DecoratedBox>(
       find

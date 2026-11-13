@@ -10,11 +10,11 @@ import '../../../../core/widgets/game_card/game_card.dart';
 import '../../../../l10n/app_localizations.dart';
 import 'loop_builder.dart';
 
-/// Page 4: two cards clash, then the reward rises: "+coin".
+/// Sayfa 4: iki kart çarpışır, sonra ödül yükselir: "+coin".
 class BattleSlideArt extends StatelessWidget {
   const BattleSlideArt({required this.cards, super.key});
 
-  /// Showcase cards; the first and the last fight (may be empty).
+  /// Vitrin kartları; ilki ve sonuncusu dövüşür (boş olabilir).
   final List<GameCardData> cards;
 
   static const int _reward = 50;
@@ -25,7 +25,7 @@ class BattleSlideArt extends StatelessWidget {
     return LoopBuilder(
       restAt: 0.7,
       builder: (context, t) {
-        // 0..0.4 dash in and hit, 0.4..0.6 back, 0.5..1 reward floats up.
+        // 0..0.4 atılıp vur, 0.4..0.6 geri dön, 0.5..1 ödül yukarı süzülür.
         final clash = math.sin(math.pi * (t / 0.6).clamp(0.0, 1.0));
         final reward = ((t - 0.5) / 0.5).clamp(0.0, 1.0);
         final dash = AppSizes.battleDash * 0.5 * clash;

@@ -16,7 +16,7 @@ import 'hp_bar.dart';
 import 'rick_reaction.dart';
 import 'slot_motion.dart';
 
-/// What a slot is doing right now (set by the replay, SPEC §4.7).
+/// Bir slotun şu an ne yaptığı (tekrar oynatma ayarlar, SPEC §4.7).
 enum SlotMotion {
   none,
   lunge,
@@ -26,11 +26,11 @@ enum SlotMotion {
   revive,
   victory,
 
-  /// The battle is lost; only Rick's 2.5D card reacts (cut-out collapses).
+  /// Savaş kaybedildi; yalnızca Rick'in 2.5D kartı tepki verir (kesilmiş görsel çöker).
   defeat,
 }
 
-/// A floating number or word above a card.
+/// Bir kartın üstünde süzülen sayı veya kelime.
 final class SlotPopup {
   const SlotPopup(this.text, {this.color = AppColors.paper, this.big = false});
 
@@ -39,6 +39,7 @@ final class SlotPopup {
   final bool big;
 }
 
+/// Bir slotun mevcut olay için hareketi, açılır yazısı ve gecikmesi.
 final class SlotFx {
   const SlotFx({
     this.motion = SlotMotion.none,
@@ -51,13 +52,13 @@ final class SlotFx {
   final int tick;
   final SlotPopup? popup;
 
-  /// Start offset (the victory hops run one card after another).
+  /// Başlangıç gecikmesi (zafer zıplamaları birbiri ardına çalışır).
   final Duration delay;
 }
 
-/// One card on the stage. Idle: floats and breathes (phases differ per
-/// slot). Attack, hit, dodge, revive and victory poses come from
-/// [SlotPoses]; faint from [Fainting]. Reduced motion: no movement.
+/// Sahnedeki tek bir kart. Boştayken süzülür ve nefes alır (fazlar slota göre
+/// değişir). Saldırı, vuruş, kaçma, dirilme ve zafer pozları [SlotPoses]'tan,
+/// bayılma [Fainting]'den gelir. Azaltılmış hareket: hareket yok.
 class BattleCardSlot extends StatefulWidget {
   const BattleCardSlot({
     required this.card,
@@ -77,10 +78,10 @@ class BattleCardSlot extends StatefulWidget {
   final Side side;
   final SlotFx fx;
 
-  /// Duration multiplier (1, ½ for 2×).
+  /// Süre çarpanı (1, 2× için ½).
   final double speed;
 
-  /// 0..1: where this slot starts in the idle cycle.
+  /// 0..1: bu slotun boşta döngüsünde nereden başladığı.
   final double idlePhase;
   final bool selected;
   final bool targetable;
@@ -102,7 +103,7 @@ class _BattleCardSlotState extends State<BattleCardSlot>
   @override
   void initState() {
     super.initState();
-    // Rick's card shows its art again once his reaction is over.
+    // Rick'in tepkisi bitince kartı görselini yeniden gösterir.
     _c.addStatusListener((status) {
       if (status == AnimationStatus.completed && _rick && mounted) {
         setState(() {});
@@ -112,8 +113,8 @@ class _BattleCardSlotState extends State<BattleCardSlot>
 
   bool get _rick => FeaturedArt.has(widget.card.id);
 
-  /// Rick reacts to the battle end: victory if he is still standing,
-  /// defeat always (his side lost).
+  /// Rick savaş sonuna tepki verir: hâlâ ayaktaysa zafer,
+  /// yenilgide her zaman (tarafı kaybetti).
   bool get _rickReacting =>
       _rick &&
       _c.isAnimating &&
@@ -164,7 +165,7 @@ class _BattleCardSlotState extends State<BattleCardSlot>
     super.dispose();
   }
 
-  /// Progress of the current motion, after its start delay.
+  /// Başlangıç gecikmesinden sonra mevcut hareketin ilerlemesi.
   double get _v {
     if (!_c.isAnimating) return 0;
     final total = _c.duration!.inMicroseconds;
@@ -176,7 +177,7 @@ class _BattleCardSlotState extends State<BattleCardSlot>
   SlotPose _pose() {
     final v = _v;
     if (v == 0) return SlotPose.rest;
-    // The killing blow still shakes; a fainted card does not hop.
+    // Öldürücü darbe yine sarsar; bayılmış kart zıplamaz.
     if (!widget.state.alive && widget.fx.motion == SlotMotion.victory) {
       return SlotPose.rest;
     }
@@ -185,7 +186,7 @@ class _BattleCardSlotState extends State<BattleCardSlot>
       SlotMotion.shake => SlotPoses.hit(v, widget.side, heavy: false),
       SlotMotion.heavyShake => SlotPoses.hit(v, widget.side, heavy: true),
       SlotMotion.dodge => SlotPoses.dodge(v),
-      // Rick's card stays put while he leaps out of it.
+      // Rick karttan fırlarken kartı yerinde kalır.
       SlotMotion.victory when _rick => SlotPose.rest,
       SlotMotion.victory => SlotPoses.victory(v),
       _ => SlotPose.rest,
@@ -318,7 +319,7 @@ class _BattleCardSlotState extends State<BattleCardSlot>
   }
 }
 
-/// Damage / heal number: floats up and fades (`slow`).
+/// Hasar / iyileşme sayısı: yukarı süzülür ve solar (`slow`).
 class _Popup extends StatelessWidget {
   const _Popup({required this.popup, required this.speed});
 

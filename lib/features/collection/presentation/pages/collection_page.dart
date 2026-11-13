@@ -13,7 +13,7 @@ import '../widgets/collection_grid.dart';
 import '../widgets/filter_bar.dart';
 import '../../../../core/widgets/app_back_button.dart';
 
-/// Collection (SPEC §2.4, §4.4, §5.6). Expects a [CollectionBloc] above it.
+/// Koleksiyon (SPEC §2.4, §4.4, §5.6). Üstünde bir [CollectionBloc] bekler.
 class CollectionPage extends StatelessWidget {
   const CollectionPage({
     required this.feedback,

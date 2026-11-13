@@ -8,10 +8,10 @@ import '../domain/sync_repository.dart';
 import 'mappers.dart';
 import 'remote_data_source.dart';
 
-/// A page fetched and ready to store.
+/// Çekilmiş ve kaydedilmeye hazır bir sayfa.
 typedef _Fetched = ({int count, int pages, Future<void> Function() store});
 
-/// One API resource and how to fetch and store a page of it.
+/// Bir API kaynağı ve onun bir sayfasının nasıl çekilip kaydedileceği.
 class _Resource {
   const _Resource(this.key, this.fetch);
 
@@ -19,10 +19,10 @@ class _Resource {
   final Future<Either<Failure, _Fetched>> Function(int page) fetch;
 }
 
-/// Resumable sync (SPEC §2.1). Order: page 1 of characters, episodes and
-/// locations (so all totals are known early), then the remaining pages.
-/// After each page: write the items, then save the progress. A page is
-/// never fetched again once its progress is saved.
+/// Kaldığı yerden devam eden senkron (SPEC §2.1). Sıra: karakterler, bölümler ve
+/// konumların 1. sayfası (böylece tüm toplamlar erken bilinir), sonra kalan sayfalar.
+/// Her sayfadan sonra: öğeleri yaz, sonra ilerlemeyi kaydet. İlerlemesi
+/// kaydedilmiş bir sayfa asla yeniden çekilmez.
 class SyncRepositoryImpl implements SyncRepository {
   SyncRepositoryImpl({
     required this._remote,
@@ -31,7 +31,7 @@ class SyncRepositoryImpl implements SyncRepository {
     this._clock = DateTime.now,
   });
 
-  /// Bump when the stored shape changes and a fresh download is needed.
+  /// Kayıtlı biçim değişip baştan indirme gerektiğinde artır.
   static const int currentSyncVersion = 1;
 
   static const String characterKey = 'character';
@@ -90,7 +90,7 @@ class SyncRepositoryImpl implements SyncRepository {
         return right(unit);
       }
 
-      // Phase 1: first page of each resource → all totals known.
+      // 1. aşama: her kaynağın ilk sayfası → tüm toplamlar bilinir.
       for (final r in _resources) {
         if (_lastPage(r.key) == 0) {
           final failure = await _fetchAndSave(r, 1, onProgress);
@@ -99,7 +99,7 @@ class SyncRepositoryImpl implements SyncRepository {
       }
       onProgress(_progress);
 
-      // Phase 2: remaining pages, resuming after the last saved one.
+      // 2. aşama: kalan sayfalar, son kaydedilenden sonra devam ederek.
       for (final r in _resources) {
         final pages = _player.state.syncPages[r.key]!;
         for (var page = _lastPage(r.key) + 1; page <= pages; page++) {
@@ -114,14 +114,14 @@ class SyncRepositoryImpl implements SyncRepository {
       AppLogger.info('sync complete: ${_progress.downloaded} items');
       onProgress(_progress);
       return right(unit);
-      // Hive reports problems as HiveError (an Error, not an Exception).
+      // Hive sorunları HiveError olarak bildirir (Exception değil, bir Error).
     } catch (e, stackTrace) {
       AppLogger.error('sync storage error', e, stackTrace);
       return left(StorageFailure(e.runtimeType.toString()));
     }
   }
 
-  /// Returns null on success.
+  /// Başarıda null döner.
   Future<Failure?> _fetchAndSave(
     _Resource r,
     int page,

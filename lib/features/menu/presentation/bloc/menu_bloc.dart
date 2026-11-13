@@ -6,10 +6,10 @@ import '../../domain/menu_repository.dart';
 import 'menu_event.dart';
 import 'menu_state.dart';
 
-/// Main menu (SPEC §2.2): loads the summary and reloads it on every stored
-/// change. The menu stays mounted under the other screens, so going back
-/// always shows the current coins, cards and deck. Sound for coin changes
-/// is a listener side effect on the page.
+/// Ana menü (SPEC §2.2): özeti yükler ve kayıtlı her değişiklikte yeniden
+/// yükler. Menü diğer ekranların altında açık kalır, bu yüzden geri dönünce
+/// her zaman güncel coin, kart ve deste görünür. Coin değişikliklerinin sesi
+/// sayfadaki bir dinleyicinin yan etkisidir.
 class MenuBloc extends Bloc<MenuEvent, MenuState> {
   MenuBloc(this._repository) : super(const MenuState()) {
     on<MenuStarted>(_load);

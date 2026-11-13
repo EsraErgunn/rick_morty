@@ -14,11 +14,11 @@ import 'debug/card_lab_page.dart';
 import 'not_found_page.dart';
 import 'placeholder_page.dart';
 
-/// Route paths from SPEC §2. Build links with these, never with raw strings.
+/// SPEC §2'deki rota yolları. Bağlantıları bunlarla kur, asla düz metinle değil.
 abstract final class AppRoutes {
   static const String splash = '/splash';
 
-  /// First-launch intro (shown once, replayable from Settings).
+  /// İlk açılış tanıtımı (bir kez gösterilir, Ayarlar'dan tekrar açılabilir).
   static const String onboarding = '/onboarding';
   static const String menu = '/';
   static const String portal = '/portal';
@@ -28,7 +28,7 @@ abstract final class AppRoutes {
   static const String album = '/album';
   static const String settings = '/settings';
 
-  /// Debug builds only (plan T17).
+  /// Yalnızca debug derlemeler (plan T17).
   static const String cardLab = '/debug/card-lab';
 
   static String cardDetail(int id) => '$collection/$id';
@@ -48,7 +48,7 @@ GoRoute _placeholder(
       PlaceholderPage(title: title(AppLocalizations.of(context), state)),
 );
 
-/// Routes from SPEC §2. Features not built yet point at a placeholder.
+/// SPEC §2'deki rotalar. Henüz yazılmamış özellikler bir yer tutucuya gider.
 GoRouter createRouter({
   required SyncRepository syncRepository,
   List<GameCardData> Function()? cardLabCards,
@@ -67,9 +67,9 @@ GoRouter createRouter({
   bool debugRoutes = kDebugMode,
   String initialLocation = AppRoutes.splash,
 }) {
-  // Screens are children of the menu, so `go('/portal')` builds the stack
-  // menu → portal: the back button and Android's back key return to the
-  // right parent (card detail → collection → menu).
+  // Ekranlar menünün alt rotasıdır; böylece `go('/portal')` yığını
+  // menü → portal olarak kurar: geri butonu ve Android'in geri tuşu
+  // doğru üst sayfaya döner (kart detayı → koleksiyon → menü).
   return GoRouter(
     initialLocation: initialLocation,
     errorBuilder: (context, state) => const NotFoundPage(),
@@ -175,10 +175,10 @@ GoRouter createRouter({
   );
 }
 
-/// '/portal' → 'portal' (a child of the menu route).
+/// '/portal' → 'portal' (menü rotasının bir alt rotası).
 String _child(String path) => path.substring(1);
 
-/// A menu child: the real page when built, otherwise a placeholder.
+/// Bir menü alt rotası: yazıldıysa gerçek sayfa, yoksa yer tutucu.
 GoRoute _screen(String path, WidgetBuilder? page, _TitleOf title) =>
     page == null
     ? _placeholder(_child(path), title)

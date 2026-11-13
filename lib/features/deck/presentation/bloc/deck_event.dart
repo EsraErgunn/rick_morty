@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 
+/// Deste ekranının olaylarının temel sınıfı.
 sealed class DeckEvent extends Equatable {
   const DeckEvent();
 
@@ -7,16 +8,17 @@ sealed class DeckEvent extends Equatable {
   List<Object?> get props => [];
 }
 
+/// Deste sayfası açıldı: kartları ve desteyi yükle.
 final class DeckStarted extends DeckEvent {
   const DeckStarted();
 }
 
-/// Stored cards or deck changed (here or on another screen).
+/// Kayıtlı kartlar veya deste değişti (burada ya da başka bir ekranda).
 final class DeckDataChanged extends DeckEvent {
   const DeckDataChanged();
 }
 
-/// An owned card tapped: it goes into the first empty slot.
+/// Sahip olunan bir karta dokunuldu: ilk boş slota girer.
 final class DeckCardTapped extends DeckEvent {
   const DeckCardTapped(this.id);
 
@@ -26,7 +28,7 @@ final class DeckCardTapped extends DeckEvent {
   List<Object?> get props => [id];
 }
 
-/// A filled slot tapped: it empties.
+/// Dolu bir slota dokunuldu: boşalır.
 final class DeckSlotTapped extends DeckEvent {
   const DeckSlotTapped(this.index);
 

@@ -9,22 +9,22 @@ import '../../../app/theme/motion.dart';
 import '../shader_cache.dart';
 import 'portal_spiral_painter.dart';
 
-/// Portal intensity levels (SPEC §2.3 AC5).
+/// Portal yoğunluk seviyeleri (SPEC §2.3 AC5).
 abstract final class PortalIntensity {
   static const double idle = 0.15;
   static const double open = 1.0;
 
-  /// Splash error state (SPEC §4.1).
+  /// Splash hata durumu (SPEC §4.1).
   static const double dim = 0.05;
 }
 
-/// The living portal: `portal.frag` driven by a ticker, or the spiral
-/// painter if the shader is unavailable. Repaints itself only (no rebuild
-/// per frame) inside a `RepaintBoundary`.
+/// Canlı portal: bir ticker ile sürülen `portal.frag` ya da shader yoksa sarmal
+/// çizici. `RepaintBoundary` içinde yalnızca kendini yeniden çizer (kare başına
+/// yeniden kurulum yok).
 ///
-/// [intensity] and [legendary] are animated by the caller (portal bloc,
-/// splash); the color change to red is eased here over `AppMotion.slow`.
-/// With reduced motion the vortex turns slowly.
+/// [intensity] ve [legendary] çağıran tarafından canlandırılır (portal bloc'u,
+/// splash); kırmızıya renk geçişi burada `AppMotion.slow` süresince yumuşatılır.
+/// Azaltılmış harekette girdap yavaş döner.
 class PortalView extends StatefulWidget {
   const PortalView({
     required this.shaders,
@@ -47,10 +47,10 @@ class _PortalViewState extends State<PortalView>
   final ValueNotifier<double> _time = ValueNotifier(0);
   ui.FragmentShader? _shader;
 
-  /// Seconds of vortex time per real second with reduced motion.
+  /// Azaltılmış harekette gerçek saniye başına girdap zamanı saniyesi.
   static const double _reducedSpeed = 0.2;
 
-  /// Keeps float precision in the shader (time wraps).
+  /// Shader'da kayan nokta hassasiyetini korur (zaman başa sarar).
   static const double _wrap = 1000;
 
   @override
@@ -109,7 +109,7 @@ class _PortalPainter extends CustomPainter {
   final double intensity;
   final Color color;
 
-  /// Fallback spiral: one turn per this many seconds of vortex time.
+  /// Yedek sarmal: girdap zamanının bu kadar saniyesinde bir tur.
   static const double _fallbackTurnSeconds = 3.2;
 
   @override

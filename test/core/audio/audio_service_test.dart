@@ -94,7 +94,7 @@ void main() {
       await tester.pump(_fade * 2);
       expect(audio.currentMusic, Music.legendarySting);
 
-      backend.music.last.done.complete(); // sting reached its end
+      backend.music.last.done.complete(); // sting sonuna ulaştı
       await tester.pump();
       await tester.pump(_fade * 2);
       expect(audio.currentMusic, Music.menuLoop);

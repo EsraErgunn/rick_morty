@@ -10,7 +10,7 @@ import '../../../../core/widgets/game_card/card_labels.dart';
 import '../../../../l10n/app_localizations.dart';
 import 'battle_card_slot.dart';
 
-/// A callout in the middle band ("KRİTİK!", "SÜPER ETKİLİ!" …).
+/// Orta banttaki duyuru ("KRİTİK!", "SÜPER ETKİLİ!" …).
 final class BandCue {
   const BandCue(
     this.text, {
@@ -23,10 +23,10 @@ final class BandCue {
   final String text;
   final Color color;
 
-  /// "Pek etkili değil…" is small and grey.
+  /// "Pek etkili değil…" küçük ve gridir.
   final bool small;
 
-  /// The super-effective banner pops with `elasticOut`.
+  /// Süper etkili afişi `elasticOut` ile belirir.
   final bool elastic;
   final int tick;
 
@@ -34,7 +34,7 @@ final class BandCue {
       BandCue(text, color: color, small: small, elastic: elastic, tick: t);
 }
 
-/// What one slot does for an event.
+/// Bir slotun bir olay için yaptığı şey.
 final class SlotCue {
   const SlotCue(this.motion, [this.popup, this.delay = Duration.zero]);
 
@@ -43,8 +43,8 @@ final class SlotCue {
   final Duration delay;
 }
 
-/// How the stage shows one event (SPEC §4.7) and how long it holds the
-/// replay (gap included; a whole turn stays ≤ 1.6 s).
+/// Sahnenin bir olayı nasıl gösterdiği (SPEC §4.7) ve tekrar oynatmayı ne kadar
+/// beklettiği (boşluk dahil; bir tur en fazla 1,6 sn sürer).
 final class BattleCues {
   const BattleCues({
     required this.duration,
@@ -57,14 +57,14 @@ final class BattleCues {
   final Map<(Side, int), SlotCue> slots;
   final BandCue? band;
 
-  /// Screen shake amplitude on impact (0: none).
+  /// Çarpmada ekran sarsıntısı genliği (0: yok).
   final double stageShake;
 
   static const int _team = 3;
 
   static BattleCues of(BattleEvent e, AppLocalizations l10n) => switch (e) {
     TurnStarted() => const BattleCues(duration: AppMotion.fast),
-    // The hit starts while the attacker is still on the target.
+    // Vuruş, saldıran hâlâ hedefin üstündeyken başlar.
     Attacked(:final side, :final attacker) => BattleCues(
       duration: AppMotion.battleAttackImpact,
       slots: {(side, attacker): const SlotCue(SlotMotion.lunge)},
@@ -106,9 +106,9 @@ final class BattleCues {
     BattleEnded(:final result) => _ended(result),
   };
 
-  /// The winners hop one after another, the losers get a defeat cue
-  /// (only Rick's 2.5D card shows it); nothing on a draw. The hold covers
-  /// Rick's reaction.
+  /// Kazananlar birbiri ardına zıplar, kaybedenler bir yenilgi işareti alır
+  /// (yalnızca Rick'in 2.5D kartı gösterir); beraberlikte hiçbir şey yok. Bekleme
+  /// Rick'in tepkisini kapsar.
   static BattleCues _ended(BattleResult result) {
     final winner = switch (result) {
       BattleResult.victory => Side.player,

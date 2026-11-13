@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'rarity.dart';
 
-/// Result of one portal pick [GM §7].
+/// Tek bir portal seçiminin sonucu [GM §7].
 final class PortalPick {
   const PortalPick({
     required this.rolled,
@@ -11,10 +11,10 @@ final class PortalPick {
     required this.isDuplicate,
   });
 
-  /// Rarity from the roll (or the demo override).
+  /// Çekilişten gelen nadirlik (ya da demo zorlaması).
   final Rarity rolled;
 
-  /// Rarity of the character actually given (lower after a step-down).
+  /// Gerçekte verilen karakterin nadirliği (aşağı kayma sonrası daha düşük).
   final Rarity rarity;
   final int characterId;
   final bool isDuplicate;
@@ -25,9 +25,9 @@ final class PortalPick {
       'id: $characterId, duplicate: $isDuplicate)';
 }
 
-/// Portal roll [GM §7, §7.1–§7.3]. Pure Dart; `Random` is always passed in.
+/// Portal çekilişi [GM §7, §7.1–§7.3]. Saf Dart; `Random` her zaman parametre olarak verilir.
 abstract final class PortalRoll {
-  /// Chance per rarity [GM §7].
+  /// Nadirlik başına şans [GM §7].
   static const Map<Rarity, double> chances = {
     Rarity.common: 0.60,
     Rarity.rare: 0.28,
@@ -35,10 +35,10 @@ abstract final class PortalRoll {
     Rarity.legendary: 0.02,
   };
 
-  /// Portals that never give a duplicate [GM §7.1].
+  /// Asla tekrar kart vermeyen portallar [GM §7.1].
   static const int guaranteedNewPortals = 3;
 
-  /// Draws a rarity with [chances] (one `nextDouble`).
+  /// [chances] ile bir nadirlik çeker (bir `nextDouble`).
   static Rarity rollRarity(Random random) {
     final x = random.nextDouble();
     var edge = 0.0;
@@ -46,17 +46,17 @@ abstract final class PortalRoll {
       edge += chances[rarity]!;
       if (x < edge) return rarity;
     }
-    return Rarity.common; // float rounding at 1.0
+    return Rarity.common; // 1.0'da kayan nokta yuvarlaması
   }
 
-  /// Picks the character for one portal.
+  /// Tek bir portal için karakteri seçer.
   ///
-  /// - [forceLegendary] (demo, [GM §7.2]) skips the rarity roll.
-  /// - While [portalsOpened] < 3 only unowned characters are given, stepping
-  ///   down a rarity when one is used up [GM §7.1, §7.3]; if the player owns
-  ///   every character, a normal duplicate from the rolled rarity.
-  /// - Later portals pick uniformly from the rolled rarity (duplicates
-  ///   allowed). An empty rarity pool steps down, then up.
+  /// - [forceLegendary] (demo, [GM §7.2]) nadirlik çekilişini atlar.
+  /// - [portalsOpened] < 3 iken yalnızca sahip olunmayan karakterler verilir; biri
+  ///   tükenince bir nadirlik aşağı kayılır [GM §7.1, §7.3]; oyuncu tüm
+  ///   karakterlere sahipse çekilen nadirlikten normal bir tekrar verilir.
+  /// - Sonraki portallar çekilen nadirlikten eşit şansla seçer (tekrar
+  ///   olabilir). Boş bir nadirlik havuzu önce aşağı, sonra yukarı kayar.
   static PortalPick pick({
     required Map<Rarity, List<int>> pool,
     required Set<int> owned,
@@ -94,7 +94,7 @@ abstract final class PortalRoll {
     );
   }
 
-  /// [from], then each lower rarity (legendary → epic → rare → common).
+  /// [from], sonra her daha düşük nadirlik (efsanevi → epik → nadir → sıradan).
   static Iterable<Rarity> _stepDown(Rarity from) =>
       Rarity.values.reversed.where((r) => r.index <= from.index);
 

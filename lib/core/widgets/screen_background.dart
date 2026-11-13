@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 
 import '../../app/theme/colors.dart';
 
-/// Full-screen art behind a screen (SPEC §5.9, D9). The image covers the
-/// screen (its center stays at the screen center). [scrim] adds a dark
-/// `void` gradient at the top and bottom so text stays readable (owner
-/// request 2026-11-12; the only gradient besides the shaders).
+/// Bir ekranın arkasındaki tam ekran görsel (SPEC §5.9, D9). Görsel ekranı
+/// kaplar (merkezi ekran merkezinde kalır). [scrim] üstte ve altta koyu bir
+/// `void` geçişi ekler, böylece yazı okunur kalır (proje sahibinin
+/// isteği 2026-11-12; shader'lar dışındaki tek geçiş).
 class ScreenBackground extends StatelessWidget {
   const ScreenBackground({
     required this.asset,
@@ -18,7 +18,7 @@ class ScreenBackground extends StatelessWidget {
   final Widget child;
   final bool scrim;
 
-  /// How dark the scrim gets at the very top/bottom, and how far it reaches.
+  /// Örtünün en üstte/altta ne kadar koyulaştığı ve ne kadar uzağa uzandığı.
   static const double scrimAlpha = 0.9;
   static const double scrimReach = 0.3;
 
@@ -55,11 +55,11 @@ class ScreenBackground extends StatelessWidget {
   );
 }
 
-/// Asset paths of the backgrounds (converted by tools/images).
+/// Arka planların görsel dosya yolları (tools/images ile dönüştürüldü).
 abstract final class Backgrounds {
   static const String menu = 'assets/images/menu_bg.webp';
   static const String splash = 'assets/images/splash_bg.webp';
 
-  /// Battle arena: portal, two glowing platforms, cracked alien ground.
+  /// Savaş arenası: portal, iki parlayan platform, çatlamış uzaylı zemini.
   static const String battle = 'assets/images/battle_bg.webp';
 }

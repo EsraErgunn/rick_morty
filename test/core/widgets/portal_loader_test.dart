@@ -5,7 +5,7 @@ import 'package:portalcards/core/widgets/portal/portal_view.dart';
 import 'package:portalcards/core/widgets/portal_loader.dart';
 import 'package:portalcards/core/widgets/shader_cache.dart';
 
-/// Hosts a [PortalLoader] whose `active` flag the test can flip.
+/// `active` işaretini testin değiştirebildiği bir [PortalLoader] barındırır.
 class _Host extends StatefulWidget {
   const _Host({required this.onSettled, this.reduceMotion = false});
 
@@ -100,7 +100,7 @@ void main() {
     expect(_painted, findsOneWidget);
     expect(settled, 0);
 
-    // 100 + 400 + 100 = 600 ms visible, then the 300 ms close.
+    // 100 + 400 + 100 = 600 ms görünür, sonra 300 ms kapanma.
     await tester.pump(const Duration(milliseconds: 100));
     await tester.pump(AppMotion.normal);
     await tester.pump(AppMotion.fast);
@@ -132,7 +132,7 @@ void main() {
       find.descendant(of: loader, matching: find.byType(FadeTransition)),
       findsOneWidget,
     );
-    // Settles (no endless spin); pumpAndSettle would time out otherwise.
+    // Yerleşir (sonsuz dönme yok); aksi hâlde pumpAndSettle zaman aşımına uğrardı.
     await tester.pumpAndSettle();
     expect(tester.hasRunningAnimations, isFalse);
   });
@@ -141,7 +141,7 @@ void main() {
     await pumpHost(tester);
     await tester.pump(AppMotion.loaderShowDelay);
     await tester.pumpWidget(const SizedBox());
-    // A leaked ticker or pending timer fails the test framework here.
+    // Sızan bir ticker ya da bekleyen bir zamanlayıcı burada test çerçevesini başarısız kılar.
   });
 
   testWidgets('with a shader cache the inside is the PortalView (D8)', (

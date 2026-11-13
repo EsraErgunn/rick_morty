@@ -4,7 +4,7 @@ import '../../domain/collection_repository.dart';
 import 'card_detail_event.dart';
 import 'card_detail_state.dart';
 
-/// Card detail (SPEC §2.5): the card, ownership and the deck action.
+/// Kart detayı (SPEC §2.5): kart, sahiplik ve deste işlemi.
 class CardDetailBloc extends Bloc<CardDetailEvent, CardDetailState> {
   CardDetailBloc(this._repository, this._id) : super(const CardDetailState()) {
     on<CardDetailStarted>((event, emit) {

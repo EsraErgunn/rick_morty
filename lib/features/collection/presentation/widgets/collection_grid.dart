@@ -6,10 +6,10 @@ import '../../../../core/widgets/game_card/game_card.dart';
 import '../../../../core/widgets/floating.dart';
 import '../../domain/collection_repository.dart';
 
-/// Hero tag shared by the grid cell and the card detail (SPEC §4.4).
+/// Izgara hücresi ile kart detayının paylaştığı Hero etiketi (SPEC §4.4).
 String cardHeroTag(int id) => 'card-$id';
 
-/// Lazy grid of 3 (SPEC §2.4 AC1, AC5); tap opens the detail.
+/// 3'lü tembel ızgara (SPEC §2.4 AC1, AC5); dokununca detay açılır.
 class CollectionGrid extends StatelessWidget {
   const CollectionGrid({
     required this.entries,

@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../app/theme/colors.dart';
 
-/// Ring burst + flash out of the portal center (burst phase).
+/// Portal merkezinden halka patlaması + parlama (patlama aşaması).
 class BurstPainter extends CustomPainter {
   const BurstPainter({
     required this.progress,
@@ -13,11 +13,11 @@ class BurstPainter extends CustomPainter {
     this.center,
   });
 
-  /// 0 → 1 over the burst (and a little after).
+  /// Patlama boyunca (ve biraz sonra) 0 → 1.
   final double progress;
   final Color color;
 
-  /// Ring center (the portal); defaults to the middle of the canvas.
+  /// Halka merkezi (portal); varsayılan tuvalin ortası.
   final Offset? center;
 
   @override
@@ -50,12 +50,12 @@ class BurstPainter extends CustomPainter {
       old.progress != progress || old.color != color || old.center != center;
 }
 
-/// Soft ink shadow under the falling card. The only blurred shadow outside
-/// the shaders, allowed for the portal scene (SPEC §4.3).
+/// Düşen kartın altında yumuşak mürekkep gölgesi. Shader'lar dışındaki tek
+/// bulanık gölge, portal sahnesi için izinli (SPEC §4.3).
 class CardShadowPainter extends CustomPainter {
   const CardShadowPainter({required this.strength});
 
-  /// 0 (card far) → 1 (card on the floor).
+  /// 0 (kart uzakta) → 1 (kart yerde).
   final double strength;
 
   @override
@@ -78,7 +78,7 @@ class CardShadowPainter extends CustomPainter {
   bool shouldRepaint(CardShadowPainter old) => old.strength != strength;
 }
 
-/// Rarity-color rays behind the card when it flips (rare and up).
+/// Kart çevrilince arkasında nadirlik renginde ışınlar (nadir ve üstü).
 class RarityRaysPainter extends CustomPainter {
   const RarityRaysPainter({required this.progress, required this.color});
 
@@ -116,7 +116,7 @@ class RarityRaysPainter extends CustomPainter {
       old.progress != progress || old.color != color;
 }
 
-/// Gold light sweep over the legendary card back before the flip.
+/// Çevirmeden önce efsanevi kart arka yüzünde altın ışık süpürmesi.
 class GoldSweepPainter extends CustomPainter {
   const GoldSweepPainter({required this.progress});
 

@@ -4,13 +4,13 @@ import 'package:dio/dio.dart';
 
 import '../logging/app_logger.dart';
 
-/// Waits for [duration]. Injected so tests do not sleep.
+/// [duration] kadar bekler. Testler uyumasın diye enjekte edilir.
 typedef Sleep = Future<void> Function(Duration duration);
 
 Future<void> _realSleep(Duration duration) => Future<void>.delayed(duration);
 
-/// Retries 429, 5xx, timeouts and connection errors with exponential backoff
-/// (architecture rules: max 3 retries). Other 4xx are never retried.
+/// 429, 5xx, zaman aşımı ve bağlantı hatalarını üstel geri çekilmeyle tekrar dener
+/// (mimari kurallar: en fazla 3 deneme). Diğer 4xx'ler asla tekrar denenmez.
 class RetryInterceptor extends Interceptor {
   RetryInterceptor({
     required this._dio,
@@ -22,7 +22,7 @@ class RetryInterceptor extends Interceptor {
   static const int defaultMaxRetries = 3;
   static const Duration defaultBaseDelay = Duration(milliseconds: 500);
 
-  /// Upper bound for a server-sent `Retry-After`.
+  /// Sunucunun gönderdiği `Retry-After` için üst sınır.
   static const Duration maxRetryAfter = Duration(seconds: 10);
 
   static const String _attemptKey = 'retry_attempt';
@@ -47,7 +47,7 @@ class RetryInterceptor extends Interceptor {
   static bool _isRetryableStatus(int? status) =>
       status != null && (status == 429 || status >= 500);
 
-  /// 500 ms, 1 s, 2 s, ... or the server's `Retry-After` (capped).
+  /// 500 ms, 1 sn, 2 sn, ... ya da sunucunun `Retry-After` değeri (sınırlı).
   Duration delayFor(int attempt, Response<dynamic>? response) {
     final retryAfter = int.tryParse(
       response?.headers.value('retry-after') ?? '',

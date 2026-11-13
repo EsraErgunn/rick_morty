@@ -4,7 +4,7 @@ import '../../domain/sync_repository.dart';
 import 'sync_event.dart';
 import 'sync_state.dart';
 
-/// Drives the splash: `initial → loading(progress) → success | failure`.
+/// Splash'i yönetir: `initial → loading(progress) → success | failure`.
 class SyncBloc extends Bloc<SyncEvent, SyncState> {
   SyncBloc(this._repository) : super(const SyncState()) {
     on<SyncStarted>(_run);
@@ -14,7 +14,7 @@ class SyncBloc extends Bloc<SyncEvent, SyncState> {
   final SyncRepository _repository;
 
   Future<void> _run(SyncEvent event, Emitter<SyncState> emit) async {
-    // One sync at a time; a second tap or event while running is ignored.
+    // Aynı anda tek senkron; çalışırken ikinci bir dokunuş ya da olay yok sayılır.
     if (state.status == SyncStatus.loading) return;
     emit(SyncState(status: SyncStatus.loading, progress: state.progress));
 

@@ -6,10 +6,10 @@ import 'hive_type_ids.dart';
 
 part 'player_state.g.dart';
 
-// Game state stored in the `player` and `collection` boxes. Field numbers
-// are permanent: add new fields with new numbers, never reuse one.
+// `player` ve `collection` kutularında saklanan oyun durumu. Alan numaraları
+// kalıcıdır: yeni alanları yeni numaralarla ekle, hiçbirini yeniden kullanma.
 
-/// Sound, music and haptics toggles + volumes (SPEC §2.9).
+/// Ses, müzik ve titreşim anahtarları + ses seviyeleri (SPEC §2.9).
 @HiveType(typeId: HiveTypeIds.playerSettings)
 class PlayerSettings extends Equatable {
   const PlayerSettings({
@@ -27,7 +27,7 @@ class PlayerSettings extends Equatable {
   @HiveField(2)
   final bool hapticsEnabled;
 
-  /// 0.0 to 1.0.
+  /// 0.0 ile 1.0 arası.
   @HiveField(3)
   final double sfxVolume;
   @HiveField(4)
@@ -57,7 +57,7 @@ class PlayerSettings extends Equatable {
   ];
 }
 
-/// Everything about the player except the owned cards.
+/// Sahip olunan kartlar dışında oyuncuyla ilgili her şey.
 @HiveType(typeId: HiveTypeIds.playerState)
 class PlayerState extends Equatable {
   const PlayerState({
@@ -84,23 +84,23 @@ class PlayerState extends Equatable {
   @HiveField(1)
   final PlayerSettings settings;
 
-  /// Character ids in the deck, at most 3.
+  /// Destedeki karakter id'leri, en fazla 3.
   @HiveField(2)
   final List<int> deck;
   @HiveField(3)
   final int wins;
 
-  /// All portals ever opened ([GM §7.1] no-duplicate rule).
+  /// Şimdiye kadar açılan tüm portallar ([GM §7.1] tekrar yok kuralı).
   @HiveField(4)
   final int portalsOpened;
   @HiveField(5)
   final bool shakeHintSeen;
 
-  /// The first-launch intro was shown (or skipped) once.
+  /// İlk açılış tanıtımı bir kez gösterildi (ya da geçildi).
   @HiveField(15)
   final bool onboardingSeen;
 
-  /// Episode ids whose album reward was paid.
+  /// Albüm ödülü ödenmiş bölüm id'leri.
   @HiveField(6)
   final List<int> completedAlbums;
   @HiveField(7)
@@ -108,23 +108,23 @@ class PlayerState extends Equatable {
   @HiveField(8)
   final bool forceNextLegendary;
 
-  /// Last completed page per resource (`character`, `episode`, `location`).
+  /// Kaynak başına son tamamlanan sayfa (`character`, `episode`, `location`).
   @HiveField(9)
   final Map<String, int> syncProgress;
 
-  /// `info.count` per resource, saved with the first page (progress totals).
+  /// Kaynak başına `info.count`, ilk sayfayla birlikte kaydedilir (ilerleme toplamları).
   @HiveField(10)
   final Map<String, int> syncTotals;
 
-  /// `info.pages` per resource, saved with the first page.
+  /// Kaynak başına `info.pages`, ilk sayfayla birlikte kaydedilir.
   @HiveField(13)
   final Map<String, int> syncPages;
 
-  /// Id of the last battle whose reward was paid (rewards exactly once).
+  /// Ödülü ödenmiş son savaşın id'si (ödüller tam olarak bir kez).
   @HiveField(14)
   final String? lastBattleId;
 
-  /// Set when a full sync completed; null until then.
+  /// Tam bir senkron bitince dolar; o zamana kadar null.
   @HiveField(11)
   final int? syncVersion;
   @HiveField(12)
@@ -189,7 +189,7 @@ class PlayerState extends Equatable {
   ];
 }
 
-/// One owned character in the `collection` box (key: character id).
+/// `collection` kutusunda sahip olunan bir karakter (anahtar: karakter id'si).
 @HiveType(typeId: HiveTypeIds.ownedCard)
 class OwnedCard extends Equatable {
   const OwnedCard({
@@ -201,7 +201,7 @@ class OwnedCard extends Equatable {
   @HiveField(0)
   final int characterId;
 
-  /// Copies received (duplicates count; merge is a stretch goal).
+  /// Alınan kopyalar (tekrarlar da sayılır; birleştirme ek bir hedef).
   @HiveField(1)
   final int copies;
   @HiveField(2)

@@ -5,7 +5,7 @@ import '../../../../app/theme/motion.dart';
 import '../../../../app/theme/spacing.dart';
 import '../../../../app/theme/typography.dart';
 
-/// One intro page: illustration, short title, one sentence.
+/// Tek bir tanıtım sayfası: çizim, kısa başlık, tek cümle.
 class OnboardingSlide extends StatelessWidget {
   const OnboardingSlide({
     required this.art,
@@ -51,7 +51,7 @@ class OnboardingSlide extends StatelessWidget {
   );
 }
 
-/// Page dots; the current one is a wider pill.
+/// Sayfa noktaları; mevcut olan daha geniş bir haptır.
 class PageDots extends StatelessWidget {
   const PageDots({
     required this.count,
@@ -63,7 +63,7 @@ class PageDots extends StatelessWidget {
   final int count;
   final int current;
 
-  /// Screen reader text ("Sayfa 2 / 4").
+  /// Ekran okuyucu metni ("Sayfa 2 / 4").
   final String label;
 
   @override

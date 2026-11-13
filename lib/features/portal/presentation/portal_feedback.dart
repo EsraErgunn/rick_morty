@@ -5,8 +5,8 @@ import '../../../core/audio/audio_service.dart';
 import '../../../core/game/rarity.dart';
 import '../../../core/haptics/haptics_service.dart';
 
-/// Sound + haptic for every portal moment (SPEC §4.3), in one place so the
-/// page and the reveal scene only say *what* happened.
+/// Her portal anı için ses + titreşim (SPEC §4.3), tek bir yerde; böylece
+/// sayfa ve açılış sahnesi yalnızca *ne* olduğunu söyler.
 class PortalFeedback {
   const PortalFeedback({required this.audio, required this.haptics});
 
@@ -46,7 +46,7 @@ class PortalFeedback {
     }
   }
 
-  /// Featured image settles into its card [GM §12.3].
+  /// Öne çıkan görsel kartına yerleşir [GM §12.3].
   void featureSettle() => unawaited(haptics.play(HapticMoment.cardLand));
 
   void duplicateCoins() {

@@ -6,8 +6,8 @@ import 'package:portalcards/core/errors/failures.dart';
 import 'package:portalcards/features/sync/data/mappers.dart';
 import 'package:portalcards/features/sync/data/remote_data_source.dart';
 
-/// In-memory API with real-like totals, 20 items per page.
-/// [failOnCall] makes that call (1-based, across all resources) fail once.
+/// Gerçeğe benzer toplamlarla bellek içi API, sayfa başına 20 öğe.
+/// [failOnCall] o çağrının (1'den başlar, tüm kaynaklar genelinde) bir kez başarısız olmasını sağlar.
 class FakeSyncRemote implements SyncRemoteDataSource {
   FakeSyncRemote({
     this.characters = 45,
@@ -21,7 +21,7 @@ class FakeSyncRemote implements SyncRemoteDataSource {
   final int locations;
   int? failOnCall;
 
-  /// Every request as `'<resource> <page>'`, in order.
+  /// Her istek `'<resource> <page>'` olarak, sırayla.
   final List<String> calls = [];
 
   static const int pageSize = 20;

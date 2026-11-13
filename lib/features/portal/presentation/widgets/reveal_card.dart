@@ -8,9 +8,9 @@ import '../../../../core/widgets/game_card/card_back.dart';
 import 'reveal_effects.dart';
 import 'reveal_timeline.dart';
 
-/// Where the card is and how it is deformed at timeline point [t]
-/// (SPEC §4.3): emerge (scale 0.1 → 1 with a big overshoot, 2.5 Y turns
-/// plus one in-plane spin), gravity fall, squash.
+/// [t] zaman çizelgesi noktasında kartın nerede olduğu ve nasıl deforme olduğu
+/// (SPEC §4.3): çıkış (büyük bir aşmayla ölçek 0.1 → 1, 2.5 Y dönüşü
+/// artı bir düzlem içi dönüş), yerçekimiyle düşüş, basılma.
 class RevealCardPose {
   const RevealCardPose({
     required this.center,
@@ -46,24 +46,24 @@ class RevealCardPose {
   static const double _minScale = 0.1;
   static const double _turns = 2.5;
 
-  /// Extra size halfway through the emerge: the card bursts out big.
+  /// Çıkışın yarısında ek boyut: kart büyük bir şekilde fırlar.
   static const double _overshoot = 0.45;
 
-  /// In-plane rotation in radians (one turn, unwinding to 0).
+  /// Radyan cinsinden düzlem içi dönüş (bir tur, 0'a geri çözülerek).
   final double spin;
 
   final Offset center;
   final double scale;
 
-  /// Y rotation in radians (0 when facing the viewer).
+  /// Radyan cinsinden Y dönüşü (izleyiciye bakarken 0).
   final double turn;
   final (double, double) squash;
   final bool visible;
 
-  /// 0..1 strength of the floor shadow.
+  /// Zemin gölgesinin 0..1 gücü.
   final double shadow;
 
-  /// Transform for the card box (emerge spin + scale, squash at the bottom).
+  /// Kart kutusu için dönüşüm (çıkış dönüşü + ölçek, altta basılma).
   Matrix4 transform(Size card) {
     final (sx, sy) = squash;
     final bottomShift = card.height / 2 * (1 - sy);
@@ -76,14 +76,14 @@ class RevealCardPose {
   }
 }
 
-/// The card back during the intro: black silhouette for a legendary
-/// (SPEC §4.3), with the gold sweep before its flip.
+/// Giriş sırasında kartın arka yüzü: efsanevi için siyah siluet
+/// (SPEC §4.3), çevrilmeden önce altın süpürme ile.
 class RevealBack extends StatelessWidget {
   const RevealBack({required this.silhouette, required this.sweep, super.key});
 
   final bool silhouette;
 
-  /// 0..1 gold sweep progress (legendary, before the flip).
+  /// 0..1 altın süpürme ilerlemesi (efsanevi, çevirmeden önce).
   final double sweep;
 
   @override

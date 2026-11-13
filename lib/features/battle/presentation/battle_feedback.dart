@@ -7,8 +7,8 @@ import '../../../core/game/card_type.dart';
 import '../../../core/game/featured.dart';
 import '../../../core/haptics/haptics_service.dart';
 
-/// Sound + haptic for every battle moment (SPEC §4.7), driven by the
-/// replayed events so the page only says *what* happened.
+/// Her savaş anı için ses + titreşim (SPEC §4.7); tekrar oynatılan olaylarla
+/// sürülür, böylece sayfa yalnızca *ne* olduğunu söyler.
 class BattleFeedback {
   const BattleFeedback({required this.audio, required this.haptics});
 
@@ -20,17 +20,17 @@ class BattleFeedback {
     unawaited(haptics.play(moment));
   }
 
-  /// Arena music: `battle_loop`, looping, from the pre-battle screen until
-  /// the result (a no-op while it already plays; respects the music toggle).
+  /// Arena müziği: `battle_loop`, döngülü, savaş öncesi ekrandan sonuca
+  /// kadar (zaten çalıyorsa hiçbir şey yapmaz; müzik anahtarına uyar).
   void enter() => unawaited(audio.playMusic(Music.battleLoop));
 
-  /// Result screen: the music stops (the victory/defeat sound plays alone).
+  /// Sonuç ekranı: müzik durur (zafer/yenilgi sesi tek başına çalar).
   void resultShown() => unawaited(audio.stopMusic());
 
-  /// Back to the menu: `menu_loop`.
+  /// Menüye dönüş: `menu_loop`.
   void leave() => unawaited(audio.playMusic(Music.menuLoop));
 
-  /// Attacker / target selection.
+  /// Saldıran / hedef seçimi.
   void select() => _do(Sfx.buttonTap, HapticMoment.buttonTap);
 
   void event(BattleEvent event) {
@@ -76,6 +76,6 @@ class BattleFeedback {
     }
   }
 
-  /// One tick of the coin count-up.
+  /// Coin sayımının bir adımı.
   void coinTick() => _do(Sfx.coin, HapticMoment.coin);
 }

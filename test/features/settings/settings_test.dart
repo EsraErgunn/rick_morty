@@ -24,7 +24,7 @@ import '../../core/storage/hive_test_helper.dart';
 import '../../helpers/cards.dart';
 import '../../helpers/fake_audio.dart';
 
-/// In-memory repository (Hive I/O cannot run inside testWidgets).
+/// Bellek içi repository (Hive G/Ç'si testWidgets içinde çalışamaz).
 class _MemorySettings implements SettingsRepository {
   @override
   PlayerSettings settings = const PlayerSettings();
@@ -205,7 +205,7 @@ void main() {
       await frames(tester, const Duration(milliseconds: 300));
       expect(repo.settings.soundEnabled, isFalse);
       expect(backend.sfx, isEmpty);
-      // Haptics are still on: the toggle still clicks.
+      // Titreşim hâlâ açık: anahtar yine tıklar.
       expect(haptics, contains(HapticKind.selection));
     });
 

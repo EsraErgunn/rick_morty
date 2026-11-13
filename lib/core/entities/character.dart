@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 
-/// A character as the game uses it, mapped from the API.
-/// Card data (rarity, type, stats) is derived from it by `core/game`.
+/// Oyunun kullandığı hâliyle bir karakter, API'den eşlenir.
+/// Kart verisi (nadirlik, tip, istatistikler) `core/game` tarafından bundan türetilir.
 final class Character extends Equatable {
   const Character({
     required this.id,
@@ -21,16 +21,16 @@ final class Character extends Equatable {
   final int id;
   final String name;
 
-  /// API status: `Alive`, `Dead` or `unknown`.
+  /// API durumu: `Alive`, `Dead` veya `unknown`.
   final String status;
   final String species;
 
-  /// API `type` (free text sub-species, often empty).
+  /// API `type` alanı (serbest metin alt tür, çoğu zaman boş).
   final String subtype;
   final String gender;
   final String originName;
 
-  /// Null when the origin is unknown (empty URL in the API).
+  /// Köken bilinmiyorsa null (API'de boş URL).
   final int? originId;
   final String locationName;
   final int? locationId;

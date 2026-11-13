@@ -5,7 +5,7 @@ import '../../../../app/theme/motion.dart';
 import '../../../../app/theme/spacing.dart';
 import '../../../../app/theme/typography.dart';
 
-/// HP bar (SPEC §4.7): tweens over `normal`; yellow at ≤ 50 %, red at ≤ 20 %.
+/// HP çubuğu (SPEC §4.7): `normal` süresince geçiş yapar; ≤ %50'de sarı, ≤ %20'de kırmızı.
 class HpBar extends StatelessWidget {
   const HpBar({required this.hp, required this.maxHp, super.key});
 
@@ -42,7 +42,7 @@ class HpBar extends StatelessWidget {
             alignment: Alignment.centerLeft,
             child: FractionallySizedBox(
               widthFactor: ratio,
-              // Without it the empty fill box collapses to zero height.
+              // Bu olmadan boş dolgu kutusu sıfır yüksekliğe çöker.
               heightFactor: 1,
               child: DecoratedBox(
                 decoration: BoxDecoration(
@@ -56,7 +56,7 @@ class HpBar extends StatelessWidget {
         Text(
           '$hp/$maxHp',
           textAlign: TextAlign.center,
-          // Readable over the arena art.
+          // Arena görselinin üstünde okunur.
           style: AppTypography.caption.copyWith(
             color: AppColors.paper,
             shadows: const [

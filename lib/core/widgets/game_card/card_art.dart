@@ -7,13 +7,13 @@ import '../../../app/theme/spacing.dart';
 import '../../../app/theme/typography.dart';
 import '../../game/rarity.dart';
 
-/// Builds the art for [url]; replaced in widget tests (no network, no
-/// platform cache there).
+/// [url] için görseli kurar; widget testlerinde değiştirilir (orada ağ ve
+/// platform önbelleği yok).
 typedef ArtBuilder = Widget Function(String url, String name);
 
-/// Character artwork: `CachedNetworkImage` with a placeholder while loading
-/// and, if the image cannot be loaded, the name's initial on the rarity
-/// color (CLAUDE.md image rule), so a card never looks empty.
+/// Karakter görseli: yüklenirken yer tutuculu `CachedNetworkImage`;
+/// görsel yüklenemezse nadirlik renginde ismin baş harfi
+/// (CLAUDE.md görsel kuralı), böylece bir kart asla boş görünmez.
 class CardArt extends StatelessWidget {
   const CardArt({
     required this.url,
@@ -26,7 +26,7 @@ class CardArt extends StatelessWidget {
   final String name;
   final Rarity rarity;
 
-  /// Test hook: when set, used instead of the network image.
+  /// Test kancası: ayarlıysa ağ görseli yerine kullanılır.
   @visibleForTesting
   static ArtBuilder? debugArtBuilder;
 
@@ -43,8 +43,8 @@ class CardArt extends StatelessWidget {
   }
 }
 
-/// Offline / missing art: the name's first letter in a rarity-colored
-/// disc with an ink outline, and the name below.
+/// Çevrimdışı / eksik görsel: mürekkep dış çizgili, nadirlik renginde bir
+/// dairede ismin ilk harfi ve altında isim.
 class InitialArt extends StatelessWidget {
   const InitialArt({required this.name, required this.rarity, super.key});
 

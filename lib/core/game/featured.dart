@@ -1,25 +1,25 @@
-/// Featured characters [GM §12]: same rarity, type, stats and portal
-/// chances as everyone; they add a frame, a signature ability (battle,
-/// Week 3) and an entrance cinematic.
+/// Öne çıkan karakterler [GM §12]: herkesle aynı nadirlik, tip, istatistik ve portal
+/// şansı; bunlara bir çerçeve, bir özel yetenek (savaş,
+/// 3. hafta) ve bir giriş sinematiği eklenir.
 enum Signature {
-  /// Rick: crit chance 20 % instead of 10 %; crit shows "DAHİ!".
+  /// Rick: kritik şansı %10 yerine %20; kritikte "DAHİ!" gösterilir.
   genius,
 
-  /// Morty: first time HP ≤ 30 %, next attack ×1.5 (once).
+  /// Morty: HP ilk kez ≤ %30 olunca sonraki saldırı ×1.5 (bir kez).
   awJeez,
 
-  /// Summer: when an ally faints, ATK ×1.2 for the rest (once).
+  /// Summer: bir takım arkadaşı bayılınca geri kalan sürede ATK ×1.2 (bir kez).
   teamSpirit,
 
-  /// Mr. Meeseeks: on a KO, heal 20 % of max HP (once).
+  /// Mr. Meeseeks: rakibi bayıltınca en yüksek HP'nin %20'si kadar iyileşir (bir kez).
   missionComplete,
 
-  /// Pickle Rick: the first attack received deals ×0.5.
+  /// Pickle Rick: aldığı ilk saldırı ×0.5 hasar verir.
   pickleArmor,
 }
 
-/// Approved numbers [GM §12.2] (owner, 2026-11-12). Used by the battle
-/// engine in Week 3.
+/// Onaylanan sayılar [GM §12.2] (proje sahibi, 2026-11-12). 3. haftada savaş
+/// motoru tarafından kullanılır.
 abstract final class SignatureRules {
   static const double geniusCritChance = 0.20;
   static const double awJeezHpFraction = 0.30;
@@ -29,8 +29,9 @@ abstract final class SignatureRules {
   static const double pickleArmorMultiplier = 0.5;
 }
 
+/// Öne çıkan karakterlerin listesi ve sorgulama yardımcıları [GM §12].
 abstract final class Featured {
-  /// API id → signature (MVP: 5 characters).
+  /// API id → özel yetenek (MVP: 5 karakter).
   static const Map<int, Signature> byId = {
     1: Signature.genius,
     2: Signature.awJeez,

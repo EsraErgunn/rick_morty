@@ -4,7 +4,7 @@ import '../../game/featured.dart';
 import '../../game/passives.dart';
 import '../../game/rarity.dart';
 
-/// Turkish names of game enums (UI text comes only from l10n).
+/// Oyun enum'larının Türkçe isimleri (arayüz metni yalnızca l10n'dan gelir).
 extension CardLabels on AppLocalizations {
   String rarityName(Rarity rarity) => switch (rarity) {
     Rarity.common => rarityCommon,
@@ -22,7 +22,7 @@ extension CardLabels on AppLocalizations {
     CardType.neutral => typeNeutral,
   };
 
-  /// Null for [Passive.none] (nothing is shown).
+  /// [Passive.none] için null (hiçbir şey gösterilmez).
   String? passiveName(Passive passive) => switch (passive) {
     Passive.none => null,
     Passive.zombie => passiveZombie,

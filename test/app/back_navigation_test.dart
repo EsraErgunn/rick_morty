@@ -12,7 +12,7 @@ void main() {
 
   setUp(() => taps = 0);
 
-  /// A stand-in page with the same back button the real pages use.
+  /// Gerçek sayfaların kullandığı geri butonuyla aynı butona sahip yedek bir sayfa.
   Widget page(String name) => Scaffold(
     appBar: AppBar(
       leading: AppBackButton(onFeedback: () => taps++),
@@ -39,7 +39,7 @@ void main() {
     return router;
   }
 
-  /// Screen → the screen its back button (and Android back) returns to.
+  /// Ekran → geri butonunun (ve Android geri tuşunun) döndüğü ekran.
   final parents = <String, String>{
     AppRoutes.portal: AppRoutes.menu,
     AppRoutes.collection: AppRoutes.menu,

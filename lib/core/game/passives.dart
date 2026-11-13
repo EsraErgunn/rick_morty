@@ -1,19 +1,19 @@
 import 'dart:math';
 
-/// Passive ability from the API `status` [GM §5].
-/// UI names: zombie = "Zombi", uncertain = "Belirsiz" (from l10n).
+/// API `status` alanından pasif yetenek [GM §5].
+/// Arayüz isimleri: zombie = "Zombi", uncertain = "Belirsiz" (l10n'dan).
 enum Passive {
-  /// Alive: no passive.
+  /// Canlı: pasif yok.
   none,
 
-  /// Dead: once per battle, revives at 30% max HP when HP drops to 0.
+  /// Ölü: savaşta bir kez, HP 0'a düşünce en yüksek HP'nin %30'u ile dirilir.
   zombie,
 
-  /// unknown: each attack deals ×1.2 or ×0.8 damage, 50/50.
+  /// Bilinmiyor: her saldırı yarı yarıya ×1.2 veya ×0.8 hasar verir.
   uncertain;
 
-  /// Maps an API status string. Anything other than Dead / unknown is
-  /// treated as Alive.
+  /// Bir API durum metnini eşler. Dead / unknown dışındaki her şey
+  /// Canlı sayılır.
   static Passive fromStatus(String status) =>
       switch (status.trim().toLowerCase()) {
         'dead' => zombie,
@@ -22,20 +22,20 @@ enum Passive {
       };
 }
 
-/// Formulas for the passives. Randomness is always passed in.
+/// Pasiflerin formülleri. Rastgelelik her zaman parametre olarak verilir.
 abstract final class Passives {
   static const double zombieReviveFraction = 0.30;
   static const double uncertainChance = 0.5;
   static const double uncertainHigh = 1.2;
   static const double uncertainLow = 0.8;
 
-  /// HP a Zombi card comes back with: 30% of [maxHp], rounded, at least 1.
+  /// Zombi kartın geri döndüğü HP: [maxHp]'nin %30'u, yuvarlanmış, en az 1.
   static int zombieReviveHp(int maxHp) =>
       max(1, (maxHp * zombieReviveFraction).round());
 
-  /// Damage multiplier for one attack by a card with [passive].
-  /// Only [Passive.uncertain] uses [random]; the others return 1.0 without
-  /// drawing from it, so they do not shift the battle's random sequence.
+  /// [passive] pasifine sahip bir kartın tek saldırısı için hasar çarpanı.
+  /// Yalnızca [Passive.uncertain] [random] kullanır; diğerleri ondan çekmeden
+  /// 1.0 döndürür, böylece savaşın rastgele sayı dizisini kaydırmazlar.
   static double attackMultiplier(Passive passive, Random random) =>
       switch (passive) {
         Passive.uncertain =>

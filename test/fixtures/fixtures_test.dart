@@ -3,7 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'fixtures.dart';
 
 void main() {
-  /// id → (name, episode count, species, status) as returned by the API.
+  /// id → (isim, bölüm sayısı, tür, durum), API'nin döndürdüğü hâliyle.
   const expected = <int, (String, int, String, String)>{
     1: ('Rick Sanchez', 51, 'Human', 'Alive'),
     2: ('Morty Smith', 51, 'Human', 'Alive'),

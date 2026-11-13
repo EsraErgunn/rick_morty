@@ -8,8 +8,8 @@ import '../../../../core/images/image_download_controller.dart';
 import '../../../../core/images/image_precacher.dart';
 import '../../../../l10n/app_localizations.dart';
 
-/// "Tüm görselleri çevrimdışı için indir" (SPEC §2.9 AC5): start, progress
-/// `%X · done/total`, Durdur, resume, "İndirildi".
+/// "Tüm görselleri çevrimdışı için indir" (SPEC §2.9 AC5): başlat, ilerleme
+/// `%X · done/total`, Durdur, devam et, "İndirildi".
 class ImageDownloadTile extends StatelessWidget {
   const ImageDownloadTile({
     required this.controller,
@@ -20,7 +20,7 @@ class ImageDownloadTile extends StatelessWidget {
 
   final ImageDownloadController controller;
 
-  /// Every character image (read when the user starts).
+  /// Tüm karakter görselleri (kullanıcı başlatınca okunur).
   final List<String> Function() urls;
   final UiFeedback feedback;
 

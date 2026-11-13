@@ -7,7 +7,7 @@ import '../../../../app/theme/typography.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../domain/sync_repository.dart';
 
-/// Progress while syncing: status line, bar, percentage and item counter.
+/// Senkron sırasında ilerleme: durum satırı, çubuk, yüzde ve öğe sayacı.
 class SyncProgressView extends StatelessWidget {
   const SyncProgressView({required this.progress, super.key});
 
@@ -56,7 +56,7 @@ class SyncProgressView extends StatelessWidget {
   }
 }
 
-/// Failure: what happened + "Tekrar dene" (SPEC §2.1 AC3).
+/// Hata: ne olduğu + "Tekrar dene" (SPEC §2.1 AC3).
 class SyncErrorView extends StatelessWidget {
   const SyncErrorView({
     required this.connectionProblem,

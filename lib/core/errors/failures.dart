@@ -1,28 +1,28 @@
 import 'package:equatable/equatable.dart';
 
-/// Every error that reaches a repository caller. Repositories return
-/// `Either<Failure, T>`; no exception crosses into the UI.
+/// Bir repository çağıranına ulaşan her hata. Repository'ler
+/// `Either<Failure, T>` döndürür; hiçbir istisna arayüze geçmez.
 sealed class Failure extends Equatable {
   const Failure(this.message);
 
-  /// Developer-facing detail for logs. The UI shows its own l10n text.
+  /// Loglar için geliştiriciye yönelik ayrıntı. Arayüz kendi l10n metnini gösterir.
   final String message;
 
   @override
   List<Object?> get props => [message];
 }
 
-/// No connection, DNS failure, TLS problem.
+/// Bağlantı yok, DNS hatası, TLS sorunu.
 final class NetworkFailure extends Failure {
   const NetworkFailure([super.message = 'network']);
 }
 
-/// Connect, send or receive timeout (after retries).
+/// Bağlanma, gönderme veya alma zaman aşımı (tekrar denemelerden sonra).
 final class TimeoutFailure extends Failure {
   const TimeoutFailure([super.message = 'timeout']);
 }
 
-/// HTTP 429 or 5xx after retries.
+/// Tekrar denemelerden sonra HTTP 429 veya 5xx.
 final class ServerFailure extends Failure {
   const ServerFailure(this.statusCode, [super.message = 'server']);
 
@@ -32,7 +32,7 @@ final class ServerFailure extends Failure {
   List<Object?> get props => [message, statusCode];
 }
 
-/// HTTP 4xx other than 429 (never retried).
+/// 429 dışındaki HTTP 4xx (asla tekrar denenmez).
 final class ClientFailure extends Failure {
   const ClientFailure(this.statusCode, [super.message = 'client']);
 
@@ -42,22 +42,22 @@ final class ClientFailure extends Failure {
   List<Object?> get props => [message, statusCode];
 }
 
-/// A response or stored record had an unexpected shape.
+/// Bir yanıt ya da kayıt beklenmeyen biçimdeydi.
 final class ParseFailure extends Failure {
   const ParseFailure([super.message = 'parse']);
 }
 
-/// Reading or writing local storage failed.
+/// Yerel depolamaya okuma veya yazma başarısız oldu.
 final class StorageFailure extends Failure {
   const StorageFailure([super.message = 'storage']);
 }
 
-/// Anything not covered above.
+/// Yukarıdakilerin kapsamadığı her şey.
 final class UnexpectedFailure extends Failure {
   const UnexpectedFailure([super.message = 'unexpected']);
 }
 
-/// A purchase needs more coins than the player has (nothing changed).
+/// Bir satın alma, oyuncunun sahip olduğundan fazla coin gerektiriyor (hiçbir şey değişmedi).
 final class NotEnoughCoinsFailure extends Failure {
   const NotEnoughCoinsFailure(this.needed, this.balance)
     : super('not enough coins');
@@ -69,13 +69,13 @@ final class NotEnoughCoinsFailure extends Failure {
   List<Object?> get props => [message, needed, balance];
 }
 
-/// The deck already has 3 cards (SPEC assumption 2); nothing changed.
+/// Destede zaten 3 kart var (SPEC varsayım 2); hiçbir şey değişmedi.
 final class DeckFullFailure extends Failure {
   const DeckFullFailure() : super('deck full');
 }
 
-/// A battle move that the rules do not allow (fainted card, wrong side,
-/// not your turn, battle over). Nothing changed.
+/// Kuralların izin vermediği bir savaş hamlesi (bayılmış kart, yanlış taraf,
+/// sıra sende değil, savaş bitti). Hiçbir şey değişmedi.
 final class InvalidMoveFailure extends Failure {
   const InvalidMoveFailure([super.message = 'invalid move']);
 }

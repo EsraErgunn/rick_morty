@@ -2,7 +2,7 @@ import 'package:equatable/equatable.dart';
 
 import '../../../core/cards/game_card_data.dart';
 
-/// One episode page of the album [GM §9]: `owned / total` characters.
+/// Albümün tek bir bölüm sayfası [GM §9]: `owned / total` karakter.
 final class AlbumEpisode extends Equatable {
   const AlbumEpisode({
     required this.id,
@@ -20,7 +20,7 @@ final class AlbumEpisode extends Equatable {
   final int owned;
   final int total;
 
-  /// Season number from the code (`S03E07` → 3); 0 if the code is odd.
+  /// Koddan sezon numarası (`S03E07` → 3); kod tuhafsa 0.
   int get season =>
       int.tryParse(code.length >= 3 ? code.substring(1, 3) : '') ?? 0;
 
@@ -30,7 +30,7 @@ final class AlbumEpisode extends Equatable {
   List<Object?> get props => [id, code, name, owned, total];
 }
 
-/// One character on an episode page: art when owned, a silhouette if not.
+/// Bir bölüm sayfasındaki tek karakter: sahip olunduysa görsel, değilse siluet.
 final class AlbumMember extends Equatable {
   const AlbumMember({required this.card, required this.owned});
 
@@ -41,7 +41,7 @@ final class AlbumMember extends Equatable {
   List<Object?> get props => [card, owned];
 }
 
-/// An album reward that was just paid ([GM §8]: once per episode).
+/// Az önce ödenen bir albüm ödülü ([GM §8]: bölüm başına bir kez).
 final class AlbumReward extends Equatable {
   const AlbumReward({required this.code, required this.coins});
 
@@ -52,19 +52,20 @@ final class AlbumReward extends Equatable {
   List<Object?> get props => [code, coins];
 }
 
+/// Albüm ekranlarının veri kaynağı: bölümler, karakterler ve sayfa ödülleri.
 abstract interface class AlbumRepository {
-  /// Every episode, sorted by code (`S01E01` first).
+  /// Koda göre sıralanmış tüm bölümler (önce `S01E01`).
   List<AlbumEpisode> episodes();
 
   AlbumEpisode? episode(int id);
 
-  /// The episode's characters in API order.
+  /// API sırasıyla bölümün karakterleri.
   List<AlbumMember> members(int episodeId);
 
-  /// Pays the reward for every complete episode not paid yet and returns
-  /// what was paid (empty if nothing). Never pays an episode twice.
+  /// Henüz ödenmemiş her tamamlanmış bölümün ödülünü öder ve
+  /// ödenenleri döndürür (hiçbir şey yoksa boş). Bir bölümü asla iki kez ödemez.
   Future<List<AlbumReward>> claimCompleted();
 
-  /// Fires whenever cards, coins or paid albums change.
+  /// Kartlar, coin'ler veya ödenen albümler her değiştiğinde tetiklenir.
   Stream<void> get changes;
 }

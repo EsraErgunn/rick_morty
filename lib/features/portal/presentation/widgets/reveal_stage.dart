@@ -17,9 +17,9 @@ import 'reveal_card.dart';
 import 'reveal_effects.dart';
 import 'reveal_timeline.dart';
 
-/// One frame of the full reveal (SPEC §4.3): portal, burst, shadow, rays,
-/// the moving card and the tap hint, laid out for the available space.
-/// Stateless: `RevealScene` owns the controllers and passes their values.
+/// Tam açılışın tek karesi (SPEC §4.3): portal, patlama, gölge, ışınlar,
+/// hareket eden kart ve dokunma ipucu, mevcut alana göre yerleştirilmiş.
+/// Durumsuz: denetleyicilerin sahibi `RevealScene`'dir ve değerlerini aktarır.
 class RevealStage extends StatelessWidget {
   const RevealStage({
     required this.timeline,
@@ -42,13 +42,13 @@ class RevealStage extends StatelessWidget {
 
   final RevealTimeline timeline;
 
-  /// Intro progress 0..1.
+  /// Giriş ilerlemesi 0..1.
   final double t;
 
-  /// Hover bob phase 0..1 (after landing).
+  /// Havada sallanma fazı 0..1 (indikten sonra).
   final double hover;
 
-  /// Rarity rays progress 0..1 (after the flip).
+  /// Nadirlik ışınları ilerlemesi 0..1 (çevirmeden sonra).
   final double rays;
   final bool landed;
   final bool flipping;
@@ -57,18 +57,18 @@ class RevealStage extends StatelessWidget {
   final Rarity rarity;
   final ShaderCache shaders;
 
-  /// The flip card (back first).
+  /// Çevrilebilir kart (önce arka yüz).
   final Widget card;
   final VoidCallback onTap;
 
-  /// Featured entrance [GM §12.3]: the card whose image drops in.
+  /// Öne çıkan giriş [GM §12.3]: görseli içine düşen kart.
   final GameCardData? featured;
 
-  /// 0..1 progress of the image drop.
+  /// Görsel düşüşünün 0..1 ilerlemesi.
   final double drop;
   final bool showCallout;
 
-  /// Share of [drop] spent falling; the rest is squash and settle.
+  /// [drop] süresinin düşüşe ayrılan payı; gerisi basılma ve yerleşme.
   static const double _dropFall = 0.6;
   static const double _dropStartScale = 0.4;
 
@@ -154,8 +154,8 @@ class RevealStage extends StatelessWidget {
                   alignment: Alignment.center,
                   transform: pose.transform(cardSize),
                   child: GestureDetector(
-                    // The card inside ignores pointers (it flips only when
-                    // allowed), so this detector catches the taps itself.
+                    // İçerideki kart dokunuşları yok sayar (yalnızca izin verildiğinde
+                    // çevrilir), bu yüzden bu algılayıcı dokunuşları kendisi yakalar.
                     behavior: HitTestBehavior.opaque,
                     onTap: onTap,
                     child: IgnorePointer(child: card),
@@ -207,7 +207,7 @@ class RevealStage extends StatelessWidget {
     },
   );
 
-  /// The character image falling from the portal into the art window.
+  /// Portaldan görsel penceresine düşen karakter görseli.
   Widget _droppingArt(
     GameCardData card, {
     required Offset from,

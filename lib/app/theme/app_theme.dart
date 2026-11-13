@@ -5,7 +5,7 @@ import 'motion.dart';
 import 'spacing.dart';
 import 'typography.dart';
 
-/// The single dark theme of the app, built only from tokens.
+/// Uygulamanın tek koyu teması, yalnızca token'lardan kurulur.
 abstract final class AppTheme {
   static const ColorScheme _scheme = ColorScheme(
     brightness: Brightness.dark,

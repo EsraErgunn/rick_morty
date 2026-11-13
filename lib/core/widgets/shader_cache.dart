@@ -4,11 +4,11 @@ import 'dart:ui' as ui;
 import '../../app/theme/motion.dart';
 import '../logging/app_logger.dart';
 
-/// Loads a fragment program from an asset path.
+/// Bir görsel dosya yolundan fragment programı yükler.
 typedef ProgramLoader = Future<ui.FragmentProgram> Function(String asset);
 
-/// Draws a program once off screen, so its GPU pipeline is compiled before
-/// the first visible frame needs it.
+/// Bir programı ekran dışında bir kez çizer, böylece GPU hattı ilk görünür
+/// kare ona ihtiyaç duymadan önce derlenir.
 typedef ProgramWarmer = Future<void> Function(ui.FragmentProgram program);
 
 Future<ui.FragmentProgram> _fromAsset(String asset) =>
@@ -32,22 +32,22 @@ Future<void> _drawOnce(ui.FragmentProgram program) async {
   }
 }
 
-/// `--dart-define=DISABLE_SHADERS=true` (debug/profile only): every shader
-/// widget draws its static fallback. A diagnosis switch for devices (or
-/// emulators) whose GPU chokes on the shaders.
+/// `--dart-define=DISABLE_SHADERS=true` (yalnızca debug/profile): her shader
+/// widget'ı statik yedeğini çizer. GPU'su shader'larda tıkanan cihazlar (ya da
+/// emülatörler) için bir teşhis anahtarı.
 const bool disableShadersDefine = bool.fromEnvironment('DISABLE_SHADERS');
 
-/// Release builds always use the shaders.
+/// Release derlemeler her zaman shader'ları kullanır.
 bool shadersDisabled({
   required bool isRelease,
   bool requested = disableShadersDefine,
 }) => !isRelease && requested;
 
-/// Loads the app's fragment programs once per run and keeps them
-/// (animation rules: load once, never in `build`). Each program is warmed
-/// up off screen; a program that fails, or does not load and warm up within
-/// [AppMotion.shaderLoadLimit], stays null and its widget draws a
-/// non-shader fallback, so a slow GPU can never freeze the app.
+/// Uygulamanın fragment programlarını her çalıştırmada bir kez yükler ve tutar
+/// (animasyon kuralları: bir kez yükle, asla `build` içinde değil). Her program ekran
+/// dışında ısıtılır; başarısız olan ya da [AppMotion.shaderLoadLimit] içinde yüklenip
+/// ısınmayan bir program null kalır ve widget'ı shader'sız bir yedek
+/// çizer, böylece yavaş bir GPU uygulamayı asla donduramaz.
 class ShaderCache {
   ShaderCache({
     this._loader = _fromAsset,
@@ -64,23 +64,23 @@ class ShaderCache {
   final ProgramWarmer _warmer;
   final Duration _limit;
 
-  /// False = never load; every widget uses its fallback (DISABLE_SHADERS).
+  /// False = asla yükleme; her widget yedeğini kullanır (DISABLE_SHADERS).
   final bool enabled;
   final Map<String, ui.FragmentProgram> _programs = {};
   final Set<String> _failed = {};
   Future<void>? _loading;
 
-  /// Card holo foil (`holo.frag`), null until loaded or if it failed.
+  /// Kart holo folyosu (`holo.frag`), yüklenene kadar ya da başarısız olduysa null.
   ui.FragmentProgram? get holo => _programs[holoAsset];
 
-  /// Portal vortex (`portal.frag`), null until loaded or if it failed.
+  /// Portal girdabı (`portal.frag`), yüklenene kadar ya da başarısız olduysa null.
   ui.FragmentProgram? get portal => _programs[portalAsset];
 
   bool get failed => _failed.isNotEmpty;
 
   bool failedFor(String asset) => _failed.contains(asset);
 
-  /// Safe to call many times; loads each program only once.
+  /// Defalarca çağrılabilir; her programı yalnızca bir kez yükler.
   Future<void> load() => _loading ??= _loadAll();
 
   Future<void> _loadAll() async {

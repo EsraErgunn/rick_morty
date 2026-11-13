@@ -2,7 +2,7 @@ import 'dart:developer' as developer;
 
 import 'package:flutter/foundation.dart';
 
-/// Signature of the log output. Defaults to `dart:developer` `log`.
+/// Log çıktısının imzası. Varsayılan `dart:developer` `log`.
 typedef LogSink = void Function(
   String message, {
   required String name,
@@ -18,8 +18,8 @@ void _developerSink(
   Object? error,
   StackTrace? stackTrace,
 }) {
-  // debugPrint reaches logcat / the run console (dart:developer `log` only
-  // reaches DevTools); this sink only runs in debug builds.
+  // debugPrint logcat'e / çalıştırma konsoluna ulaşır (dart:developer `log` yalnızca
+  // DevTools'a ulaşır); bu çıktı yalnızca debug derlemelerde çalışır.
   debugPrint('[$name] $message${error == null ? '' : ' | $error'}');
   developer.log(
     message,
@@ -30,10 +30,10 @@ void _developerSink(
   );
 }
 
-/// The only logger in the app. Writes in debug builds only; a no-op in
-/// release and profile. Never log API payloads or player data (L1 rules).
+/// Uygulamadaki tek logger. Yalnızca debug derlemelerde yazar; release ve
+/// profile'da hiçbir şey yapmaz. API verilerini veya oyuncu verilerini asla loglama (L1 kuralları).
 abstract final class AppLogger {
-  /// Off outside debug builds. Tests may override.
+  /// Debug dışında kapalı. Testler değiştirebilir.
   @visibleForTesting
   static bool enabled = kDebugMode;
 
@@ -42,7 +42,7 @@ abstract final class AppLogger {
 
   static const String _name = 'portalcards';
 
-  // Levels follow package:logging (dart:developer convention).
+  // Seviyeler package:logging'i izler (dart:developer geleneği).
   static const int _debug = 500;
   static const int _info = 800;
   static const int _warning = 900;
@@ -74,7 +74,7 @@ abstract final class AppLogger {
     );
   }
 
-  /// Restores the defaults after a test changed them.
+  /// Bir test değiştirdikten sonra varsayılanları geri yükler.
   @visibleForTesting
   static void reset() {
     enabled = kDebugMode;

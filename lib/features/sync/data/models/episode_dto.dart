@@ -1,6 +1,6 @@
 import 'json_reader.dart';
 
-/// `/episode` item as returned by the API.
+/// API'nin döndürdüğü hâliyle `/episode` öğesi.
 class EpisodeDto {
   const EpisodeDto({
     required this.id,
@@ -10,7 +10,7 @@ class EpisodeDto {
     required this.characterIds,
   });
 
-  /// Throws [FormatException] for a malformed item.
+  /// Bozuk bir öğe için [FormatException] fırlatır.
   factory EpisodeDto.fromJson(Map<String, dynamic> json) => EpisodeDto(
     id: json.field<int>('id'),
     name: json.field<String>('name'),
@@ -23,7 +23,7 @@ class EpisodeDto {
   final String name;
   final String airDate;
 
-  /// Code like `S01E01`.
+  /// `S01E01` gibi kod.
   final String episode;
   final List<int> characterIds;
 }

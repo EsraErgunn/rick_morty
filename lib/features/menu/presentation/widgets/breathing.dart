@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../../../../app/theme/motion.dart';
 
-/// Gentle scale loop 1.0 ↔ 1.04 (SPEC §4.2: the only animated call to
-/// action, used while the collection is empty). Off with reduced motion.
+/// Hafif ölçek döngüsü 1.0 ↔ 1.04 (SPEC §4.2: tek canlandırılmış eylem
+/// çağrısı, koleksiyon boşken kullanılır). Azaltılmış harekette kapalı.
 class Breathing extends StatefulWidget {
   const Breathing({required this.active, required this.child, super.key});
 

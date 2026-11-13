@@ -11,8 +11,8 @@ import '../bloc/album_bloc.dart';
 import '../bloc/album_state.dart';
 import '../widgets/episode_tile.dart';
 
-/// Episode album [GM §9]: seasons, each episode with `owned/total`.
-/// Announces paid page rewards. Expects an [AlbumBloc] above it.
+/// Bölüm albümü [GM §9]: sezonlar, her bölüm `owned/total` ile.
+/// Ödenen sayfa ödüllerini duyurur. Üstünde bir [AlbumBloc] bekler.
 class AlbumPage extends StatelessWidget {
   const AlbumPage({required this.feedback, required this.onOpen, super.key});
 

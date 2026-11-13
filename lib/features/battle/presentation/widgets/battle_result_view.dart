@@ -9,8 +9,8 @@ import '../../../../core/game/battle_model.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../domain/battle_repository.dart';
 
-/// Result (SPEC §4.7): "Kazandın!" / "Kaybettin" / "Berabere" pops in, the
-/// reward counts up, tier-up note, then "Yeni savaş" / "Menüye dön".
+/// Sonuç (SPEC §4.7): "Kazandın!" / "Kaybettin" / "Berabere" belirir,
+/// ödül sayılarak artar, kademe atlama notu, sonra "Yeni savaş" / "Menüye dön".
 class BattleResultView extends StatelessWidget {
   const BattleResultView({
     required this.result,

@@ -4,7 +4,7 @@ import '../../../app/theme/card_style.dart';
 import '../../../app/theme/colors.dart';
 import '../../../app/theme/spacing.dart';
 
-/// Card outline: rounded corners, or notched corners for epic/legendary.
+/// Kart dış çizgisi: yuvarlak köşeler ya da epik/efsanevi için kesik köşeler.
 Path cardShape(Rect rect, {required double notch}) {
   if (notch <= 0) {
     return Path()..addRRect(
@@ -23,9 +23,9 @@ Path cardShape(Rect rect, {required double notch}) {
     ..close();
 }
 
-/// Paints the rarity frame (SPEC §5.5): colored band with an ink outline,
-/// the body area in `voidRaised`, and the rare inner `paper` line.
-/// [bodyTop] is where the body starts (below the name plate).
+/// Nadirlik çerçevesini çizer (SPEC §5.5): mürekkep dış çizgili renkli bant,
+/// `voidRaised` renginde gövde alanı ve nadir kartın iç `paper` çizgisi.
+/// [bodyTop] gövdenin başladığı yerdir (isim plakasının altı).
 class RarityFramePainter extends CustomPainter {
   const RarityFramePainter({
     required this.style,
@@ -36,7 +36,7 @@ class RarityFramePainter extends CustomPainter {
   final RarityStyle style;
   final double bodyTop;
 
-  /// Featured characters get a portal-green inner line [GM §12.1].
+  /// Öne çıkan karakterler portal yeşili bir iç çizgi alır [GM §12.1].
   final bool featured;
 
   Rect bodyRect(Size size) => Rect.fromLTRB(
@@ -102,7 +102,7 @@ class RarityFramePainter extends CustomPainter {
       old.style != style || old.bodyTop != bodyTop || old.featured != featured;
 }
 
-/// Legendary emblem: a small portal ring (SPEC §5.5).
+/// Efsanevi amblem: küçük bir portal halkası (SPEC §5.5).
 class PortalEmblem extends StatelessWidget {
   const PortalEmblem({super.key});
 
@@ -122,7 +122,7 @@ class PortalEmblem extends StatelessWidget {
   );
 }
 
-/// Featured badge: Material `stars` in ink on a portal disc [GM §12.1].
+/// Öne çıkan rozeti: portal dairesi üzerinde mürekkep renginde Material `stars` [GM §12.1].
 class FeaturedBadge extends StatelessWidget {
   const FeaturedBadge({super.key});
 

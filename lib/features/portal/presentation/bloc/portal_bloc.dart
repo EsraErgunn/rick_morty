@@ -5,10 +5,10 @@ import '../../domain/portal_repository.dart';
 import 'portal_event.dart';
 import 'portal_state.dart';
 
-/// Portal screen flow (SPEC §2.3). The result is saved by the repository
-/// before the state turns to `revealing`, so the animation can never lose
-/// a card or refund coins (AC8). Sounds and haptics are side effects of
-/// state changes and scene beats, handled by the page's listeners.
+/// Portal ekranı akışı (SPEC §2.3). Sonuç, durum `revealing` olmadan önce
+/// repository tarafından kaydedilir, böylece animasyon asla kart kaybettiremez
+/// ya da coin iade ettiremez (AC8). Sesler ve titreşimler durum değişikliklerinin
+/// ve sahne vuruşlarının yan etkileridir, sayfanın dinleyicileri tarafından işlenir.
 class PortalBloc extends Bloc<PortalEvent, PortalState> {
   PortalBloc(this._repository) : super(const PortalState()) {
     on<PortalStarted>(_onStarted);

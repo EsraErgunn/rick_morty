@@ -1,8 +1,8 @@
-// Portal vortex (animation rules: uniforms uTime, uSize, uIntensity, uColor).
-//   uIntensity: 0.15 idle, rises to 1.0 while charging / opening (SPEC §2.3 AC5)
-//   uColor: portal green, or danger red for a legendary
-// The portal is the only glowing element in the app (SPEC §5.1).
-// Output is premultiplied; transparent outside the glow.
+// Portal girdabı (animasyon kuralları: uTime, uSize, uIntensity, uColor uniform'ları).
+//   uIntensity: boşta 0.15, şarj / açılış sırasında 1.0'a çıkar (SPEC §2.3 AC5)
+//   uColor: portal yeşili ya da efsanevi için tehlike kırmızısı
+// Portal uygulamadaki tek parlayan öğedir (SPEC §5.1).
+// Çıktı önceden çarpılmıştır; parıltının dışı saydamdır.
 #include <flutter/runtime_effect.glsl>
 
 uniform vec2 uSize;
@@ -33,10 +33,10 @@ void main() {
   float a = atan(p.y, p.x);
   float k = clamp(uIntensity, 0.0, 1.0);
 
-  const float R = 0.80;      // portal radius
-  const float RIM = 0.045;   // ink rim half width
+  const float R = 0.80;      // portal yarıçapı
+  const float RIM = 0.045;   // mürekkep kenarın yarı genişliği
 
-  // Swirl: angle twisted by 1/r, spinning faster with intensity.
+  // Girdap: açı 1/r ile bükülür, yoğunlukla daha hızlı döner.
   float speed = 0.5 + 2.6 * k;
   float swirl = a + 2.0 / (r + 0.18) - uTime * speed;
   float n = vnoise(p * 3.0 + vec2(uTime * 0.25, -uTime * 0.2));
@@ -49,11 +49,11 @@ void main() {
   float core = exp(-r * r * (7.0 - 4.5 * k));
   col = mix(col, hot, core * (0.45 + 0.25 * k));
 
-  // Particles pulled inward along the spiral; more and faster when charging.
+  // Sarmal boyunca içe çekilen parçacıklar; şarjda daha çok ve daha hızlı.
   float rings = 9.0;
   float flow = r * rings + uTime * (0.6 + 3.0 * k);
-  // mod 14: the angle jumps by one full turn at +-pi; the same cell index on
-  // both sides avoids a visible seam on the left axis.
+  // mod 14: açı +-pi'de bir tam tur atlar; iki tarafta aynı hücre
+  // indeksi sol eksende görünür bir ek yeri oluşmasını önler.
   const float SECTORS = 14.0;
   vec2 cell = vec2(floor(flow), mod(floor((swirl / 6.2831853) * SECTORS), SECTORS));
   float pick = step(0.86 - 0.18 * k, hash(cell));
@@ -64,7 +64,7 @@ void main() {
   float inside = smoothstep(R, R - 0.02, r);
   float rim = smoothstep(RIM, RIM * 0.4, abs(r - R));
 
-  // Glow outside the rim (stronger when charging).
+  // Kenarın dışında parıltı (şarjda daha güçlü).
   float glow = (r > R) ? exp(-(r - R) * 7.0) * (0.25 + 0.5 * k) : 0.0;
 
   vec3 rgb = col * inside;

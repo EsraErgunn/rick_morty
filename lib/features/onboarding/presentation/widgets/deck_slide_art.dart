@@ -12,8 +12,8 @@ import '../../../../app/theme/card_style.dart';
 import '../../../../l10n/app_localizations.dart';
 import 'loop_builder.dart';
 
-/// Page 3: the type triangle Human → Robot → Alien → Human; the advantage
-/// travels around it and lights up the type it reaches.
+/// Sayfa 3: tip üçgeni İnsan → Robot → Uzaylı → İnsan; üstünlük
+/// üçgen boyunca dolaşır ve ulaştığı tipi yakar.
 class DeckSlideArt extends StatelessWidget {
   const DeckSlideArt({super.key});
 
@@ -23,7 +23,7 @@ class DeckSlideArt extends StatelessWidget {
     CardType.alien,
   ];
 
-  /// Vertices: top, bottom right, bottom left (unit square).
+  /// Köşeler: üst, sağ alt, sol alt (birim kare).
   static const List<Alignment> _at = [
     Alignment(0, -0.85),
     Alignment(0.85, 0.7),
@@ -86,8 +86,8 @@ class _TypeDisc extends StatelessWidget {
   );
 }
 
-/// Arrows between the vertices; a dot runs along them (one side per third
-/// of the loop).
+/// Köşeler arasındaki oklar; bir nokta bunlar boyunca koşar (döngünün her
+/// üçte birinde bir kenar).
 class _ArrowsPainter extends CustomPainter {
   const _ArrowsPainter(this.at, this.t);
 

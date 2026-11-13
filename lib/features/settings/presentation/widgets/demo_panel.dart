@@ -10,7 +10,7 @@ import '../bloc/settings_bloc.dart';
 import '../bloc/settings_event.dart';
 import '../bloc/settings_state.dart';
 
-/// Hidden demo panel (SPEC D2, §2.9 AC2).
+/// Gizli demo paneli (SPEC D2, §2.9 AC2).
 class DemoPanel extends StatelessWidget {
   const DemoPanel({required this.state, required this.feedback, super.key});
 

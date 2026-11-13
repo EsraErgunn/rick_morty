@@ -1,6 +1,6 @@
-/// Card rarity from the number of episodes a character appears in [GM §2].
+/// Bir karakterin göründüğü bölüm sayısına göre kart nadirliği [GM §2].
 ///
-/// Frame colors are UI and live in `app/theme` (`AppColors.rarity*`).
+/// Çerçeve renkleri arayüze aittir ve `app/theme` içinde durur (`AppColors.rarity*`).
 enum Rarity {
   common(statMultiplier: 1, holoStrength: 0),
   rare(statMultiplier: 1.15, holoStrength: 0.35),
@@ -9,19 +9,19 @@ enum Rarity {
 
   const Rarity({required this.statMultiplier, required this.holoStrength});
 
-  /// Multiplier applied to every base stat [GM §4].
+  /// Her temel istatistiğe uygulanan çarpan [GM §4].
   final double statMultiplier;
 
-  /// `uStrength` of the holo shader (0 = no holo layer).
+  /// Holo shader'ının `uStrength` değeri (0 = holo katmanı yok).
   final double holoStrength;
 
-  /// Lowest episode count of each tier above common.
+  /// Sıradanın üstündeki her kademenin en düşük bölüm sayısı.
   static const int rareMinEpisodes = 2;
   static const int epicMinEpisodes = 5;
   static const int legendaryMinEpisodes = 20;
 
-  /// 1 → common, 2–4 → rare, 5–19 → epic, 20+ → legendary.
-  /// Counts below 1 do not occur in the API and are treated as common.
+  /// 1 → sıradan, 2–4 → nadir, 5–19 → epik, 20+ → efsanevi.
+  /// 1'in altındaki sayılar API'de olmaz ve sıradan sayılır.
   static Rarity fromEpisodeCount(int episodes) {
     if (episodes >= legendaryMinEpisodes) return legendary;
     if (episodes >= epicMinEpisodes) return epic;

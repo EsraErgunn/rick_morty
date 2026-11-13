@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import '../l10n/app_localizations.dart';
 import 'theme/app_theme.dart';
 
-/// Root widget: Turkish only (SPEC assumption 3), dark theme only.
+/// Kök widget: yalnızca Türkçe (SPEC varsayım 3), yalnızca koyu tema.
 class PortalCardsApp extends StatelessWidget {
   const PortalCardsApp({required this.router, super.key});
 

@@ -1,11 +1,11 @@
 import 'router.dart';
 
-/// `--dart-define=START_ROUTE=/collection/1` (perf runs, `docs/perf/`).
+/// `--dart-define=START_ROUTE=/collection/1` (performans ölçümleri, `docs/perf/`).
 const String startRouteDefine = String.fromEnvironment('START_ROUTE');
 
-/// The first route of the app. A [requested] route is honored only in
-/// debug and profile builds and only if it is an absolute path; release
-/// builds always start at the splash.
+/// Uygulamanın ilk rotası. İstenen [requested] rota yalnızca debug ve
+/// profile derlemelerde ve yalnızca mutlak bir yolsa dikkate alınır; release
+/// derlemeler her zaman splash'ten başlar.
 String resolveStartRoute({
   required bool isRelease,
   String requested = startRouteDefine,

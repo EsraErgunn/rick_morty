@@ -8,7 +8,7 @@ import '../../../../core/widgets/portal_loader.dart';
 import '../../../../core/widgets/shader_cache.dart';
 import 'loop_builder.dart';
 
-/// Page 1: a spinning portal and a phone that shakes now and then.
+/// Sayfa 1: dönen bir portal ve arada bir sallanan bir telefon.
 class PortalSlideArt extends StatelessWidget {
   const PortalSlideArt({this.shaders, super.key});
 
@@ -27,7 +27,7 @@ class PortalSlideArt extends StatelessWidget {
         alignment: Alignment.bottomRight,
         child: LoopBuilder(
           builder: (context, t) {
-            // Two quick shakes in the first third of the loop.
+            // Döngünün ilk üçte birinde iki hızlı sallama.
             final shake = t < 1 / 3 ? math.sin(t * 3 * math.pi * 4) : 0.0;
             return Transform.rotate(
               angle: AppSizes.onboardingWiggle * shake,

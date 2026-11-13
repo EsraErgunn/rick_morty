@@ -6,8 +6,8 @@ import '../../domain/album_repository.dart';
 import 'album_event.dart';
 import 'album_state.dart';
 
-/// Episode album list [GM §9]. Reloads on every stored change (a portal
-/// card shows up at once) and pays each completed page once.
+/// Bölüm albümü listesi [GM §9]. Kayıtlı her değişiklikte yeniden yüklenir (portaldan
+/// gelen kart hemen görünür) ve her tamamlanan sayfayı bir kez öder.
 class AlbumBloc extends Bloc<AlbumEvent, AlbumState> {
   AlbumBloc(this._repository) : super(const AlbumState()) {
     on<AlbumStarted>(_load);
@@ -37,7 +37,7 @@ class AlbumBloc extends Bloc<AlbumEvent, AlbumState> {
   }
 }
 
-/// One episode page; reloads on every stored change.
+/// Tek bir bölüm sayfası; kayıtlı her değişiklikte yeniden yüklenir.
 class AlbumPageBloc extends Bloc<AlbumEvent, AlbumPageState> {
   AlbumPageBloc(this._repository, this._episodeId)
     : super(const AlbumPageState()) {

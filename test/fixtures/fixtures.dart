@@ -1,13 +1,13 @@
 import 'dart:convert';
 import 'dart:io';
 
-/// Reads a fixture from `test/fixtures/` as decoded JSON.
-/// `flutter test` runs from the package root, so the path is relative to it.
+/// `test/fixtures/` içinden bir fikstürü çözülmüş JSON olarak okur.
+/// `flutter test` paket kökünden çalışır, bu yüzden yol ona göredir.
 Map<String, dynamic> loadFixture(String name) =>
     jsonDecode(File('test/fixtures/$name').readAsStringSync())
         as Map<String, dynamic>;
 
-/// Character fixtures by API id.
+/// API id'sine göre karakter fikstürleri.
 const Map<int, String> characterFixtures = {
   1: 'character_1_rick_sanchez.json',
   2: 'character_2_morty_smith.json',

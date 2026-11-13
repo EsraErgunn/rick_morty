@@ -1,8 +1,8 @@
 import '../../../../core/network/endpoints.dart';
 
-/// Strict field access for API JSON. Throws [FormatException] with the field
-/// name when a field is missing or has the wrong type; mappers turn that
-/// into a `ParseFailure`.
+/// API JSON'u için katı alan erişimi. Bir alan eksikse ya da tipi yanlışsa
+/// alan adıyla [FormatException] fırlatır; eşleyiciler bunu bir
+/// `ParseFailure`'a çevirir.
 extension JsonReader on Map<String, dynamic> {
   T field<T>(String key) {
     final value = this[key];
@@ -14,7 +14,7 @@ extension JsonReader on Map<String, dynamic> {
 
   Map<String, dynamic> object(String key) => field<Map<String, dynamic>>(key);
 
-  /// A list of resource URLs mapped to their ids.
+  /// Id'lerine eşlenmiş kaynak URL'leri listesi.
   List<int> idsFromUrls(String key) => [
     for (final url in field<List<dynamic>>(key))
       if (url is String)
@@ -24,8 +24,8 @@ extension JsonReader on Map<String, dynamic> {
         throw FormatException('field "$key": expected URL strings'),
   ];
 
-  /// The id at the end of the `url` field, or null if the URL is empty
-  /// (the API uses "" for an unknown origin or location).
+  /// `url` alanının sonundaki id; URL boşsa null
+  /// (API bilinmeyen köken veya konum için "" kullanır).
   int? optionalIdFromUrl(String key) {
     final url = field<String>(key);
     return url.isEmpty ? null : Endpoints.idFromUrl(url);

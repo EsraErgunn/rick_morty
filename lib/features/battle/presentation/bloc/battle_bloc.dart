@@ -10,9 +10,9 @@ import '../../domain/battle_repository.dart';
 import 'battle_event.dart';
 import 'battle_state.dart';
 
-/// One battle (SPEC §2.7); [BattleOpened] starts a new one. The engine resolves whole turns at once; the
-/// page replays the queued events one by one and answers each with
-/// [BattleReplayAdvanced]. Input is accepted only in [BattlePhase.choosing].
+/// Tek bir savaş (SPEC §2.7); [BattleOpened] yenisini başlatır. Motor tüm turları tek seferde çözer;
+/// sayfa sıradaki olayları tek tek tekrar oynatır ve her birine
+/// [BattleReplayAdvanced] ile cevap verir. Girdi yalnızca [BattlePhase.choosing] durumunda kabul edilir.
 class BattleBloc extends Bloc<BattleUiEvent, BattleViewState> {
   BattleBloc({
     required this._repository,
@@ -37,7 +37,7 @@ class BattleBloc extends Bloc<BattleUiEvent, BattleViewState> {
   late final StreamSubscription<void> _changes;
   final Random _random;
 
-  /// A fresh id per battle, so rewards are paid once per battle.
+  /// Her savaş için yeni bir id, böylece ödüller savaş başına bir kez ödenir.
   final String Function() _newBattleId;
   String _battleId = '';
 
@@ -62,9 +62,9 @@ class BattleBloc extends Bloc<BattleUiEvent, BattleViewState> {
     );
   }
 
-  /// Before the battle: show the current deck. A deck that just became full
-  /// gets an opponent; an existing opponent is kept. Ignored once the battle
-  /// has started (the battle's own reward write lands here too).
+  /// Savaştan önce: mevcut desteyi göster. Yeni dolan bir deste
+  /// rakip alır; var olan rakip korunur. Savaş başladıktan sonra
+  /// yok sayılır (savaşın kendi ödül yazımı da buraya düşer).
   void _onDeckChanged(BattleDeckChanged e, Emitter<BattleViewState> emit) {
     final phase = state.phase;
     if (phase != BattlePhase.noDeck && phase != BattlePhase.preBattle) return;
@@ -141,7 +141,7 @@ class BattleBloc extends Bloc<BattleUiEvent, BattleViewState> {
     required BattleState after,
     required List<BattleEvent> events,
   }) async {
-    // Rewards are credited before the result animation (AC5).
+    // Ödüller sonuç animasyonundan önce yatırılır (AC5).
     var reward = state.reward;
     if (after.result case final result?) {
       reward = (await _repository.finish(_battleId, result)).toNullable();
@@ -219,7 +219,7 @@ class BattleBloc extends Bloc<BattleUiEvent, BattleViewState> {
     signature: c.signature,
   );
 
-  /// Moves the stage one event forward (HP and turn; the rest is animation).
+  /// Sahneyi bir olay ilerletir (HP ve tur; gerisi animasyon).
   static BattleState applyEvent(BattleState view, BattleEvent event) {
     BattleState setHp(Side side, int index, int hp) {
       final cards = [...view.cards(side)];

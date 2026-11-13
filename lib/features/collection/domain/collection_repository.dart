@@ -4,7 +4,7 @@ import 'package:fpdart/fpdart.dart';
 import '../../../core/cards/game_card_data.dart';
 import '../../../core/errors/failures.dart';
 
-/// One owned card.
+/// Sahip olunan bir kart.
 final class CollectionEntry extends Equatable {
   const CollectionEntry({
     required this.card,
@@ -20,22 +20,23 @@ final class CollectionEntry extends Equatable {
   List<Object?> get props => [card, copies, obtainedAt];
 }
 
+/// Koleksiyon, kart detayı ve deste ekranlarının veri kaynağı.
 abstract interface class CollectionRepository {
   static const int deckSize = 3;
 
   List<CollectionEntry> entries();
 
-  /// Fires whenever the stored data behind this repository changes.
+  /// Bu repository'nin arkasındaki kayıtlı veriler her değiştiğinde tetiklenir.
   Stream<void> get changes;
 
   int get totalCharacters;
 
-  /// Any synced character (card lab and detail), owned or not.
+  /// Senkronlanmış herhangi bir karakter (kart laboratuvarı ve detay), sahip olunsun ya da olunmasın.
   GameCardData? card(int id);
   bool owns(int id);
   List<int> get deck;
 
-  /// Adds [id] to the deck, or removes it if it is already in.
-  /// [DeckFullFailure] when adding to a full deck (nothing changes).
+  /// [id]'yi desteye ekler ya da zaten varsa çıkarır.
+  /// Dolu bir desteye eklerken [DeckFullFailure] (hiçbir şey değişmez).
   Future<Either<Failure, List<int>>> toggleDeck(int id);
 }

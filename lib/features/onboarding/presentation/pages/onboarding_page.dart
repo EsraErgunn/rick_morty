@@ -21,9 +21,9 @@ import '../widgets/deck_slide_art.dart';
 import '../widgets/onboarding_slide.dart';
 import '../widgets/portal_slide_art.dart';
 
-/// First-launch intro: four swipeable pages, "Geç" top right, dots and
-/// "İleri" / "Başla" at the bottom, `menu_loop` playing. Finishing (or
-/// skipping) marks it seen and calls [onDone].
+/// İlk açılış tanıtımı: dört kaydırılabilir sayfa, sağ üstte "Geç", altta noktalar ve
+/// "İleri" / "Başla", `menu_loop` çalıyor. Bitirmek (ya da
+/// geçmek) onu görüldü olarak işaretler ve [onDone] çağırır.
 class OnboardingPage extends StatefulWidget {
   const OnboardingPage({
     required this.audio,

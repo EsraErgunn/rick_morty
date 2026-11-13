@@ -3,9 +3,10 @@ import 'package:equatable/equatable.dart';
 import '../../../../core/errors/failures.dart';
 import '../../domain/portal_repository.dart';
 
-/// idle → opening (repository saves) → revealing (scene plays) → revealed.
+/// idle → opening (repository kaydeder) → revealing (sahne oynar) → revealed.
 enum PortalPhase { idle, opening, revealing, revealed }
 
+/// Portal ekranının durumu: aşama, coin, ipucu ve son sonuç.
 final class PortalState extends Equatable {
   const PortalState({
     this.phase = PortalPhase.idle,
@@ -19,20 +20,20 @@ final class PortalState extends Equatable {
   final PortalPhase phase;
   final int coins;
 
-  /// First visit only (SPEC D4); hidden once a portal opened.
+  /// Yalnızca ilk ziyaret (SPEC D4); bir portal açılınca gizlenir.
   final bool showShakeHint;
 
-  /// Set from `revealing` on; already saved.
+  /// `revealing`'den itibaren dolu; zaten kaydedilmiş.
   final PortalResult? result;
 
-  /// Increases on every rejected open, so a listener can shake the coin
-  /// counter each time (SPEC §2.3 AC2).
+  /// Her reddedilen açılışta artar, böylece bir dinleyici her seferinde coin
+  /// sayacını sallayabilir (SPEC §2.3 AC2).
   final int notEnoughCoins;
 
-  /// A storage problem while opening (the portal stays idle).
+  /// Açılış sırasında bir depolama sorunu (portal boşta kalır).
   final Failure? failure;
 
-  /// Shake and button are ignored while not idle (SPEC §2.3 AC6).
+  /// Boşta değilken sallama ve buton yok sayılır (SPEC §2.3 AC6).
   bool get busy => phase != PortalPhase.idle;
 
   PortalState copyWith({

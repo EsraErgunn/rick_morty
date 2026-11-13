@@ -9,8 +9,8 @@ import '../../../../core/widgets/game_card/game_card.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../bloc/deck_state.dart';
 
-/// Three slots (SPEC §2.6 AC1, §4.6): a card drops in with `easeOutBack`;
-/// when the deck completes, the slots outline in portal green once.
+/// Üç slot (SPEC §2.6 AC1, §4.6): kart `easeOutBack` ile düşer;
+/// deste tamamlanınca slotların çevresi bir kez portal yeşiline boyanır.
 class DeckSlots extends StatelessWidget {
   const DeckSlots({required this.state, required this.onSlot, super.key});
 

@@ -6,21 +6,21 @@ import '../storage/player_state.dart';
 import 'audio_assets.dart';
 import 'audio_backend.dart';
 
-/// All sound in the app goes through here (animation-audio rules).
+/// Uygulamadaki tüm sesler buradan geçer (animasyon-ses kuralları).
 ///
-/// - SFX: preloaded pool, overlap allowed, respects `soundEnabled` and
-///   `sfxVolume`.
-/// - Music: one track at a time, crossfades between tracks, respects
-///   `musicEnabled` and `musicVolume`, pauses in the background.
-/// - [playSting] plays a one-shot track, then returns to the loop that was
-///   asked for last (legendary reveal, SPEC §4.3).
+/// - SFX: önceden yüklenmiş havuz, üst üste binebilir, `soundEnabled` ve
+///   `sfxVolume` ayarlarına uyar.
+/// - Müzik: aynı anda tek parça, parçalar arasında geçişli solma yapar,
+///   `musicEnabled` ve `musicVolume` ayarlarına uyar, arka planda duraklar.
+/// - [playSting] tek seferlik bir parça çalar, sonra en son istenen döngüye
+///   döner (efsanevi açılış, SPEC §4.3).
 class AudioService with WidgetsBindingObserver {
   AudioService({
     required this._backend,
     this._settings = const PlayerSettings(),
   });
 
-  /// Music crossfade length (not a visual token: audio timing).
+  /// Müzik geçişli solma süresi (görsel bir token değil: ses zamanlaması).
   static const Duration crossfade = Duration(milliseconds: 800);
   static const int _fadeSteps = 16;
 
@@ -34,13 +34,13 @@ class AudioService with WidgetsBindingObserver {
 
   PlayerSettings get settings => _settings;
 
-  /// The track playing now (null if silent).
+  /// Şu an çalan parça (sessizse null).
   Music? get currentMusic => _current?.track;
 
-  /// Loads every sound effect (call once at startup).
+  /// Tüm ses efektlerini yükler (açılışta bir kez çağır).
   Future<void> preload() => _backend.preload(Sfx.values);
 
-  /// Registers for app lifecycle events (background pause).
+  /// Uygulama yaşam döngüsü olaylarına kaydolur (arka planda duraklatma).
   void attachLifecycle() => WidgetsBinding.instance.addObserver(this);
 
   void detachLifecycle() => WidgetsBinding.instance.removeObserver(this);
@@ -50,21 +50,21 @@ class AudioService with WidgetsBindingObserver {
     await _backend.playSfx(sound, _settings.sfxVolume);
   }
 
-  /// Plays [track] as the background loop (crossfade from the current one).
+  /// [track] parçasını arka plan döngüsü olarak çalar (mevcut parçadan geçişli solmayla).
   Future<void> playMusic(Music track) async {
     _desired = track;
     if (!_musicOn || _current?.track == track) return;
     await _crossfadeTo(track);
   }
 
-  /// One-shot [sting] over the music, then back to the last loop.
+  /// Müziğin üstünde tek seferlik [sting], sonra son döngüye geri döner.
   Future<void> playSting([Music sting = Music.legendarySting]) async {
     if (!_musicOn) return;
     final generation = await _crossfadeTo(sting);
     final playing = _current;
     if (playing == null) return;
     await playing.handle.completed;
-    if (generation != _generation) return; // something else took over
+    if (generation != _generation) return; // araya başka bir şey girdi
     final back = _desired;
     if (back != null && _musicOn) {
       await _crossfadeTo(back);
@@ -78,7 +78,7 @@ class AudioService with WidgetsBindingObserver {
     await _fadeOutCurrent();
   }
 
-  /// New settings from the Settings screen: applied at once.
+  /// Ayarlar ekranından gelen yeni ayarlar: hemen uygulanır.
   Future<void> applySettings(PlayerSettings next) async {
     final wasOn = _musicOn;
     _settings = next;
@@ -132,8 +132,8 @@ class AudioService with WidgetsBindingObserver {
     await handle.stop();
   }
 
-  /// Steps the volume from [from] to [to] over [crossfade]. A ramp that
-  /// belongs to an older crossfade ([generation] changed) stops early.
+  /// Sesi [crossfade] süresince [from] değerinden [to] değerine kademeli değiştirir.
+  /// Daha eski bir geçişe ait kademe ([generation] değiştiyse) erken durur.
   Future<void> _ramp(
     MusicHandle handle,
     double from,

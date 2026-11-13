@@ -2,11 +2,11 @@ import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
 
-/// SPEC §5.8 T3: no hex color, duration or font size literal in visual code
-/// outside `lib/app/theme/`. Scope = visual code: `lib/features`,
-/// `lib/core/widgets` and `lib/app` (SPEC names the first two). Non-visual
-/// timing constants (network retry, audio fades, haptic sequences, sensor
-/// windows) live as named constants in their `core/` services.
+/// SPEC §5.8 T3: `lib/app/theme/` dışındaki görsel kodda hex renk, süre veya yazı boyutu
+/// sabiti yok. Kapsam = görsel kod: `lib/features`,
+/// `lib/core/widgets` ve `lib/app` (SPEC ilk ikisini sayar). Görsel olmayan
+/// zamanlama sabitleri (ağ tekrarı, ses solmaları, titreşim dizileri, sensör
+/// pencereleri) `core/` servislerinde isimli sabitler olarak durur.
 void main() {
   final forbidden = <String, RegExp>{
     'hex color': RegExp(r'Color\(0x'),

@@ -6,7 +6,7 @@ import '../../../../app/theme/typography.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../domain/album_repository.dart';
 
-/// One episode row: code, name, `owned/total` and a progress bar.
+/// Tek bir bölüm satırı: kod, isim, `owned/total` ve bir ilerleme çubuğu.
 class EpisodeTile extends StatelessWidget {
   const EpisodeTile({required this.episode, required this.onTap, super.key});
 

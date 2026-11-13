@@ -2,8 +2,8 @@ import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
 
-/// `lib/core/game/` is pure Dart (architecture rules): no Flutter, no Hive,
-/// no Dio, and randomness is always injected.
+/// `lib/core/game/` saf Dart'tır (mimari kurallar): Flutter yok, Hive yok,
+/// Dio yok ve rastgelelik her zaman enjekte edilir.
 void main() {
   final files = Directory('lib/core/game')
       .listSync(recursive: true)

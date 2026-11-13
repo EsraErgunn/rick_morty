@@ -15,7 +15,7 @@ import '../widgets/pre_battle_view.dart';
 import '../../../../core/widgets/app_back_button.dart';
 import '../../../../core/widgets/screen_background.dart';
 
-/// Battle (SPEC §2.7, §4.7). Expects a [BattleBloc] above it.
+/// Savaş (SPEC §2.7, §4.7). Üstünde bir [BattleBloc] bekler.
 class BattlePage extends StatefulWidget {
   const BattlePage({
     required this.feedback,
@@ -84,8 +84,8 @@ class _BattlePageState extends State<BattlePage> {
       listenWhen: (a, b) => (!a.left && b.left) || a.phase != b.phase,
       listener: (context, state) {
         if (state.left) return widget.onExit();
-        // Music follows the phase: arena loop until the result, then silence;
-        // "Yeni savaş" starts the loop again.
+        // Müzik aşamayı izler: sonuca kadar arena döngüsü, sonra sessizlik;
+        // "Yeni savaş" döngüyü yeniden başlatır.
         if (state.phase == BattlePhase.finished) {
           widget.feedback.resultShown();
         } else {

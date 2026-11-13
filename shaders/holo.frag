@@ -1,12 +1,12 @@
-// Holo foil for GameCard (animation rules: uniforms uSize, uTilt, uStrength).
-// Drawn additively over the card face; output is premultiplied.
-//   uStrength 0.35 rare: faint diagonal sheen
-//   uStrength 0.65 epic: sheen + sparse star speckle
-//   uStrength 1.0  legendary: rainbow foil + gold edge glint
+// GameCard için holo folyo (animasyon kuralları: uSize, uTilt, uStrength uniform'ları).
+// Kart yüzünün üstüne eklemeli olarak çizilir; çıktı önceden çarpılmıştır.
+//   uStrength 0.35 nadir: soluk çapraz parlama
+//   uStrength 0.65 epik: parlama + seyrek yıldız benekleri
+//   uStrength 1.0  efsanevi: gökkuşağı folyo + altın kenar parıltısı
 #include <flutter/runtime_effect.glsl>
 
-uniform vec2 uSize;     // card size in pixels
-uniform vec2 uTilt;     // flutter_tilt areaProgress, about [-1, 1]
+uniform vec2 uSize;     // piksel cinsinden kart boyutu
+uniform vec2 uTilt;     // flutter_tilt areaProgress, yaklaşık [-1, 1]
 uniform float uStrength;
 
 out vec4 fragColor;
@@ -23,10 +23,10 @@ vec3 hue(float h) {
 void main() {
   vec2 uv = FlutterFragCoord().xy / uSize;
 
-  // Diagonal band that slides with the tilt.
+  // Eğimle kayan çapraz bant.
   float diag = uv.x * 0.7 + uv.y * 0.3;
   float pos = 0.5 + (uTilt.x * 0.6 - uTilt.y * 0.4) * 0.5;
-  // x * x, not pow(x, 2.0): pow is undefined for a negative base in GLSL.
+  // pow(x, 2.0) değil x * x: GLSL'de pow negatif taban için tanımsızdır.
   float off = (diag - pos) * 11.0;
   float band = exp(-off * off);
   float sheen = band * 0.16 * smoothstep(0.0, 0.35, uStrength);
@@ -34,7 +34,7 @@ void main() {
   vec3 color = vec3(sheen);
   float alpha = sheen;
 
-  // Epic and up: sparse small stars that twinkle as the card tilts.
+  // Epik ve üstü: kart eğildikçe parıldayan seyrek küçük yıldızlar.
   if (uStrength > 0.5) {
     vec2 grid = vec2(14.0, 20.0);
     vec2 cell = floor(uv * grid);
@@ -48,7 +48,7 @@ void main() {
     alpha += star;
   }
 
-  // Legendary: rainbow foil + gold glint along the edges.
+  // Efsanevi: gökkuşağı folyo + kenarlar boyunca altın parıltı.
   if (uStrength > 0.9) {
     float h = diag * 1.5 + uTilt.x * 0.35 + uTilt.y * 0.25;
     float foilAmount = 0.07 + 0.12 * band;

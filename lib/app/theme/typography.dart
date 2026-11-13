@@ -2,16 +2,16 @@ import 'package:flutter/painting.dart';
 
 import 'colors.dart';
 
-/// Font families bundled under `assets/fonts/` (SPEC §5.3).
+/// `assets/fonts/` altına paketlenmiş yazı tipi aileleri (SPEC §5.3).
 abstract final class AppFonts {
-  /// Display: screen titles, card names, battle callouts. Weights 700, 900.
+  /// Display: ekran başlıkları, kart isimleri, savaş duyuruları. Kalınlıklar 700, 900.
   static const String display = 'Grandstander';
 
-  /// Body and numbers: stats, lists, settings. Weights 400, 700.
+  /// Gövde ve sayılar: istatistikler, listeler, ayarlar. Kalınlıklar 400, 700.
   static const String body = 'AtkinsonHyperlegibleNext';
 }
 
-/// Type scale in sp, ratio 1.25, body 16 (SPEC §5.3).
+/// sp cinsinden yazı ölçeği, oran 1.25, gövde 16 (SPEC §5.3).
 abstract final class AppTypography {
   static const double captionSize = 12;
   static const double bodySize = 16;
@@ -38,7 +38,7 @@ abstract final class AppTypography {
     color: AppColors.paper,
   );
 
-  /// Buttons and emphasized body text.
+  /// Butonlar ve vurgulu gövde yazısı.
   static const TextStyle label = TextStyle(
     fontFamily: AppFonts.body,
     fontSize: bodySize,
@@ -47,7 +47,7 @@ abstract final class AppTypography {
     color: AppColors.paper,
   );
 
-  /// Card names, section titles.
+  /// Kart isimleri, bölüm başlıkları.
   static const TextStyle title = TextStyle(
     fontFamily: AppFonts.display,
     fontSize: titleSize,
@@ -64,7 +64,7 @@ abstract final class AppTypography {
     color: AppColors.paper,
   );
 
-  /// Screen titles.
+  /// Ekran başlıkları.
   static const TextStyle display = TextStyle(
     fontFamily: AppFonts.display,
     fontSize: displaySize,
@@ -73,7 +73,7 @@ abstract final class AppTypography {
     color: AppColors.paper,
   );
 
-  /// Battle callouts and the legendary name.
+  /// Savaş duyuruları ve efsanevi isim.
   static const TextStyle callout = TextStyle(
     fontFamily: AppFonts.display,
     fontSize: calloutSize,
@@ -82,7 +82,7 @@ abstract final class AppTypography {
     color: AppColors.paper,
   );
 
-  /// Stat values on cards and in battle. Tabular so digits do not jump.
+  /// Kartlarda ve savaşta istatistik değerleri. Tablo rakamlı, rakamlar zıplamasın.
   static const TextStyle stat = TextStyle(
     fontFamily: AppFonts.body,
     fontSize: bodySize,
@@ -92,7 +92,7 @@ abstract final class AppTypography {
     fontFeatures: _tabular,
   );
 
-  /// Coin counter. Tabular so the width stays stable while it counts.
+  /// Coin sayacı. Tablo rakamlı, sayarken genişlik sabit kalsın.
   static const TextStyle coin = TextStyle(
     fontFamily: AppFonts.body,
     fontSize: titleSize,

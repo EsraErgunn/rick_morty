@@ -2,17 +2,17 @@ import 'dart:math';
 
 import 'rarity.dart';
 
-/// Coin rules [GM §8] and the only way to change a balance (SPEC §3:
-/// "Economy is the only writer of coins"). Pure: it returns a
-/// [CoinTransaction]; the caller saves it and logs it.
+/// Coin kuralları [GM §8] ve bakiyeyi değiştirmenin tek yolu (SPEC §3:
+/// "Coin'leri yalnızca Economy yazar"). Saf: bir
+/// [CoinTransaction] döndürür; çağıran onu kaydeder ve loglar.
 abstract final class EconomyRules {
-  /// Coins of a new player: three portals.
+  /// Yeni oyuncunun coin'i: üç portal.
   static const int startingCoins = 300;
 
-  /// Price of one portal [GM §7].
+  /// Bir portalın fiyatı [GM §7].
   static const int portalCost = 100;
 
-  /// Hidden demo panel "+1000 coin" (SPEC D2).
+  /// Gizli demo paneli "+1000 coin" (SPEC D2).
   static const int demoBonus = 1000;
 
   static const int defeatCoins = 25;
@@ -24,10 +24,10 @@ abstract final class EconomyRules {
   static const int albumMax = 500;
 }
 
-/// Why coins changed (logged with every change).
+/// Coin'lerin neden değiştiği (her değişiklikle loglanır).
 enum CoinReason { portal, duplicate, victory, defeat, draw, album, demo }
 
-/// One applied change. [after] is never below 0.
+/// Uygulanmış tek bir değişiklik. [after] asla 0'ın altına düşmez.
 final class CoinTransaction {
   const CoinTransaction({
     required this.reason,
@@ -45,8 +45,9 @@ final class CoinTransaction {
   String toString() => 'coins ${reason.name} $delta: $before -> $after';
 }
 
+/// Tüm coin değişikliklerini hesaplayan saf sınıf [GM §8].
 abstract final class Economy {
-  /// Coins paid for a duplicate card (before merge exists).
+  /// Tekrar gelen bir kart için ödenen coin (birleştirme özelliği gelmeden önce).
   static int duplicateCoins(Rarity rarity) => switch (rarity) {
     Rarity.common => 20,
     Rarity.rare => 40,
@@ -62,7 +63,7 @@ abstract final class Economy {
     EconomyRules.albumBase + EconomyRules.albumPerMember * members,
   );
 
-  /// Adds [amount] (≥ 0) for [reason].
+  /// [reason] için [amount] (≥ 0) ekler.
   static CoinTransaction earn(int balance, int amount, CoinReason reason) {
     assert(amount >= 0, 'use spend() to take coins');
     return CoinTransaction(
@@ -73,7 +74,7 @@ abstract final class Economy {
     );
   }
 
-  /// Takes [amount] if the balance allows it; null if not (nothing changes).
+  /// Bakiye yetiyorsa [amount] düşer; yetmiyorsa null (hiçbir şey değişmez).
   static CoinTransaction? spend(int balance, int amount, CoinReason reason) {
     if (amount < 0 || balance < amount) return null;
     return CoinTransaction(

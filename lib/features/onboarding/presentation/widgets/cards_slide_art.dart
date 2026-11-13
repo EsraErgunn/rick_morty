@@ -9,8 +9,8 @@ import '../../../../core/widgets/game_card/holo_layer.dart';
 import '../../../../core/widgets/game_card/tilting_game_card.dart';
 import '../../../../core/widgets/shader_cache.dart';
 
-/// Page 2: the rarity ladder fanned out (common → legendary) and the
-/// rarest card in front, tilting with the phone and catching the holo.
+/// Sayfa 2: yelpaze gibi açılmış nadirlik merdiveni (sıradan → efsanevi) ve
+/// önde en nadir kart; telefonla eğilir ve holo parlar.
 class CardsSlideArt extends StatelessWidget {
   const CardsSlideArt({
     required this.cards,
@@ -19,7 +19,7 @@ class CardsSlideArt extends StatelessWidget {
     super.key,
   });
 
-  /// Common → legendary; may be empty (nothing synced).
+  /// Sıradandan efsaneviye; boş olabilir (hiçbir şey senkronlanmadı).
   final List<GameCardData> cards;
   final TiltStream tiltStream;
   final ShaderCache shaders;

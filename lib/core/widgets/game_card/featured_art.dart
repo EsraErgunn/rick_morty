@@ -6,9 +6,9 @@ import '../../../app/theme/colors.dart';
 import '../../cards/game_card_data.dart';
 import 'card_art.dart';
 
-/// Bundled 2.5D art (`tools/images/cutout.py`): the character cut out of
-/// its avatar, and the avatar itself as the (dimmed) background layer.
-/// Only Rick has it for now.
+/// Paketlenmiş 2.5D görsel (`tools/images/cutout.py`): avatarından kesilmiş
+/// karakter ve (karartılmış) arka plan katmanı olarak avatarın kendisi.
+/// Şimdilik yalnızca Rick'te var.
 abstract final class FeaturedArt {
   static const Set<int> _ids = {1};
 
@@ -17,11 +17,11 @@ abstract final class FeaturedArt {
   static String cutout(int id) => 'assets/featured/$id.webp';
   static String background(int id) => 'assets/featured/${id}_bg.webp';
 
-  /// Where the cut-out is drawn, in card design units: as wide as
-  /// [CardMetrics.featuredCutoutScale] × the art window, from
-  /// [CardMetrics.featuredPopOut] above the window down to its bottom.
-  /// The image is cropped to the top of the character, so the head always
-  /// starts at the top of this rect.
+  /// Kesilmiş görselin çizildiği yer, kart tasarım birimleri cinsinden: görsel
+  /// penceresinin [CardMetrics.featuredCutoutScale] katı genişlikte, pencerenin
+  /// [CardMetrics.featuredPopOut] üstünden altına kadar.
+  /// Görsel karakterin tepesinden kırpılmıştır, böylece kafa her zaman
+  /// bu dikdörtgenin üstünden başlar.
   static Rect cutoutRect(Rect art) {
     final width = art.width * CardMetrics.featuredCutoutScale;
     return Rect.fromLTRB(
@@ -33,7 +33,7 @@ abstract final class FeaturedArt {
   }
 }
 
-/// No tilt (grids, battle): the layers rest.
+/// Eğim yok (ızgaralar, savaş): katmanlar durur.
 const ValueListenable<Offset> _still = _Still();
 
 class _Still implements ValueListenable<Offset> {
@@ -46,14 +46,14 @@ class _Still implements ValueListenable<Offset> {
   void removeListener(VoidCallback listener) {}
 }
 
-/// Parallax shift of a layer for [tilt] (flutter_tilt `areaProgress`,
-/// (1, 1) = top-left tilted down). A near layer moves toward the edge that
-/// tilts away, a deep layer the other way.
+/// [tilt] için bir katmanın paralaks kayması (flutter_tilt `areaProgress`,
+/// (1, 1) = sol üst aşağı eğik). Yakın katman uzaklaşan kenara doğru,
+/// derin katman ters yöne hareket eder.
 Offset parallax(Offset tilt, double depth) => -tilt * depth;
 
-/// Background of a 2.5D art window: the avatar, dimmed so the cut-out in
-/// front reads as nearer, slightly oversized and shifted against the tilt. Falls back to the
-/// network art if the asset is missing.
+/// 2.5D görsel penceresinin arka planı: öndeki kesilmiş görsel daha yakın görünsün diye
+/// karartılmış avatar; biraz büyük çizilir ve eğime karşı kaydırılır. Görsel dosyası
+/// yoksa ağdaki görsele geri döner.
 class FeaturedBackground extends StatelessWidget {
   const FeaturedBackground({
     required this.data,
@@ -65,7 +65,7 @@ class FeaturedBackground extends StatelessWidget {
   final GameCardData data;
   final ValueListenable<Offset>? tilt;
 
-  /// The character is out of the card: the window dims.
+  /// Karakter kartın dışında: pencere kararır.
   final bool empty;
 
   @override
@@ -99,10 +99,10 @@ class FeaturedBackground extends StatelessWidget {
   }
 }
 
-/// The cut-out character, positioned by the caller at
-/// [FeaturedArt.cutoutRect]. Clipped to [window] (the art window, local to
-/// this rect) except at the top, so only the head can leave the window.
-/// Moves with the tilt more than the background.
+/// Kesilmiş karakter; çağıran onu [FeaturedArt.cutoutRect] konumuna
+/// yerleştirir. Üst kısım hariç [window] alanına (görsel penceresi, bu dikdörtgene
+/// göre) kırpılır, böylece yalnızca kafa pencereden çıkabilir.
+/// Eğimle arka plandan daha fazla hareket eder.
 class FeaturedCutout extends StatelessWidget {
   const FeaturedCutout({
     required this.id,
@@ -129,7 +129,7 @@ class FeaturedCutout extends StatelessWidget {
   );
 }
 
-/// Just the cut-out image (also used by the battle reactions).
+/// Yalnızca kesilmiş görsel (savaş tepkilerinde de kullanılır).
 class FeaturedCutoutImage extends StatelessWidget {
   const FeaturedCutoutImage({required this.id, super.key});
 
@@ -145,7 +145,7 @@ class FeaturedCutoutImage extends StatelessWidget {
   );
 }
 
-/// Clips to [window] with the top left open for the head.
+/// Kafa için üstü açık bırakılarak [window] alanına kırpar.
 class _OpenTopClip extends CustomClipper<Rect> {
   const _OpenTopClip(this.window);
 

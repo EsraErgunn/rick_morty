@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:portalcards/core/sensors/tilt_stream.dart';
 
-/// Fake accelerometer that counts subscriptions.
+/// Abonelikleri sayan sahte ivmeölçer.
 class _FakeSensor {
   final List<StreamController<Gravity>> opened = [];
 
@@ -46,11 +46,11 @@ void main() {
 
   test('low-pass: each step moves 15% toward the target', () async {
     const g = TiltStream.gravity;
-    const step = TiltStream.fullTiltG * g * 0.5; // half deflection
+    const step = TiltStream.fullTiltG * g * 0.5; // yarım sapma
     final out = await collect(() {
       sensor.emit(0, 6.9);
       for (var i = 0; i < 3; i++) {
-        sensor.emit(-step, 6.9); // right edge down → +dx
+        sensor.emit(-step, 6.9); // sağ kenar aşağı → +dx
       }
     });
 

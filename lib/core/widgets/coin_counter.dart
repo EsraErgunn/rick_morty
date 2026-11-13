@@ -8,9 +8,9 @@ import '../../app/theme/spacing.dart';
 import '../../app/theme/typography.dart';
 import '../../l10n/app_localizations.dart';
 
-/// Coin balance (tabular). Rolls to a new value (`slow`, `elasticOut`,
-/// SPEC §4.2) and shakes on the X axis whenever [shakeTick] changes
-/// (not enough coins, SPEC §4.3).
+/// Coin bakiyesi (tablo rakamlı). Yeni değere yuvarlanarak geçer (`slow`, `elasticOut`,
+/// SPEC §4.2) ve [shakeTick] her değiştiğinde X ekseninde sallanır
+/// (yetersiz coin, SPEC §4.3).
 class CoinCounter extends StatefulWidget {
   const CoinCounter({required this.coins, this.shakeTick = 0, super.key});
 

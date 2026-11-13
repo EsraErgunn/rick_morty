@@ -2,10 +2,10 @@ import 'package:flutter/services.dart';
 
 import '../storage/player_state.dart';
 
-/// Basic vibration kinds (Flutter `HapticFeedback`).
+/// Temel titreşim türleri (Flutter `HapticFeedback`).
 enum HapticKind { selection, light, medium, heavy }
 
-/// Sends one vibration; injected so tests need no platform channel.
+/// Tek bir titreşim gönderir; testler platform kanalına ihtiyaç duymasın diye enjekte edilir.
 typedef HapticDriver = Future<void> Function(HapticKind kind);
 
 Future<void> _platform(HapticKind kind) => switch (kind) {
@@ -15,7 +15,7 @@ Future<void> _platform(HapticKind kind) => switch (kind) {
   HapticKind.heavy => HapticFeedback.heavyImpact(),
 };
 
-/// Moments that vibrate (animation-audio rules, SPEC §4).
+/// Titreşim veren anlar (animasyon-ses kuralları, SPEC §4).
 enum HapticMoment {
   buttonTap,
   toggle,
@@ -32,14 +32,14 @@ enum HapticMoment {
   legendaryReveal,
 }
 
-/// All vibration goes through here; respects `hapticsEnabled`.
+/// Tüm titreşimler buradan geçer; `hapticsEnabled` ayarına uyar.
 class HapticsService {
   HapticsService({
     this._driver = _platform,
     PlayerSettings settings = const PlayerSettings(),
   }) : _enabled = settings.hapticsEnabled;
 
-  /// Legendary reveal: heavy → 80 ms → heavy → 120 ms → heavy (rules).
+  /// Efsanevi açılış: güçlü → 80 ms → güçlü → 120 ms → güçlü (kurallar).
   static const List<Duration> legendaryGaps = [
     Duration(milliseconds: 80),
     Duration(milliseconds: 120),

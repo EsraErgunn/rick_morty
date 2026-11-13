@@ -8,8 +8,8 @@ import '../../../../app/theme/spacing.dart';
 import '../../../../app/theme/typography.dart';
 import '../../../../l10n/app_localizations.dart';
 
-/// "Telefonu salla!" with a rocking hand (SPEC §2.3 AC9, §4.3): three
-/// ±15° swings, then a pause, repeat. Reduced motion: static icon.
+/// Sallanan bir elle "Telefonu salla!" (SPEC §2.3 AC9, §4.3): üç
+/// ±15° salınım, sonra bir duraklama, tekrar. Azaltılmış hareket: sabit ikon.
 class ShakeHint extends StatefulWidget {
   const ShakeHint({super.key});
 

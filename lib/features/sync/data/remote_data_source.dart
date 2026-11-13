@@ -8,13 +8,14 @@ import '../../../core/network/dio_client.dart';
 import '../../../core/network/endpoints.dart';
 import 'mappers.dart';
 
-/// One page of each API list endpoint, already mapped to entities.
+/// Her API liste uç noktasının bir sayfası, varlıklara zaten eşlenmiş.
 abstract interface class SyncRemoteDataSource {
   Future<Either<Failure, EntityPage<Character>>> characterPage(int page);
   Future<Either<Failure, EntityPage<Episode>>> episodePage(int page);
   Future<Either<Failure, EntityPage<Location>>> locationPage(int page);
 }
 
+/// [SyncRemoteDataSource]'un Rick and Morty API'sinden okuyan uygulaması.
 class ApiSyncRemoteDataSource implements SyncRemoteDataSource {
   const ApiSyncRemoteDataSource(this._client);
 

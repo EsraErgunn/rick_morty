@@ -20,8 +20,8 @@ import '../bloc/card_detail_state.dart';
 import '../widgets/collection_grid.dart';
 import '../../../../core/widgets/app_back_button.dart';
 
-/// Card detail (SPEC §2.5, §4.5): tilt + holo + flip, back facts, and the
-/// deck action. Expects a [CardDetailBloc] above it.
+/// Kart detayı (SPEC §2.5, §4.5): eğim + holo + çevirme, arka yüz bilgileri ve
+/// deste işlemi. Üstünde bir [CardDetailBloc] bekler.
 class CardDetailPage extends StatelessWidget {
   const CardDetailPage({
     required this.id,

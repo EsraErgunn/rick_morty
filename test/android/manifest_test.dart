@@ -7,8 +7,8 @@ void main() {
       .readAsStringSync();
 
   test('release manifest asks for the INTERNET permission', () {
-    // Only the debug/profile manifests get it from Flutter; without it the
-    // release build cannot sync or download card art.
+    // Bunu Flutter'dan yalnızca debug/profile manifestleri alır; bu olmadan
+    // release derleme senkron yapamaz ve kart görsellerini indiremez.
     expect(manifest, contains('android.permission.INTERNET'));
   });
 

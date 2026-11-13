@@ -6,7 +6,7 @@ import '../../domain/collection_repository.dart';
 import 'collection_event.dart';
 import 'collection_state.dart';
 
-/// Collection grid (SPEC §2.4): owned cards, filters, sort.
+/// Koleksiyon ızgarası (SPEC §2.4): sahip olunan kartlar, filtreler, sıralama.
 class CollectionBloc extends Bloc<CollectionEvent, CollectionState> {
   CollectionBloc(this._repository) : super(const CollectionState()) {
     on<CollectionStarted>(_load);
@@ -33,7 +33,7 @@ class CollectionBloc extends Bloc<CollectionEvent, CollectionState> {
   final CollectionRepository _repository;
   late final StreamSubscription<void> _changes;
 
-  /// Filters and sort are kept; only the data is reloaded.
+  /// Filtreler ve sıralama korunur; yalnızca veri yeniden yüklenir.
   void _load(CollectionEvent event, Emitter<CollectionState> emit) => emit(
     state.copyWith(
       status: CollectionStatus.success,

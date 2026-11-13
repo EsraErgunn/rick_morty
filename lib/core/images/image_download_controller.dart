@@ -4,12 +4,12 @@ import 'package:flutter/foundation.dart';
 
 import 'image_precacher.dart';
 
-/// App-wide image downloads (SPEC §3 Images, §2.9 AC5). Lives in DI, so a
-/// download keeps running when the Settings page closes.
+/// Uygulama genelinde görsel indirmeleri (SPEC §3 Görseller, §2.9 AC5). DI içinde yaşar,
+/// böylece Ayarlar sayfası kapansa da indirme sürer.
 ///
-/// - [downloadAll]: user-started, every character image, progress in
-///   [progress], cancellable with [stop], resumable (cached files skip).
-/// - [warmUp]: silent, automatic, small sets (owned cards, deck).
+/// - [downloadAll]: kullanıcı başlatır, tüm karakter görselleri, ilerleme
+///   [progress] içinde, [stop] ile iptal edilir, kaldığı yerden devam eder (önbellekteki dosyalar atlanır).
+/// - [warmUp]: sessiz, otomatik, küçük kümeler (sahip olunan kartlar, deste).
 class ImageDownloadController {
   ImageDownloadController({ImageFetch fetch = diskCacheFetch})
     : _all = ImagePrecacher(fetch: fetch),
@@ -21,12 +21,12 @@ class ImageDownloadController {
   StreamSubscription<PrecacheProgress>? _sub;
   bool _stopped = false;
 
-  /// Null until the first full download starts.
+  /// İlk tam indirme başlayana kadar null.
   ValueListenable<PrecacheProgress?> get progress => _progress;
 
   bool get running => _all.running;
 
-  /// True after [stop] until the next start.
+  /// [stop] sonrasında, bir sonraki başlatmaya kadar true.
   bool get stopped => _stopped;
 
   void downloadAll(Iterable<String> urls) {
@@ -41,7 +41,7 @@ class ImageDownloadController {
     _all.cancel();
   }
 
-  /// Fire and forget; never blocks a screen.
+  /// Başlat ve unut; hiçbir ekranı engellemez.
   Future<void> warmUp(Iterable<String> urls) async {
     if (_warm.running) return;
     await _warm.run(urls).drain<void>();

@@ -1,9 +1,9 @@
 import '../entities/character.dart';
 import '../game/rarity.dart';
 
-/// Character ids grouped by rarity, for portal rolls [GM §7]. Built once from
-/// the synced characters and held in memory (SPEC §3); rebuilt only after a
-/// sync.
+/// Portal çekilişleri için nadirliğe göre gruplanmış karakter id'leri [GM §7]. Senkronlanmış
+/// karakterlerden bir kez kurulur ve bellekte tutulur (SPEC §3); yalnızca bir
+/// senkrondan sonra yeniden kurulur.
 class RarityPool {
   RarityPool._(this._ids);
 
@@ -19,7 +19,7 @@ class RarityPool {
 
   final Map<Rarity, List<int>> _ids;
 
-  /// Sorted ids of [rarity] (empty if none).
+  /// [rarity] nadirliğinin sıralı id'leri (yoksa boş).
   List<int> ids(Rarity rarity) => _ids[rarity]!;
 
   int get total => _ids.values.fold(0, (sum, list) => sum + list.length);

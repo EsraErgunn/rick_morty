@@ -15,6 +15,7 @@ import '../../../core/storage/api_data_store.dart';
 import '../../../core/storage/player_store.dart';
 import '../domain/battle_repository.dart';
 
+/// [BattleRepository]'nin Hive depolarıyla çalışan uygulaması.
 class BattleRepositoryImpl implements BattleRepository {
   BattleRepositoryImpl({
     required this._apiData,

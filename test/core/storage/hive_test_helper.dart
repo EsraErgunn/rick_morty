@@ -4,8 +4,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:hive_ce/hive.dart';
 import 'package:portalcards/core/storage/hive_init.dart';
 
-/// Gives each test a fresh Hive directory and cleans it up afterwards.
-/// Returns a getter for the current directory path.
+/// Her teste yeni bir Hive klasörü verir ve sonrasında temizler.
+/// Mevcut klasör yolu için bir getter döndürür.
 String Function() useTempHive() {
   late Directory dir;
   setUp(() async {

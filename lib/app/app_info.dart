@@ -1,5 +1,5 @@
-/// App facts shown in the UI. Keep [version] equal to `pubspec.yaml`
-/// `version` (a test checks it); no package is added for this.
+/// Arayüzde gösterilen uygulama bilgileri. [version] değerini `pubspec.yaml`
+/// `version` ile aynı tut (bir test kontrol eder); bunun için paket eklenmedi.
 abstract final class AppInfo {
   static const String version = '1.3.0';
 }

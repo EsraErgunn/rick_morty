@@ -3,8 +3,10 @@ import 'package:equatable/equatable.dart';
 import '../../../../core/errors/failures.dart';
 import '../../domain/sync_repository.dart';
 
+/// Senkronun durumu.
 enum SyncStatus { initial, loading, success, failure }
 
+/// Splash ekranının durumu: senkron durumu, ilerleme ve hata.
 final class SyncState extends Equatable {
   const SyncState({
     this.status = SyncStatus.initial,
@@ -15,10 +17,10 @@ final class SyncState extends Equatable {
   final SyncStatus status;
   final SyncProgress progress;
 
-  /// Set only in [SyncStatus.failure].
+  /// Yalnızca [SyncStatus.failure] durumunda dolu.
   final Failure? failure;
 
-  /// Network-type failures show "Bağlantı koptu..." (SPEC §2.1 AC3).
+  /// Ağ türü hatalar "Bağlantı koptu..." gösterir (SPEC §2.1 AC3).
   bool get isConnectionProblem => switch (failure) {
     NetworkFailure() || TimeoutFailure() || ServerFailure() => true,
     _ => false,

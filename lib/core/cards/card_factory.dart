@@ -6,7 +6,7 @@ import '../game/passives.dart';
 import '../game/rarity.dart';
 import 'game_card_data.dart';
 
-/// Builds card data from a character using only `core/game` formulas.
+/// Kart verisini yalnızca `core/game` formüllerini kullanarak bir karakterden kurar.
 abstract final class CardFactory {
   static GameCardData fromCharacter(Character c) {
     final rarity = Rarity.fromEpisodeCount(c.episodeCount);

@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 
+/// Tanıtım ekranının olaylarının temel sınıfı.
 sealed class OnboardingEvent extends Equatable {
   const OnboardingEvent();
 
@@ -7,12 +8,12 @@ sealed class OnboardingEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-/// The intro opened: load the showcase cards.
+/// Tanıtım açıldı: vitrin kartlarını yükle.
 final class OnboardingStarted extends OnboardingEvent {
   const OnboardingStarted();
 }
 
-/// The user swiped (or tapped a dot) to [page].
+/// Kullanıcı [page] sayfasına kaydırdı (ya da bir noktaya dokundu).
 final class OnboardingPageChanged extends OnboardingEvent {
   const OnboardingPageChanged(this.page);
 
@@ -22,7 +23,7 @@ final class OnboardingPageChanged extends OnboardingEvent {
   List<Object?> get props => [page];
 }
 
-/// "Geç" or "Başla": remember the intro and leave.
+/// "Geç" ya da "Başla": tanıtımı hatırla ve çık.
 final class OnboardingFinished extends OnboardingEvent {
   const OnboardingFinished();
 }

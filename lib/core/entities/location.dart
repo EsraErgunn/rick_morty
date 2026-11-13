@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-/// A location (dimension map, stretch) [GM §10].
+/// Bir konum (boyut haritası, ek hedef) [GM §10].
 final class Location extends Equatable {
   const Location({
     required this.id,

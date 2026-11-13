@@ -7,8 +7,8 @@ import '../../../../app/theme/motion.dart';
 import '../../../../app/theme/spacing.dart';
 import '../../../../core/game/battle_model.dart';
 
-/// One frame of a card's motion: offset, rotation and squash & stretch,
-/// plus the flash over the card.
+/// Bir kartın hareketinin tek karesi: kayma, dönüş ve basılma-esneme,
+/// artı kartın üstündeki parlama.
 final class SlotPose {
   const SlotPose({
     this.offset = Offset.zero,
@@ -24,7 +24,7 @@ final class SlotPose {
   final double scaleX;
   final double scaleY;
 
-  /// 0..1 opacity of the flash over the card.
+  /// Kartın üstündeki parlamanın 0..1 opaklığı.
   final double flash;
   final Color flashColor;
 
@@ -36,7 +36,7 @@ final class SlotPose {
   static const SlotPose rest = SlotPose();
 }
 
-/// Pure pose math for the battle animations (SPEC §4.7). [v] is 0..1.
+/// Savaş animasyonları için saf poz hesabı (SPEC §4.7). [v] 0..1 arasıdır.
 abstract final class SlotPoses {
   static const int _shakeWaves = 4;
   static const int _flickers = 4;
@@ -44,11 +44,11 @@ abstract final class SlotPoses {
   static double _seg(double v, double from, double to) =>
       ((v - from) / (to - from)).clamp(0.0, 1.0);
 
-  /// Toward the enemy: up for the player, down for the enemy.
+  /// Rakibe doğru: oyuncu için yukarı, rakip için aşağı.
   static double _forward(Side side) => side == Side.player ? -1 : 1;
 
-  /// Attack: wind-up (crouch back), leap with spin and stretch, impact
-  /// squash on the target, return.
+  /// Saldırı: hazırlık (geriye çömelme), dönerek ve esneyerek sıçrama, hedefte
+  /// çarpma basıklığı, dönüş.
   static SlotPose lunge(double v, Side side) {
     final dir = _forward(side);
     const squash = AppSizes.battleSquash;
@@ -68,7 +68,7 @@ abstract final class SlotPoses {
           -dir * AppSizes.battleWindUp +
           dir * (AppSizes.battleWindUp + AppSizes.battleDash) * e;
       return SlotPose(
-        // The hop: a sideways arc while it flies.
+        // Zıplama: uçarken yana doğru bir yay.
         offset: Offset(
           dir * AppSizes.battleHop * 0.5 * arc,
           y - AppSizes.battleHop * 0.3 * arc,
@@ -90,12 +90,12 @@ abstract final class SlotPoses {
     return SlotPose(offset: Offset(0, dir * AppSizes.battleDash * (1 - e)));
   }
 
-  /// Hit: shake, knock-back away from the attacker, red flash. [heavy]
-  /// (crit / super effective): twice the shake and a flashing light.
+  /// Vuruş: sarsıntı, saldırandan uzağa geri itilme, kırmızı parlama. [heavy]
+  /// (kritik / süper etkili): iki kat sarsıntı ve yanıp sönen ışık.
   static SlotPose hit(double v, Side side, {required bool heavy}) {
     final amp = heavy ? AppSizes.battleCritShake : AppSizes.battleHitShake;
     final fade = 1 - v;
-    final back = -_forward(side); // pushed away from the other team
+    final back = -_forward(side); // diğer takımdan uzağa itilir
     final knock = math.sin(math.pi * math.min(1, v * 2)) * fade;
     final flicker = heavy && (v * _flickers * 2).floor().isEven;
     return SlotPose(
@@ -114,7 +114,7 @@ abstract final class SlotPoses {
   static SlotPose dodge(double v) =>
       SlotPose(offset: Offset(AppSizes.battleLunge * math.sin(math.pi * v), 0));
 
-  /// Two hops with a squash on each landing.
+  /// Her inişte basılmayla iki zıplama.
   static SlotPose victory(double v) {
     final hop = (math.sin(math.pi * 2 * v)).abs();
     final landing = 1 - hop;
@@ -126,7 +126,7 @@ abstract final class SlotPoses {
   }
 }
 
-/// Particle burst out of the card center (hit impact).
+/// Kart merkezinden parçacık patlaması (vuruş çarpması).
 class BurstPainter extends CustomPainter {
   const BurstPainter({required this.v, required this.heavy});
 

@@ -66,7 +66,7 @@ void main() {
 
       final second = await p.run(urls).last;
       expect(second.complete, isTrue);
-      expect(downloaded, urls); // each url downloaded exactly once
+      expect(downloaded, urls); // her url tam olarak bir kez indirildi
     },
   );
 

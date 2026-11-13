@@ -10,8 +10,8 @@ import '../../../../core/widgets/game_card/game_card.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../bloc/battle_state.dart';
 
-/// Pre-battle (SPEC §2.7 AC1): the opponent's 3 cards, the player's deck,
-/// tier and wins, and "Başla".
+/// Savaş öncesi (SPEC §2.7 AC1): rakibin 3 kartı, oyuncunun destesi,
+/// kademe ve galibiyetler ve "Başla".
 class PreBattleView extends StatelessWidget {
   const PreBattleView({required this.state, required this.onStart, super.key});
 

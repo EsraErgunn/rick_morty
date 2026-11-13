@@ -4,12 +4,12 @@ import 'package:cached_network_image/cached_network_image.dart';
 
 import '../logging/app_logger.dart';
 
-/// Puts one image into the disk cache. Returns false if it was already
-/// cached (skipped), true if downloaded; throws on a failed download.
+/// Tek bir görseli disk önbelleğine koyar. Zaten önbellekteyse false
+/// (atlandı), indirildiyse true döner; indirme başarısız olursa hata fırlatır.
 typedef ImageFetch = Future<bool> Function(String url);
 
-/// Disk cache only, no decoding (SPEC §3 Images): the same cache that
-/// `CachedNetworkImage` reads from.
+/// Yalnızca disk önbelleği, çözümleme yok (SPEC §3 Görseller): `CachedNetworkImage`'ın
+/// okuduğu önbelleğin aynısı.
 Future<bool> diskCacheFetch(String url) async {
   final cache = CachedNetworkImageProvider.defaultCacheManager;
   if (await cache.getFileFromCache(url) != null) return false;
@@ -17,7 +17,7 @@ Future<bool> diskCacheFetch(String url) async {
   return true;
 }
 
-/// Progress of one precache run.
+/// Tek bir önbelleğe alma çalışmasının ilerlemesi.
 final class PrecacheProgress {
   const PrecacheProgress({
     required this.done,
@@ -26,12 +26,12 @@ final class PrecacheProgress {
     required this.finished,
   });
 
-  /// URLs handled so far (downloaded, already cached or failed).
+  /// Şimdiye kadar işlenen URL'ler (indirilen, zaten önbellekte olan veya başarısız).
   final int done;
   final int total;
   final int failed;
 
-  /// True on the last event (all handled, or cancelled).
+  /// Son olayda true (hepsi işlendi ya da iptal edildi).
   final bool finished;
 
   int get percent => total == 0 ? 100 : (done * 100 / total).floor();
@@ -39,9 +39,9 @@ final class PrecacheProgress {
   bool get complete => finished && done == total && failed == 0;
 }
 
-/// Warms the image disk cache with at most [concurrency] downloads at a
-/// time (SPEC §3, §2.9 AC5). Cancel stops new downloads at once; running
-/// it again resumes, because cached files are skipped.
+/// Görsel disk önbelleğini aynı anda en fazla [concurrency] indirmeyle
+/// ısıtır (SPEC §3, §2.9 AC5). İptal yeni indirmeleri hemen durdurur; tekrar
+/// çalıştırınca kaldığı yerden devam eder, çünkü önbellekteki dosyalar atlanır.
 class ImagePrecacher {
   ImagePrecacher({this._fetch = diskCacheFetch, this.concurrency = 4});
 
@@ -54,7 +54,7 @@ class ImagePrecacher {
 
   void cancel() => _cancelled = true;
 
-  /// Runs over [urls] (duplicates removed) and reports progress after each.
+  /// [urls] üzerinden geçer (tekrarlar çıkarılır) ve her birinden sonra ilerlemeyi bildirir.
   Stream<PrecacheProgress> run(Iterable<String> urls) {
     final list = urls.toSet().toList();
     final out = StreamController<PrecacheProgress>();

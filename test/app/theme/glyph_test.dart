@@ -10,7 +10,7 @@ import 'package:portalcards/app/theme/typography.dart';
 import '../../helpers/fonts.dart';
 import 'ttf_reader.dart';
 
-/// SPEC §5.8 T1: Turkish glyphs in every weight of both fonts.
+/// SPEC §5.8 T1: iki yazı tipinin her kalınlığında Türkçe karakterler.
 const String turkish = 'ğşıİçöüĞŞÇÖÜ';
 
 void main() {

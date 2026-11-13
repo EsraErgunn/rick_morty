@@ -33,14 +33,14 @@ void main() {
     await sensor.close();
   });
 
-  /// One reading at time [ms] with magnitude [g] (on x).
+  /// [ms] anında [g] büyüklüğünde tek bir okuma (x üzerinde).
   Future<void> at(int ms, double g) async {
     now = Duration(milliseconds: ms);
     sensor.add((x: g, y: 0, z: 0));
     await Future<void>.delayed(Duration.zero);
   }
 
-  /// A peak: above the threshold, then back down.
+  /// Bir tepe: eşiğin üstüne, sonra yeniden aşağı.
   Future<void> peak(int ms) async {
     await at(ms, 20);
     await at(ms + 20, 2);
@@ -62,7 +62,7 @@ void main() {
     await peak(0);
     await peak(700);
     expect(shakes, isEmpty);
-    await peak(1000); // pairs with the 700 ms peak
+    await peak(1000); // 700 ms'deki tepeyle eşleşir
     expect(shakes, hasLength(1));
   });
 

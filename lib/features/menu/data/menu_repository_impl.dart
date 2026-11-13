@@ -3,6 +3,7 @@ import '../../../core/storage/player_store.dart';
 import '../../../core/storage/store_changes.dart';
 import '../domain/menu_repository.dart';
 
+/// [MenuRepository]'nin Hive depolarıyla çalışan uygulaması.
 class MenuRepositoryImpl implements MenuRepository {
   const MenuRepositoryImpl({
     required this._apiData,

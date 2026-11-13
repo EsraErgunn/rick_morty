@@ -13,8 +13,8 @@ import '../../../../l10n/app_localizations.dart';
 import '../bloc/album_bloc.dart';
 import '../bloc/album_state.dart';
 
-/// One episode page [GM §9]: owned characters with art, missing ones as
-/// silhouettes. Expects an [AlbumPageBloc] above it.
+/// Tek bir bölüm sayfası [GM §9]: sahip olunan karakterler görseliyle, eksik olanlar
+/// siluet olarak. Üstünde bir [AlbumPageBloc] bekler.
 class AlbumEpisodePage extends StatelessWidget {
   const AlbumEpisodePage({required this.feedback, super.key});
 
@@ -94,7 +94,7 @@ class AlbumEpisodePage extends StatelessWidget {
   }
 }
 
-/// A missing character: the card as a dark shape with a question mark.
+/// Eksik bir karakter: soru işaretli koyu bir şekil olarak kart.
 class _Silhouette extends StatelessWidget {
   const _Silhouette({required this.card});
 

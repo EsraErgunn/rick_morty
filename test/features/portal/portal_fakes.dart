@@ -12,7 +12,7 @@ import 'package:portalcards/features/portal/presentation/portal_feedback.dart';
 
 import '../../helpers/cards.dart';
 
-/// Repository with scripted results.
+/// Senaryolu sonuçlar veren repository.
 class FakePortalRepository implements PortalRepository {
   FakePortalRepository({
     this.coins = 300,
@@ -60,7 +60,7 @@ PortalResult resultFor(
   );
 }
 
-/// Records every sound and vibration.
+/// Her sesi ve titreşimi kaydeder.
 class RecordingBackend implements AudioBackend {
   final List<Sfx> played = [];
 

@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-/// What the main menu shows (SPEC §2.2, §5.6).
+/// Ana menünün gösterdikleri (SPEC §2.2, §5.6).
 final class MenuSummary extends Equatable {
   const MenuSummary({
     required this.coins,
@@ -34,9 +34,10 @@ final class MenuSummary extends Equatable {
   ];
 }
 
+/// Ana menünün veri kaynağı: özet ve değişiklik akışı.
 abstract interface class MenuRepository {
   MenuSummary load();
 
-  /// Fires whenever the stored data behind this repository changes.
+  /// Bu repository'nin arkasındaki kayıtlı veriler her değiştiğinde tetiklenir.
   Stream<void> get changes;
 }

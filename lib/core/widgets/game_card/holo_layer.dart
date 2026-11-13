@@ -6,11 +6,11 @@ import 'package:flutter/material.dart';
 import '../../game/rarity.dart';
 import '../shader_cache.dart';
 
-/// Holo foil over a card face. Strength comes from the rarity [GM §2];
-/// common (0) draws nothing. [tilt] is the same value as the 3D tilt
-/// (`TiltingGameCard`), so both move together. Repaints only when the tilt
-/// changes. Uses `holo.frag`, or a static diagonal sheen if the shader
-/// could not be loaded.
+/// Kart yüzü üstünde holo folyo. Gücü nadirlikten gelir [GM §2];
+/// sıradan (0) hiçbir şey çizmez. [tilt] 3D eğimle aynı değerdir
+/// (`TiltingGameCard`), böylece ikisi birlikte hareket eder. Yalnızca eğim
+/// değişince yeniden çizilir. `holo.frag` kullanır; shader
+/// yüklenemezse sabit bir çapraz parlama.
 class HoloLayer extends StatefulWidget {
   const HoloLayer({
     required this.rarity,
@@ -28,8 +28,8 @@ class HoloLayer extends StatefulWidget {
 }
 
 class _HoloLayerState extends State<HoloLayer> {
-  /// One shader instance per layer, created once and disposed with it.
-  /// Common cards (strength 0) never create one.
+  /// Katman başına bir shader örneği, bir kez oluşturulur ve katmanla birlikte atılır.
+  /// Sıradan kartlar (güç 0) asla oluşturmaz.
   ui.FragmentShader? _shader;
 
   @override
@@ -102,7 +102,7 @@ class _HoloShaderPainter extends CustomPainter {
       old.strength != strength || old.shader != shader;
 }
 
-/// Non-shader fallback: a fixed diagonal sheen, stronger for rarer cards.
+/// Shader'sız yedek: sabit bir çapraz parlama, nadir kartlarda daha güçlü.
 class _FallbackSheenPainter extends CustomPainter {
   const _FallbackSheenPainter({required this.strength});
 

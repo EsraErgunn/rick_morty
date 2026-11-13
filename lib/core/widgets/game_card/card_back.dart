@@ -10,9 +10,9 @@ import 'card_labels.dart';
 import 'game_card.dart';
 import 'rarity_frame_painter.dart';
 
-/// Back face (SPEC §5.5): `ink` field with a portal-ring pattern. With
-/// [facts] (card detail page) it also lists species, status, origin,
-/// location and episode count.
+/// Arka yüz (SPEC §5.5): portal halkası desenli `ink` zemin. [facts]
+/// verilirse (kart detay sayfası) tür, durum, köken,
+/// konum ve bölüm sayısını da listeler.
 class CardBack extends StatelessWidget {
   const CardBack({this.facts, super.key});
 
@@ -69,7 +69,7 @@ class _Facts extends StatelessWidget {
   }
 }
 
-/// Ink field, concentric portal rings, ink outline.
+/// Mürekkep zemin, iç içe portal halkaları, mürekkep dış çizgi.
 class _BackPainter extends CustomPainter {
   const _BackPainter();
 

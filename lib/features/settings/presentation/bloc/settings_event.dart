@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 
 import '../../../../core/storage/player_state.dart';
 
+/// Ayarlar ekranının olaylarının temel sınıfı.
 sealed class SettingsEvent extends Equatable {
   const SettingsEvent();
 
@@ -9,11 +10,12 @@ sealed class SettingsEvent extends Equatable {
   List<Object?> get props => [];
 }
 
+/// Ayarlar sayfası açıldı: kayıtlı ayarları yükle.
 final class SettingsStarted extends SettingsEvent {
   const SettingsStarted();
 }
 
-/// A toggle or a slider changed (applied and saved at once).
+/// Bir anahtar ya da kaydırıcı değişti (hemen uygulanır ve kaydedilir).
 final class SettingsChanged extends SettingsEvent {
   const SettingsChanged(this.settings);
 
@@ -23,7 +25,7 @@ final class SettingsChanged extends SettingsEvent {
   List<Object?> get props => [settings];
 }
 
-/// The version label was tapped at [at] (7 taps in 3 s unlock demo, D2).
+/// Sürüm yazısına [at] anında dokunuldu (3 sn'de 7 dokunuş demoyu açar, D2).
 final class VersionTapped extends SettingsEvent {
   const VersionTapped(this.at);
 
@@ -33,10 +35,12 @@ final class VersionTapped extends SettingsEvent {
   List<Object?> get props => [at];
 }
 
+/// Demo panelinde "+1000 coin" dokunuldu.
 final class DemoCoinsRequested extends SettingsEvent {
   const DemoCoinsRequested();
 }
 
+/// Demo panelinde "Sonraki portal efsanevi" dokunuldu.
 final class DemoLegendaryRequested extends SettingsEvent {
   const DemoLegendaryRequested();
 }
@@ -46,7 +50,7 @@ final class DemoClosed extends SettingsEvent {
   const DemoClosed();
 }
 
-/// Confirmed in the destructive dialog.
+/// Yıkıcı işlem diyaloğunda onaylandı.
 final class ProgressResetConfirmed extends SettingsEvent {
   const ProgressResetConfirmed();
 }

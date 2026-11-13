@@ -1,12 +1,12 @@
 import 'battle_model.dart';
 import 'card_type.dart';
 
-/// Simple, readable AI [GM §6]: no randomness, no hidden information.
+/// Basit, okunabilir yapay zekâ [GM §6]: rastgelelik yok, gizli bilgi yok.
 abstract final class BattleAi {
-  /// (attacker index, target index) for [side].
-  /// 1. A super-effective pair → the one with the highest expected damage.
-  /// 2. Else the highest-ATK card attacks the lowest-HP enemy.
-  /// Ties: the first card in team order (deterministic).
+  /// [side] için (saldıran indeksi, hedef indeksi).
+  /// 1. Süper etkili bir eşleşme → beklenen hasarı en yüksek olan.
+  /// 2. Yoksa ATK'sı en yüksek kart HP'si en düşük rakibe saldırır.
+  /// Eşitlik: takım sırasındaki ilk kart (deterministik).
   static (int, int) choose(BattleState state, Side side) {
     final own = state.cards(side);
     final foe = state.cards(side.other);

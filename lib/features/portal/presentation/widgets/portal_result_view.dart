@@ -9,7 +9,7 @@ import '../../domain/portal_repository.dart';
 import '../portal_feedback.dart';
 import 'reveal_scene.dart';
 
-/// Reveal scene, then (once revealed) what was won and the next actions.
+/// Açılış sahnesi, sonra (açılınca) kazanılan ve sonraki eylemler.
 class PortalResultView extends StatelessWidget {
   const PortalResultView({
     required this.result,

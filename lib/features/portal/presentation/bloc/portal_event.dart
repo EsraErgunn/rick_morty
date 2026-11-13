@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 
+/// Portal ekranının olaylarının temel sınıfı.
 sealed class PortalEvent extends Equatable {
   const PortalEvent();
 
@@ -7,27 +8,27 @@ sealed class PortalEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-/// Page opened: load coins and the hint flag.
+/// Sayfa açıldı: coin'leri ve ipucu işaretini yükle.
 final class PortalStarted extends PortalEvent {
   const PortalStarted();
 }
 
-/// The phone was shaken (ShakeDetector).
+/// Telefon sallandı (ShakeDetector).
 final class PortalShaken extends PortalEvent {
   const PortalShaken();
 }
 
-/// "Portalı aç" tapped (fallback for emulators and accessibility).
+/// "Portalı aç" dokunuldu (emülatörler ve erişilebilirlik için yedek).
 final class PortalOpenRequested extends PortalEvent {
   const PortalOpenRequested();
 }
 
-/// The reveal scene finished (card flipped, effects done).
+/// Açılış sahnesi bitti (kart çevrildi, efektler tamam).
 final class RevealFinished extends PortalEvent {
   const RevealFinished();
 }
 
-/// "Tekrar aç" / leaving the result: back to the idle portal.
+/// "Tekrar aç" / sonuçtan çıkış: boştaki portala geri dön.
 final class PortalReset extends PortalEvent {
   const PortalReset();
 }

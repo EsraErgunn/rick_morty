@@ -3,8 +3,10 @@ import 'package:equatable/equatable.dart';
 import '../../../../core/errors/failures.dart';
 import '../../../../core/storage/player_state.dart';
 
+/// Ayarların yüklenme durumu.
 enum SettingsStatus { initial, success }
 
+/// Ayarlar ekranının durumu: ayarlar, demo modu ve coin.
 final class SettingsState extends Equatable {
   const SettingsState({
     this.status = SettingsStatus.initial,
@@ -23,10 +25,10 @@ final class SettingsState extends Equatable {
   final bool legendaryArmed;
   final int coins;
 
-  /// Increases when the demo panel unlocks (sound + haptic once).
+  /// Demo paneli açılınca artar (bir kez ses + titreşim).
   final int demoUnlockedTick;
 
-  /// Increases after a progress reset (snack bar).
+  /// İlerleme sıfırlandıktan sonra artar (bilgi çubuğu).
   final int resetTick;
   final Failure? failure;
 

@@ -1,6 +1,6 @@
 import 'json_reader.dart';
 
-/// `/location` item as returned by the API.
+/// API'nin döndürdüğü hâliyle `/location` öğesi.
 class LocationDto {
   const LocationDto({
     required this.id,
@@ -10,7 +10,7 @@ class LocationDto {
     required this.residentIds,
   });
 
-  /// Throws [FormatException] for a malformed item.
+  /// Bozuk bir öğe için [FormatException] fırlatır.
   factory LocationDto.fromJson(Map<String, dynamic> json) => LocationDto(
     id: json.field<int>('id'),
     name: json.field<String>('name'),

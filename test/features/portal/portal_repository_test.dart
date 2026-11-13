@@ -29,8 +29,8 @@ void main() {
       for (final id in characterFixtures.keys)
         parseCharacter(loadCharacter(id))
             .getOrElse((f) => throw StateError('$f')),
-      // The fixtures have only 2 commons; real data has hundreds. Five
-      // single-episode copies of Conroy keep the common pool realistic.
+      // Fikstürlerde yalnızca 2 sıradan kart var; gerçek veride yüzlerce. Conroy'un
+      // beş tek bölümlük kopyası sıradan havuzu gerçekçi tutar.
       for (var id = 9001; id <= 9005; id++)
         parseCharacter(loadCharacter(71)..['id'] = id)
             .getOrElse((f) => throw StateError('$f')),
@@ -143,7 +143,7 @@ void main() {
   test(
     'a character missing from storage is a StorageFailure, no change',
     () async {
-      // In the pool, but never written to the characters box.
+      // Havuzda var, ama karakterler kutusuna asla yazılmaz.
       final ghost = parseCharacter(loadCharacter(1)..['id'] = 424242)
           .getOrElse((f) => throw StateError('$f'));
       final r = PortalRepositoryImpl(

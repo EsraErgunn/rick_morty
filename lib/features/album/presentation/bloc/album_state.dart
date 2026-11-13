@@ -2,9 +2,10 @@ import 'package:equatable/equatable.dart';
 
 import '../../domain/album_repository.dart';
 
+/// Albüm verisinin yüklenme durumu.
 enum AlbumStatus { initial, success }
 
-/// The album list: episodes sorted by code, plus the rewards paid last.
+/// Albüm listesi: koda göre sıralı bölümler ve son ödenen ödüller.
 final class AlbumState extends Equatable {
   const AlbumState({
     this.status = AlbumStatus.initial,
@@ -16,14 +17,14 @@ final class AlbumState extends Equatable {
   final AlbumStatus status;
   final List<AlbumEpisode> episodes;
 
-  /// Paid in the last claim; the page announces them when [rewardTick]
-  /// changes.
+  /// Son talepte ödenenler; [rewardTick] değişince sayfa bunları
+  /// duyurur.
   final List<AlbumReward> rewards;
   final int rewardTick;
 
   int get completed => episodes.where((e) => e.complete).length;
 
-  /// Episodes grouped by season, in order.
+  /// Sezona göre gruplanmış bölümler, sırayla.
   Map<int, List<AlbumEpisode>> get seasons {
     final map = <int, List<AlbumEpisode>>{};
     for (final e in episodes) {
@@ -48,7 +49,7 @@ final class AlbumState extends Equatable {
   List<Object?> get props => [status, episodes, rewards, rewardTick];
 }
 
-/// One episode page: its characters, owned or not.
+/// Tek bir bölüm sayfası: sahip olunsun ya da olunmasın karakterleri.
 final class AlbumPageState extends Equatable {
   const AlbumPageState({
     this.status = AlbumStatus.initial,

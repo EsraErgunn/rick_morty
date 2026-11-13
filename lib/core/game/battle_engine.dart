@@ -9,15 +9,15 @@ import 'card_type.dart';
 import 'featured.dart';
 import 'passives.dart';
 
-/// State after a turn and what happened during it.
+/// Bir turdan sonraki durum ve tur sırasında olanlar.
 typedef BattleStep = ({BattleState state, List<BattleEvent> events});
 
-/// 3 vs 3 turn-based battle [GM §6] with passives [GM §5], type traits
-/// [GM §3] and featured signatures [GM §12.2]. Pure and deterministic:
-/// the same state, choices and seed give the same events. Never waits for
-/// the UI.
+/// Pasifler [GM §5], tip özellikleri [GM §3] ve öne çıkan karakter
+/// yetenekleriyle [GM §12.2] 3'e 3 sıra tabanlı savaş [GM §6]. Saf ve deterministik:
+/// aynı durum, seçimler ve tohum aynı olayları verir. Asla arayüzü
+/// beklemez.
 abstract final class BattleEngine {
-  /// Turn limit: one side's attack is one turn (decision Q1).
+  /// Tur sınırı: bir tarafın saldırısı bir turdur (karar S1).
   static const int maxTurns = 40;
 
   static const double baseCritChance = 0.10;
@@ -25,8 +25,8 @@ abstract final class BattleEngine {
   static const double mythDodgeChance = 0.10;
   static const double defenseScale = 50;
 
-  /// Who starts: the side whose fastest alive card is faster; a Beast
-  /// counts as infinitely fast for its side's first turn; tie → player.
+  /// Kim başlar: en hızlı canlı kartı daha hızlı olan taraf; bir Canavar
+  /// kendi tarafının ilk turunda sonsuz hızlı sayılır; eşitlik → oyuncu.
   static BattleState start(List<BattleCard> player, List<BattleCard> enemy) {
     double speed(List<BattleCard> side) =>
         side.any((c) => c.alive && c.type == CardType.beast)
@@ -51,8 +51,8 @@ abstract final class BattleEngine {
     return right(_resolve(state, Side.player, attacker, target, random));
   }
 
-  /// The AI's turn for whichever side is active (used for the enemy, and
-  /// for both sides in the balance simulation).
+  /// Etkin taraf hangisiyse onun yapay zekâ turu (rakip için ve
+  /// denge simülasyonunda her iki taraf için kullanılır).
   static BattleStep aiTurn(BattleState state, Random random) {
     final (a, t) = BattleAi.choose(state, state.active);
     return _resolve(state, state.active, a, t, random);
@@ -99,8 +99,8 @@ abstract final class BattleEngine {
       final atk =
           attacker.atk *
           (attacker.teamSpirit ? SignatureRules.teamSpiritAtkMultiplier : 1);
-      // [GM §6] one hit never deals more than the attacker's ATK stat; the
-      // crit and effectiveness flags (callouts, sounds) stay as rolled.
+      // [GM §6] tek bir vuruş asla saldıranın ATK değerinden fazla hasar vermez;
+      // kritik ve etkinlik işaretleri (duyurular, sesler) çekildiği gibi kalır.
       final rolled = max(
         1,
         (atk *

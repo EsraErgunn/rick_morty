@@ -4,8 +4,8 @@ import '../../../../app/theme/colors.dart';
 import '../../../../app/theme/spacing.dart';
 import '../../../../app/theme/typography.dart';
 
-/// One left-aligned menu row with an optional right-aligned value
-/// (SPEC §5.6) and an optional hint when disabled.
+/// İsteğe bağlı sağa hizalı bir değeri (SPEC §5.6) ve devre dışıyken isteğe bağlı
+/// bir ipucu olan, sola hizalı tek bir menü satırı.
 class MenuEntry extends StatelessWidget {
   const MenuEntry({
     required this.label,
@@ -17,11 +17,11 @@ class MenuEntry extends StatelessWidget {
 
   final String label;
 
-  /// Null = disabled.
+  /// Null = devre dışı.
   final VoidCallback? onTap;
   final String? value;
 
-  /// Shown under the label while disabled (e.g. "Destene 3 kart ekle").
+  /// Devre dışıyken etiketin altında gösterilir (ör. "Destene 3 kart ekle").
   final String? hint;
 
   @override

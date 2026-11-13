@@ -1,7 +1,7 @@
 import 'json_reader.dart';
 
-/// A list page: `info` (totals) + `results` [CLAUDE.md gotchas: never
-/// hard-code counts, read `info.count` / `info.pages`].
+/// Bir liste sayfası: `info` (toplamlar) + `results` [CLAUDE.md tuzakları: sayıları
+/// asla sabit yazma, `info.count` / `info.pages` oku].
 class PageDto<T> {
   const PageDto({
     required this.count,
@@ -10,7 +10,7 @@ class PageDto<T> {
     required this.results,
   });
 
-  /// Throws [FormatException] if the page or any item is malformed.
+  /// Sayfa ya da herhangi bir öğe bozuksa [FormatException] fırlatır.
   factory PageDto.fromJson(
     Map<String, dynamic> json,
     T Function(Map<String, dynamic>) item,
@@ -31,10 +31,10 @@ class PageDto<T> {
     );
   }
 
-  /// Total items of this resource.
+  /// Bu kaynağın toplam öğe sayısı.
   final int count;
 
-  /// Total pages of this resource.
+  /// Bu kaynağın toplam sayfa sayısı.
   final int pages;
   final bool hasNext;
   final List<T> results;

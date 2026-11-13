@@ -6,9 +6,9 @@ import '../entities/location.dart';
 import 'hive_init.dart';
 import 'stored_models.dart';
 
-/// Local copy of the API data: `characters`, `episodes`, `locations` boxes,
-/// keyed by API id. Methods may throw Hive errors; repositories catch them
-/// and return a `StorageFailure`.
+/// API verilerinin yerel kopyası: API id'sine göre anahtarlanmış `characters`, `episodes`,
+/// `locations` kutuları. Metotlar Hive hatası fırlatabilir; repository'ler bunları yakalar
+/// ve bir `StorageFailure` döndürür.
 class ApiDataStore {
   ApiDataStore._(this._characters, this._episodes, this._locations);
 
@@ -26,7 +26,7 @@ class ApiDataStore {
   int get episodeCount => _episodes.length;
   int get locationCount => _locations.length;
 
-  /// Writes one page at once (one disk write per page).
+  /// Bir sayfayı tek seferde yazar (sayfa başına bir disk yazımı).
   Future<void> putCharacters(Iterable<Character> items) => _characters.putAll({
     for (final c in items) c.id: StoredCharacter.fromEntity(c),
   });

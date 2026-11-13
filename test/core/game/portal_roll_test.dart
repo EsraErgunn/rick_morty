@@ -4,7 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:portalcards/core/game/portal_roll.dart';
 import 'package:portalcards/core/game/rarity.dart';
 
-/// 100 common, 40 rare, 20 epic, 4 legendary ids.
+/// 100 sıradan, 40 nadir, 20 epik, 4 efsanevi id.
 Map<Rarity, List<int>> _bigPool() => {
   Rarity.common: [for (var i = 0; i < 100; i++) 1000 + i],
   Rarity.rare: [for (var i = 0; i < 40; i++) 2000 + i],
@@ -85,7 +85,7 @@ void main() {
         Rarity.epic: <int>[],
         Rarity.legendary: <int>[],
       };
-      // Seed whose first roll is common (60 %).
+      // İlk çekilişi sıradan olan tohum (%60).
       final seed = List.generate(
         50,
         (i) => i,

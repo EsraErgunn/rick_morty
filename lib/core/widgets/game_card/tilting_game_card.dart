@@ -7,20 +7,20 @@ import 'package:flutter_tilt/flutter_tilt.dart';
 import '../../../app/theme/card_style.dart';
 import '../../sensors/tilt_stream.dart';
 
-/// Builds the card; [tilt] is the current tilt for the holo layer.
+/// Kartı kurar; [tilt] holo katmanı için anlık eğimdir.
 typedef TiltedBuilder = Widget Function(
   BuildContext context,
   ValueListenable<Offset> tilt,
 );
 
-/// 3D tilt + light for a card (sensors rules). flutter_tilt's own sensors
-/// are off; a [TiltController] is fed from [TiltStream], and touch drag
-/// stays on as the fallback. Both inputs reach `onGestureMove` (spike
-/// 2026-11-12), so [TiltedBuilder]'s `tilt` is one value for 3D tilt and
-/// holo: flutter_tilt `areaProgress`, (1, 1) = top-left tilted down.
+/// Bir kart için 3D eğim + ışık (sensör kuralları). flutter_tilt'in kendi sensörleri
+/// kapalı; bir [TiltController] [TiltStream] ile beslenir ve dokunarak sürükleme
+/// yedek olarak açık kalır. İki girdi de `onGestureMove`'a ulaşır (deneme
+/// 2026-11-12), bu yüzden [TiltedBuilder]'ın `tilt` değeri 3D eğim ve holo için
+/// tek değerdir: flutter_tilt `areaProgress`, (1, 1) = sol üst aşağı eğik.
 ///
-/// The sensor pauses when the app goes to the background.
-/// All flutter_tilt usage stays in this file (plan risk: API churn).
+/// Uygulama arka plana geçince sensör duraklar.
+/// Tüm flutter_tilt kullanımı bu dosyada kalır (plan riski: API değişiklikleri).
 class TiltingGameCard extends StatefulWidget {
   const TiltingGameCard({
     required this.tiltStream,
@@ -61,7 +61,7 @@ class _TiltingGameCardState extends State<TiltingGameCard>
     }
   }
 
-  /// Sensor [-1, 1] → a point inside the card (center = rest).
+  /// Sensör [-1, 1] → kartın içinde bir nokta (merkez = durma).
   void _onSensor(Offset t) {
     if (_size.isEmpty) return;
     final half = _size.center(Offset.zero);
@@ -95,8 +95,8 @@ class _TiltingGameCardState extends State<TiltingGameCard>
           enableGestureSensors: false,
         ),
         lightConfig: const LightConfig(maxIntensity: CardMetrics.tiltLight),
-        // flutter_tilt shadows are blurred; SPEC §5.4 allows no blur
-        // outside the portal and holo, so the hard card outline stays.
+        // flutter_tilt gölgeleri bulanıktır; SPEC §5.4 portal ve holo dışında
+        // bulanıklığa izin vermez, bu yüzden sert kart dış çizgisi kalır.
         shadowConfig: const ShadowBaseConfig(disable: true),
         borderRadius: BorderRadius.circular(0),
         clipBehavior: Clip.none,

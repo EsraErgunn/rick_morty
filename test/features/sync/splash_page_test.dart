@@ -116,9 +116,9 @@ void main() {
 
     repo.release();
     await tester.pump();
-    expect(done, 0); // still closing the portal
+    expect(done, 0); // portal hâlâ kapanıyor
 
-    // Portal closes (normal) plus a frame for the post-frame callback.
+    // Portal kapanır (normal) artı kare sonrası geri çağrı için bir kare.
     await tester.pump(AppMotion.normal);
     await tester.pump(AppMotion.fast);
     expect(done, 1);
@@ -128,8 +128,8 @@ void main() {
     'already synced: navigates even if no further frame is ever drawn',
     (tester) async {
       await pumpSplash(tester, FakeSyncRepository());
-      // Like a device whose frame pipeline stalls after the first frame:
-      // only time passes (timers + microtasks), no pump, no frame.
+      // İlk kareden sonra kare hattı takılan bir cihaz gibi:
+      // yalnızca zaman geçer (zamanlayıcılar + mikro görevler), pump yok, kare yok.
       await tester.binding.delayed(AppMotion.splashExitLimit);
       expect(done, 1);
       await tester.pump(const Duration(seconds: 2));
@@ -145,7 +145,7 @@ void main() {
     await tester.pump(AppMotion.loaderShowDelay);
     await tester.pump(const Duration(seconds: 1));
     repo.release();
-    await tester.pump(); // the listener runs; then frames stop
+    await tester.pump(); // dinleyici çalışır; sonra kareler durur
     expect(done, 0);
     await tester.binding.delayed(AppMotion.splashExitLimit);
     expect(done, 1);

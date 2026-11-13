@@ -13,14 +13,14 @@ import '../../../../core/widgets/game_card/featured_art.dart';
 import '../../../../core/widgets/game_card/game_card.dart';
 import '../../../../l10n/app_localizations.dart';
 
-/// Rick's 2.5D battle reaction, drawn over his card at card design size.
+/// Rick'in 2.5D savaş tepkisi, kartının üstüne kart tasarım boyutunda çizilir.
 ///
-/// * Victory: the cut-out leaps out of the card, spins in the air, grows,
-///   and lands back; speech bubble and confetti.
-/// * Defeat: the cut-out sinks into the card, topples sideways and turns
-///   grey; speech bubble.
+/// * Zafer: kesilmiş görsel karttan fırlar, havada döner, büyür
+///   ve geri iner; konuşma balonu ve konfeti.
+/// * Yenilgi: kesilmiş görsel kartın içine çöker, yana devrilir ve
+///   grileşir; konuşma balonu.
 ///
-/// [v] is the reaction progress (0..1), driven by the slot.
+/// [v] tepkinin ilerlemesidir (0..1), slot tarafından sürülür.
 class RickReaction extends StatelessWidget {
   const RickReaction({
     required this.card,
@@ -33,7 +33,7 @@ class RickReaction extends StatelessWidget {
   final bool victory;
   final double v;
 
-  /// Part of [v] in [a, b], 0..1.
+  /// [v]'nin [a, b] aralığındaki kısmı, 0..1.
   static double _seg(double v, double a, double b) =>
       ((v - a) / (b - a)).clamp(0.0, 1.0);
 
@@ -58,8 +58,8 @@ class RickReaction extends StatelessWidget {
         ],
       ),
     );
-    // The bubble is laid out at screen size (the battle card is small, a
-    // design-size bubble would be unreadable), above Rick's head.
+    // Balon ekran boyutunda yerleştirilir (savaş kartı küçük, tasarım
+    // boyutundaki balon okunamazdı), Rick'in kafasının üstünde.
     return IgnorePointer(
       child: LayoutBuilder(
         builder: (context, box) {
@@ -98,12 +98,12 @@ class RickReaction extends StatelessWidget {
       AppMotion.emerge.transform(_seg(v, 0, 0.3)) *
       (1 - AppMotion.fall.transform(_seg(v, 0.55, 0.8)));
 
-  /// Out of the card, spin, grow, land.
+  /// Karttan çık, dön, büyü, in.
   Widget _leap(double v, int id) {
     final lift = _lift(v);
     final spin = AppMotion.move.transform(_seg(v, 0.15, 0.55));
     final grow = math.sin(math.pi * _seg(v, 0, 0.8));
-    // Landing squash right after touching down.
+    // Yere değdikten hemen sonra iniş basıklığı.
     final squash = math.sin(math.pi * _seg(v, 0.8, 0.95));
     return Transform(
       alignment: Alignment.bottomCenter,
@@ -121,7 +121,7 @@ class RickReaction extends StatelessWidget {
     );
   }
 
-  /// Sink into the card, topple sideways, turn grey, fade.
+  /// Kartın içine çök, yana devril, grileş, sol.
   Widget _collapse(double v, int id) {
     final appear = _seg(v, 0, 0.12);
     final sink = AppMotion.fall.transform(_seg(v, 0.2, 0.55));
@@ -165,8 +165,8 @@ class RickReaction extends StatelessWidget {
   }
 }
 
-/// The cut-out with its lower part faded out, so no hard bottom edge shows
-/// once Rick leaves the art window.
+/// Alt kısmı soldurulmuş kesilmiş görsel, böylece Rick görsel penceresinden
+/// çıkınca sert bir alt kenar görünmez.
 class _FadedCutout extends StatelessWidget {
   const _FadedCutout({required this.id});
 
@@ -187,7 +187,7 @@ class _FadedCutout extends StatelessWidget {
   );
 }
 
-/// Comic speech bubble: paper fill, ink outline, a tail pointing down.
+/// Çizgi roman konuşma balonu: paper dolgu, mürekkep dış çizgi, aşağı bakan bir kuyruk.
 class SpeechBubble extends StatelessWidget {
   const SpeechBubble({required this.text, super.key});
 
@@ -245,13 +245,13 @@ class _BubblePainter extends CustomPainter {
   bool shouldRepaint(_BubblePainter old) => false;
 }
 
-/// Confetti bursting up from the card and falling (no blur, flat pieces).
-/// Positions are fixed per piece (golden-angle spread), so every victory
-/// looks the same and no `Random` is needed.
+/// Karttan yukarı fışkırıp düşen konfeti (bulanıklık yok, düz parçalar).
+/// Konumlar her parça için sabittir (altın açı yayılımı), böylece her zafer
+/// aynı görünür ve `Random` gerekmez.
 class ConfettiPainter extends CustomPainter {
   const ConfettiPainter(this.t);
 
-  /// 0..1 over the reaction.
+  /// Tepki boyunca 0..1.
   final double t;
 
   static const int _count = 36;

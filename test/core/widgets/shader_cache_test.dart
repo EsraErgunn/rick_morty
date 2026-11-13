@@ -43,7 +43,7 @@ void main() {
     test('a program that does not warm up in time falls back', () async {
       final cache = ShaderCache(
         loader: (_) => ui.FragmentProgram.fromAsset(ShaderCache.holoAsset),
-        warmer: (_) => Completer<void>().future, // GPU never answers
+        warmer: (_) => Completer<void>().future, // GPU hiç cevap vermiyor
         limit: const Duration(milliseconds: 50),
       );
       await cache.load();

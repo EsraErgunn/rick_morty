@@ -5,6 +5,7 @@ import 'card_type.dart';
 import 'featured.dart';
 import 'passives.dart';
 
+/// Savaştaki iki taraf: oyuncu ve rakip.
 enum Side {
   player,
   enemy;
@@ -12,9 +13,10 @@ enum Side {
   Side get other => this == player ? enemy : player;
 }
 
+/// Bir savaşın sonucu: zafer, yenilgi veya beraberlik.
 enum BattleResult { victory, defeat, draw }
 
-/// One card in a battle with its live state [GM §6, §12].
+/// Savaştaki bir kart ve anlık durumu [GM §6, §12].
 final class BattleCard extends Equatable {
   const BattleCard({
     required this.id,
@@ -60,16 +62,16 @@ final class BattleCard extends Equatable {
   final int spd;
   final int hp;
 
-  /// Zombi used its revive.
+  /// Zombi dirilme hakkını kullandı.
   final bool revived;
 
-  /// The once-per-battle signature already fired.
+  /// Savaşta bir kez çalışan özel yetenek zaten tetiklendi.
   final bool signatureUsed;
 
-  /// Morty: next attack ×1.5.
+  /// Morty: sonraki saldırı ×1.5.
   final bool boosted;
 
-  /// Summer: ATK ×1.2 for the rest of the battle.
+  /// Summer: savaşın geri kalanında ATK ×1.2.
   final bool teamSpirit;
 
   bool get alive => hp > 0;
@@ -114,7 +116,7 @@ final class BattleCard extends Equatable {
   ];
 }
 
-/// The whole battle at one moment. Immutable; the engine returns new ones.
+/// Bir andaki tüm savaş. Değişmez; motor yenilerini döndürür.
 final class BattleState extends Equatable {
   const BattleState({
     required this.player,
@@ -127,10 +129,10 @@ final class BattleState extends Equatable {
   final List<BattleCard> player;
   final List<BattleCard> enemy;
 
-  /// Whose move it is.
+  /// Sıra kimde.
   final Side active;
 
-  /// Turns played so far (one side's attack = one turn, Q1).
+  /// Şimdiye kadar oynanan turlar (bir tarafın saldırısı = bir tur, S1).
   final int turn;
   final BattleResult? result;
 
@@ -156,7 +158,7 @@ final class BattleState extends Equatable {
   List<Object?> get props => [player, enemy, active, turn, result];
 }
 
-/// What happened, in order; the UI replays these (architecture rules).
+/// Olanlar, sırasıyla; arayüz bunları tekrar oynatır (mimari kurallar).
 sealed class BattleEvent extends Equatable {
   const BattleEvent();
 
@@ -164,6 +166,7 @@ sealed class BattleEvent extends Equatable {
   List<Object?> get props => [];
 }
 
+/// [side] tarafının [turn]. turu başladı.
 final class TurnStarted extends BattleEvent {
   const TurnStarted(this.side, this.turn);
 
@@ -174,10 +177,11 @@ final class TurnStarted extends BattleEvent {
   List<Object?> get props => [side, turn];
 }
 
+/// Bir kart bir rakip karta saldırdı.
 final class Attacked extends BattleEvent {
   const Attacked(this.side, this.attacker, this.target);
 
-  /// Side of the attacker; [attacker] and [target] are list indexes.
+  /// Saldıranın tarafı; [attacker] ve [target] liste indeksleridir.
   final Side side;
   final int attacker;
   final int target;
@@ -186,7 +190,7 @@ final class Attacked extends BattleEvent {
   List<Object?> get props => [side, attacker, target];
 }
 
-/// Myth dodged (no damage).
+/// Efsanevi yaratık kaçtı (hasar yok).
 final class Dodged extends BattleEvent {
   const Dodged(this.side, this.index);
 
@@ -197,6 +201,7 @@ final class Dodged extends BattleEvent {
   List<Object?> get props => [side, index];
 }
 
+/// Bir kart hasar aldı (kritik ve tip etkinliği bilgisiyle).
 final class Damaged extends BattleEvent {
   const Damaged({
     required this.side,
@@ -208,7 +213,7 @@ final class Damaged extends BattleEvent {
     this.signature,
   });
 
-  /// Side and index of the card that took the damage.
+  /// Hasar alan kartın tarafı ve indeksi.
   final Side side;
   final int index;
   final int amount;
@@ -216,7 +221,7 @@ final class Damaged extends BattleEvent {
   final bool isCrit;
   final Effectiveness effectiveness;
 
-  /// Rick's crit: [Signature.genius] (UI shows "DAHİ!").
+  /// Rick'in kritiği: [Signature.genius] (arayüz "DAHİ!" gösterir).
   final Signature? signature;
 
   @override
@@ -231,6 +236,7 @@ final class Damaged extends BattleEvent {
   ];
 }
 
+/// Bir kartın HP'si 0'a düştü ve bayıldı.
 final class Fainted extends BattleEvent {
   const Fainted(this.side, this.index);
 
@@ -241,7 +247,7 @@ final class Fainted extends BattleEvent {
   List<Object?> get props => [side, index];
 }
 
-/// Zombi came back with [hp].
+/// Zombi [hp] ile geri döndü.
 final class Revived extends BattleEvent {
   const Revived(this.side, this.index, this.hp);
 
@@ -253,7 +259,7 @@ final class Revived extends BattleEvent {
   List<Object?> get props => [side, index, hp];
 }
 
-/// A featured signature fired [GM §12.2].
+/// Öne çıkan karakterin özel yeteneği tetiklendi [GM §12.2].
 final class SignatureTriggered extends BattleEvent {
   const SignatureTriggered(this.side, this.index, this.signature);
 
@@ -265,6 +271,7 @@ final class SignatureTriggered extends BattleEvent {
   List<Object?> get props => [side, index, signature];
 }
 
+/// Bir kart iyileşti (ör. Mr. Meeseeks'in "Görev tamam" yeteneği).
 final class Healed extends BattleEvent {
   const Healed(this.side, this.index, this.amount, this.hpAfter);
 
@@ -277,6 +284,7 @@ final class Healed extends BattleEvent {
   List<Object?> get props => [side, index, amount, hpAfter];
 }
 
+/// Mevcut tur bitti.
 final class TurnEnded extends BattleEvent {
   const TurnEnded(this.side);
 
@@ -286,6 +294,7 @@ final class TurnEnded extends BattleEvent {
   List<Object?> get props => [side];
 }
 
+/// Savaş [result] sonucuyla bitti.
 final class BattleEnded extends BattleEvent {
   const BattleEnded(this.result);
 

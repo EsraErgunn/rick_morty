@@ -5,8 +5,8 @@ import '../../../core/cards/game_card_data.dart';
 import '../../../core/errors/failures.dart';
 import '../../../core/game/rarity.dart';
 
-/// What one portal gave. Already saved when the caller gets it
-/// (write-before-animate, SPEC §2.3 AC8).
+/// Tek bir portalın verdiği. Çağırana ulaştığında zaten kaydedilmiştir
+/// (animasyondan önce yaz, SPEC §2.3 AC8).
 final class PortalResult extends Equatable {
   const PortalResult({
     required this.card,
@@ -19,11 +19,11 @@ final class PortalResult extends Equatable {
 
   final GameCardData card;
 
-  /// Rarity from the roll; differs from `card.rarity` after a step-down.
+  /// Çekilişten gelen nadirlik; aşağı kayma sonrası `card.rarity`'den farklıdır.
   final Rarity rolled;
   final bool isDuplicate;
 
-  /// Coins paid back for a duplicate (0 for a new card).
+  /// Tekrar gelen kart için geri ödenen coin (yeni kart için 0).
   final int duplicateCoins;
   final int coinsBefore;
   final int coinsAfter;
@@ -41,15 +41,16 @@ final class PortalResult extends Equatable {
   ];
 }
 
+/// Portal ekranının veri kaynağı: coin, ipucu ve portal açma.
 abstract interface class PortalRepository {
-  /// Current coins (for the counter and the "not enough coins" check).
+  /// Mevcut coin'ler (sayaç ve "yetersiz coin" kontrolü için).
   int get coins;
 
-  /// False until the first portal opened (shake hint, SPEC D4).
+  /// İlk portal açılana kadar false (sallama ipucu, SPEC D4).
   bool get shakeHintSeen;
 
-  /// Spends the portal cost, rolls, saves the card (or the duplicate
-  /// coins) and the player state, then returns the result.
-  /// [NotEnoughCoinsFailure] changes nothing.
+  /// Portal ücretini harcar, çekiliş yapar, kartı (ya da tekrar
+  /// coin'lerini) ve oyuncu durumunu kaydeder, sonra sonucu döndürür.
+  /// [NotEnoughCoinsFailure] hiçbir şeyi değiştirmez.
   Future<Either<Failure, PortalResult>> open();
 }

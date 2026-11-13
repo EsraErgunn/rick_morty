@@ -1,40 +1,40 @@
 import 'package:flutter/painting.dart';
 
-/// Color tokens from SPEC §5.2 ("Cel ink in the void").
+/// SPEC §5.2'deki renk token'ları ("Boşlukta çizgi film mürekkebi").
 ///
-/// Measured WCAG contrast ratios are recorded in SPEC §5.2 and checked by
-/// `test/app/theme/contrast_test.dart`. Text on any colored fill (portal,
-/// warn, danger, rarity frames) uses [ink], never [paper].
+/// Ölçülen WCAG kontrast oranları SPEC §5.2'de kayıtlıdır ve
+/// `test/app/theme/contrast_test.dart` ile kontrol edilir. Renkli zemin (portal,
+/// uyarı, tehlike, nadirlik çerçeveleri) üzerindeki yazı [paper] değil, her zaman [ink] kullanır.
 abstract final class AppColors {
-  /// SPEC token `void` (renamed: `void` is a Dart keyword).
-  /// App background: deep space indigo.
+  /// SPEC token'ı `void` (yeniden adlandırıldı: `void` bir Dart anahtar kelimesi).
+  /// Uygulama arka planı: derin uzay çivit mavisi.
   static const Color voidBase = Color(0xFF15112B);
 
-  /// Surfaces: panels, slots, sheets, card body.
+  /// Yüzeyler: paneller, slotlar, alt sayfalar, kart gövdesi.
   static const Color voidRaised = Color(0xFF231B45);
 
-  /// Outlines and hard shadows; text on colored fills.
+  /// Dış çizgiler ve sert gölgeler; renkli zeminler üzerindeki yazı.
   static const Color ink = Color(0xFF0B0918);
 
-  /// Primary text on [voidBase], card name plates.
+  /// [voidBase] üzerindeki ana yazı, kart isim plakaları.
   static const Color paper = Color(0xFFF2ECDF);
 
-  /// Secondary text.
+  /// İkincil yazı.
   static const Color paperMuted = Color(0xFFA9A3BF);
 
-  /// The only accent: portal, primary action, selection, progress.
+  /// Tek vurgu rengi: portal, ana eylem, seçim, ilerleme.
   static const Color portal = Color(0xFF8FE04A);
 
-  /// Portal core highlight, focus ring.
+  /// Portal çekirdeği vurgusu, odak halkası.
   static const Color portalHot = Color(0xFFD4FF7A);
 
-  /// Legendary portal, destructive actions, low HP.
+  /// Efsanevi portal, yıkıcı eylemler, düşük HP.
   static const Color danger = Color(0xFFFF5A4E);
 
-  /// HP at or below 50%. Orange, kept apart from [rarityLegendary] gold.
+  /// %50 ve altındaki HP. Turuncu, [rarityLegendary] altınından ayrı tutulur.
   static const Color warn = Color(0xFFFF9F43);
 
-  /// Rarity frame colors [GM §2]. Semantic: they mean rarity only.
+  /// Nadirlik çerçeve renkleri [GM §2]. Anlamsal: yalnızca nadirlik anlamına gelir.
   static const Color rarityCommon = Color(0xFF9AA5B1);
   static const Color rarityRare = Color(0xFF3FA9F5);
   static const Color rarityEpic = Color(0xFFA55EEA);

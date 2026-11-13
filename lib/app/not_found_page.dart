@@ -5,7 +5,7 @@ import '../l10n/app_localizations.dart';
 import 'router.dart';
 import 'theme/spacing.dart';
 
-/// Shown by the router for any unknown location.
+/// Router bilinmeyen her adres için bunu gösterir.
 class NotFoundPage extends StatelessWidget {
   const NotFoundPage({super.key});
 

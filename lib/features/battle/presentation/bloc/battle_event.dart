@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 
 import '../../../../core/game/battle_model.dart';
 
+/// Savaş ekranının olaylarının temel sınıfı.
 sealed class BattleUiEvent extends Equatable {
   const BattleUiEvent();
 
@@ -9,23 +10,23 @@ sealed class BattleUiEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-/// Load the deck and generate the opponent (pre-battle screen).
+/// Desteyi yükle ve rakibi üret (savaş öncesi ekranı).
 final class BattleOpened extends BattleUiEvent {
   const BattleOpened();
 }
 
-/// The stored deck changed. Applied only before the battle starts.
+/// Kayıtlı deste değişti. Yalnızca savaş başlamadan önce uygulanır.
 final class BattleDeckChanged extends BattleUiEvent {
   const BattleDeckChanged();
 }
 
-/// "Başla" on the pre-battle screen.
+/// Savaş öncesi ekranında "Başla".
 final class BattleStartPressed extends BattleUiEvent {
   const BattleStartPressed();
 }
 
-/// A card on the stage tapped: an own card selects the attacker, an enemy
-/// card (with an attacker selected) is attacked.
+/// Sahnedeki bir karta dokunuldu: kendi kartı saldıranı seçer, rakip
+/// kartına (saldıran seçiliyken) saldırılır.
 final class BattleCardTapped extends BattleUiEvent {
   const BattleCardTapped(this.side, this.index);
 
@@ -36,16 +37,17 @@ final class BattleCardTapped extends BattleUiEvent {
   List<Object?> get props => [side, index];
 }
 
-/// The page finished animating the current replay event.
+/// Sayfa mevcut tekrar olayının animasyonunu bitirdi.
 final class BattleReplayAdvanced extends BattleUiEvent {
   const BattleReplayAdvanced();
 }
 
+/// 2× hız anahtarına dokunuldu.
 final class BattleSpeedToggled extends BattleUiEvent {
   const BattleSpeedToggled();
 }
 
-/// Leaving confirmed in the dialog (SPEC §2.7 AC6): counts as a defeat.
+/// Diyalogda çıkış onaylandı (SPEC §2.7 AC6): yenilgi sayılır.
 final class BattleLeft extends BattleUiEvent {
   const BattleLeft();
 }

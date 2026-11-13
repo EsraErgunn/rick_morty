@@ -35,8 +35,8 @@ import '../../helpers/fake_audio.dart';
 
 final _t0 = DateTime.utc(2026, 11, 12);
 
-/// In-memory repository for widget tests (Hive file I/O does not run
-/// inside the widget tester's fake async zone).
+/// Widget testleri için bellek içi repository (Hive dosya G/Ç'si widget
+/// tester'ın sahte async bölgesinde çalışmaz).
 class _MemoryRepo implements CollectionRepository {
   @override
   Stream<void> get changes => const Stream.empty();

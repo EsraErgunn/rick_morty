@@ -5,16 +5,16 @@ import 'package:flutter/material.dart';
 import '../../app/theme/motion.dart';
 import '../../app/theme/spacing.dart';
 
-/// Gentle up-down float for cards in grids (collection, deck). [phase]
-/// (0..1) staggers neighbours so the grid never moves in sync. Still with
-/// reduced motion.
+/// Izgaralardaki kartlar (koleksiyon, deste) için hafif aşağı-yukarı süzülme. [phase]
+/// (0..1) komşuları kaydırır, böylece ızgara asla aynı anda hareket etmez.
+/// Azaltılmış harekette sabit durur.
 class Floating extends StatefulWidget {
   const Floating({required this.child, this.phase = 0, super.key});
 
   final Widget child;
   final double phase;
 
-  /// A phase that differs for neighbouring grid cells.
+  /// Komşu ızgara hücreleri için farklı olan bir faz.
   static double phaseFor(int index) => (index * 0.37) % 1;
 
   @override

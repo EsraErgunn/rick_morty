@@ -7,7 +7,7 @@ import '../../../../core/game/rarity.dart';
 import '../../../../core/widgets/game_card/card_labels.dart';
 import '../../../../l10n/app_localizations.dart';
 
-/// One scrollable chip row (SPEC §5.6): "Hepsi", rarities, types.
+/// Kaydırılabilir tek çip satırı (SPEC §5.6): "Hepsi", nadirlikler, tipler.
 class FilterBar extends StatelessWidget {
   const FilterBar({
     required this.rarities,

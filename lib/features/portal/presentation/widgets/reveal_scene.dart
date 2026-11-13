@@ -16,8 +16,8 @@ import 'reveal_card.dart';
 import 'reveal_stage.dart';
 import 'reveal_timeline.dart';
 
-/// The portal reveal scene (SPEC §4.3, D7). The result is already saved;
-/// this only plays it. Reduced motion: a single crossfade.
+/// Portal açılış sahnesi (SPEC §4.3, D7). Sonuç zaten kaydedilmiş;
+/// bu yalnızca oynatır. Azaltılmış hareket: tek bir geçişli solma.
 class RevealScene extends StatefulWidget {
   const RevealScene({
     required this.result,
@@ -31,7 +31,7 @@ class RevealScene extends StatefulWidget {
   final ShaderCache shaders;
   final PortalFeedback feedback;
 
-  /// Called once the card is face up and its effect has played.
+  /// Kart yüzü yukarı dönüp efekti oynayınca bir kez çağrılır.
   final VoidCallback onFinished;
 
   @override
@@ -56,7 +56,7 @@ class _RevealSceneState extends State<RevealScene>
     duration: AppMotion.slow,
   );
 
-  /// Featured entrance: the image falls into the empty art window.
+  /// Öne çıkan giriş: görsel boş görsel penceresine düşer.
   late final bool _featured = widget.result.card.featured;
   late final AnimationController _drop = AnimationController(
     vsync: this,
@@ -109,7 +109,7 @@ class _RevealSceneState extends State<RevealScene>
     for (final beat in _timeline.beatsBetween(_last, t)) {
       switch (beat) {
         case RevealBeat.charge:
-          break; // played in didChangeDependencies
+          break; // didChangeDependencies içinde oynatıldı
         case RevealBeat.burst:
           widget.feedback.burst(legendary: _legendary);
         case RevealBeat.land:

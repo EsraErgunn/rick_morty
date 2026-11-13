@@ -6,10 +6,10 @@ import 'package:sensors_plus/sensors_plus.dart';
 import 'sensor_support.dart';
 import 'tilt_stream.dart' show Gravity;
 
-/// Linear acceleration source (gravity removed), m/s².
+/// Doğrusal ivme kaynağı (yerçekimi çıkarılmış), m/s².
 typedef MotionSource = Stream<Gravity> Function();
 
-/// Monotonic clock, injected for tests.
+/// Monoton saat, testler için enjekte edilir.
 typedef Clock = Duration Function();
 
 Stream<Gravity> _deviceMotion() => deviceHasMotionSensors
@@ -20,9 +20,9 @@ Stream<Gravity> _deviceMotion() => deviceHasMotionSensors
 final Stopwatch _stopwatch = Stopwatch()..start();
 Duration _monotonic() => _stopwatch.elapsed;
 
-/// Shake to open the portal (sensors rules): magnitude ≈ 15 m/s², two
-/// peaks within 500 ms, then a 1.5 s cooldown. The sensor is open only
-/// while someone listens and the detector is not paused.
+/// Portalı açmak için sallama (sensör kuralları): büyüklük ≈ 15 m/s², 500 ms
+/// içinde iki tepe, sonra 1,5 sn bekleme. Sensör yalnızca biri dinlerken
+/// ve dedektör duraklatılmamışken açıktır.
 class ShakeDetector {
   ShakeDetector({this._source = _deviceMotion, this._clock = _monotonic}) {
     _out = StreamController<void>.broadcast(onListen: _open, onCancel: _close);
@@ -42,7 +42,7 @@ class ShakeDetector {
   Duration? _firstPeak;
   Duration? _lastShake;
 
-  /// One event per detected shake.
+  /// Algılanan her sallama için bir olay.
   Stream<void> get shakes => _out.stream;
 
   int get activeSubscriptions => _sub == null ? 0 : 1;

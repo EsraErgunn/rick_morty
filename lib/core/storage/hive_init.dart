@@ -3,7 +3,7 @@ import 'package:hive_ce/hive.dart';
 import 'player_state.dart';
 import 'stored_models.dart';
 
-/// Box names: one box per aggregate (architecture rules).
+/// Kutu isimleri: her toplu veri için bir kutu (mimari kurallar).
 abstract final class HiveBoxes {
   static const String characters = 'characters';
   static const String episodes = 'episodes';
@@ -12,8 +12,8 @@ abstract final class HiveBoxes {
   static const String collection = 'collection';
 }
 
-/// Registers adapters (once per process) and points Hive at [directory].
-/// The app passes `getApplicationSupportDirectory()`; tests a temp dir.
+/// Adaptörleri kaydeder (işlem başına bir kez) ve Hive'ı [directory] klasörüne yönlendirir.
+/// Uygulama `getApplicationSupportDirectory()` verir; testler geçici bir klasör.
 void initHive(String directory) {
   Hive.init(directory);
   _register(StoredCharacterAdapter());

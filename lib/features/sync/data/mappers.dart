@@ -9,6 +9,7 @@ import 'models/episode_dto.dart';
 import 'models/location_dto.dart';
 import 'models/page_dto.dart';
 
+/// API karakter DTO'sunu [Character] varlığına dönüştürür.
 extension CharacterDtoMapper on CharacterDto {
   Character toEntity() => Character(
     id: id,
@@ -26,6 +27,7 @@ extension CharacterDtoMapper on CharacterDto {
   );
 }
 
+/// API bölüm DTO'sunu [Episode] varlığına dönüştürür.
 extension EpisodeDtoMapper on EpisodeDto {
   Episode toEntity() => Episode(
     id: id,
@@ -36,6 +38,7 @@ extension EpisodeDtoMapper on EpisodeDto {
   );
 }
 
+/// API konum DTO'sunu [Location] varlığına dönüştürür.
 extension LocationDtoMapper on LocationDto {
   Location toEntity() => Location(
     id: id,
@@ -46,7 +49,7 @@ extension LocationDtoMapper on LocationDto {
   );
 }
 
-/// A parsed page of entities with the resource totals.
+/// Kaynak toplamlarıyla birlikte ayrıştırılmış bir varlık sayfası.
 typedef EntityPage<T> = ({int count, int pages, List<T> items});
 
 Either<Failure, EntityPage<T>> _parsePage<D, T>(
@@ -78,7 +81,7 @@ Either<Failure, EntityPage<Location>> parseLocationPage(
   Map<String, dynamic> json,
 ) => _parsePage(json, LocationDto.fromJson, (d) => d.toEntity());
 
-/// A single `/character/{id}` object.
+/// Tek bir `/character/{id}` nesnesi.
 Either<Failure, Character> parseCharacter(Map<String, dynamic> json) {
   try {
     return right(CharacterDto.fromJson(json).toEntity());

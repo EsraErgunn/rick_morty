@@ -19,8 +19,8 @@ import '../bloc/settings_state.dart';
 import '../widgets/demo_panel.dart';
 import '../../../../core/widgets/app_back_button.dart';
 
-/// Settings (SPEC §2.9, §4.9). Expects a [SettingsBloc] above it.
-/// [extra] is a slot for more rows (image download, plan T36).
+/// Ayarlar (SPEC §2.9, §4.9). Üstünde bir [SettingsBloc] bekler.
+/// [extra] daha fazla satır için bir yuvadır (görsel indirme, plan T36).
 class SettingsPage extends StatelessWidget {
   const SettingsPage({
     required this.audio,
@@ -37,7 +37,7 @@ class SettingsPage extends StatelessWidget {
   final UiFeedback feedback;
   final String version;
 
-  /// Opens the first-launch intro again (demo).
+  /// İlk açılış tanıtımını yeniden açar (demo).
   final VoidCallback? onReplayIntro;
   final Widget? extra;
 
@@ -73,7 +73,7 @@ class SettingsPage extends StatelessWidget {
     final bloc = context.read<SettingsBloc>();
     return MultiBlocListener(
       listeners: [
-        // Apply first: the toggle sound/haptic then follow the new setting.
+        // Önce uygula: anahtarın sesi/titreşimi sonra yeni ayarı izler.
         BlocListener<SettingsBloc, SettingsState>(
           listenWhen: (a, b) => a.settings != b.settings,
           listener: (context, state) {
@@ -99,9 +99,9 @@ class SettingsPage extends StatelessWidget {
           final s = state.settings;
           void toggle(bool v, PlayerSettingsChange change) {
             final next = change(v);
-            // Apply now, then give feedback: the toggle's own sound/haptic
-            // follows the NEW setting (SPEC §4.9). The listener re-applies
-            // the same values after the bloc saved them.
+            // Şimdi uygula, sonra geri bildirim ver: anahtarın kendi sesi/titreşimi
+            // YENİ ayarı izler (SPEC §4.9). Dinleyici, bloc kaydettikten sonra
+            // aynı değerleri yeniden uygular.
             unawaited(audio.applySettings(next));
             haptics.applySettings(next);
             feedback.toggle();
@@ -142,7 +142,7 @@ class SettingsPage extends StatelessWidget {
                   value: s.sfxVolume,
                   onChanged: (v) =>
                       bloc.add(SettingsChanged(s.copyWith(sfxVolume: v))),
-                  // Play the tap at the NEW volume (SPEC §4.9).
+                  // Dokunma sesini YENİ ses seviyesinde çal (SPEC §4.9).
                   onChangeEnd: (v) {
                     unawaited(audio.applySettings(s.copyWith(sfxVolume: v)));
                     unawaited(audio.play(Sfx.buttonTap));
@@ -225,6 +225,7 @@ class SettingsPage extends StatelessWidget {
   }
 }
 
+/// Bir anahtarın yeni değerinden yeni ayarları üreten fonksiyon.
 typedef PlayerSettingsChange = PlayerSettings Function(bool value);
 
 class _VolumeRow extends StatelessWidget {

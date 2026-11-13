@@ -7,7 +7,7 @@ import '../../../../app/theme/spacing.dart';
 import '../../../../app/theme/typography.dart';
 import 'battle_cues.dart';
 
-/// Middle band: the turn label and the latest callout (pops in, then fades).
+/// Orta bant: tur etiketi ve son duyuru (belirir, sonra solar).
 class EventBand extends StatelessWidget {
   const EventBand({
     required this.label,

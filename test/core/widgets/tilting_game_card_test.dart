@@ -6,7 +6,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:portalcards/core/sensors/tilt_stream.dart';
 import 'package:portalcards/core/widgets/game_card/tilting_game_card.dart';
 
-/// Fake accelerometer: counts open subscriptions.
+/// Sahte ivmeölçer: açık abonelikleri sayar.
 class _Sensor {
   final List<StreamController<Gravity>> opened = [];
 
@@ -80,11 +80,11 @@ void main() {
 
   testWidgets('tilting the phone updates the holo tilt value', (tester) async {
     await pumpCard(tester);
-    sensor.emit(0, 6.9); // rest pose
+    sensor.emit(0, 6.9); // durma pozu
     await tester.pump(const Duration(milliseconds: 20));
     expect(tilt!.value, Offset.zero);
 
-    await tiltPhone(tester, -3, 6.9); // right edge down
+    await tiltPhone(tester, -3, 6.9); // sağ kenar aşağı
     expect(tilt!.value, isNot(Offset.zero));
     expect(tilt!.value.dx.abs(), greaterThan(0.1));
     await tester.pumpWidget(const SizedBox());

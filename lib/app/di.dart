@@ -70,14 +70,14 @@ import 'app_info.dart';
 import 'debug/card_lab_page.dart';
 import 'router.dart';
 
-/// The app's service locator. Only `main` and composition code (router)
-/// read from it; widgets and blocs get their dependencies passed in.
+/// Uygulamanın servis bulucusu. Yalnızca `main` ve kompozisyon kodu (router)
+/// buradan okur; widget'lar ve bloc'lar bağımlılıklarını parametre olarak alır.
 final GetIt getIt = GetIt.instance;
 
-/// Registers every dependency. Call once before `runApp`.
-/// [storageDirectory] overrides the Hive directory (tests); the app uses
-/// `getApplicationSupportDirectory()`.
-/// Tests call `await getIt.reset()` and then this again.
+/// Tüm bağımlılıkları kaydeder. `runApp`'ten önce bir kez çağır.
+/// [storageDirectory] Hive klasörünü değiştirir (testler); uygulama
+/// `getApplicationSupportDirectory()` kullanır.
+/// Testler önce `await getIt.reset()`, sonra bunu tekrar çağırır.
 Future<void> configureDependencies({
   String? storageDirectory,
   String initialLocation = AppRoutes.splash,
@@ -87,7 +87,7 @@ Future<void> configureDependencies({
   final apiData = await ApiDataStore.open();
   final player = await PlayerStore.open();
   final collection = await CollectionStore.open();
-  // Shaders load once per run, before any card needs them.
+  // Shader'lar her çalıştırmada, herhangi bir kart ihtiyaç duymadan önce bir kez yüklenir.
   final shaders = ShaderCache(
     enabled: !shadersDisabled(isRelease: kReleaseMode),
   );
@@ -106,12 +106,12 @@ Future<void> configureDependencies({
       () =>
           SyncRepositoryImpl(remote: getIt(), store: getIt(), player: getIt()),
     )
-    // Built on first use, which is after the splash finished the sync
-    // (portal, Week 2). A later re-sync must reset it (SPEC §3).
+    // İlk kullanımda kurulur; bu da splash senkronu bitirdikten sonradır
+    // (portal, 2. hafta). Sonraki bir yeniden senkron bunu sıfırlamalıdır (SPEC §3).
     ..registerLazySingleton<RarityPool>(
       () => RarityPool.fromCharacters(getIt<ApiDataStore>().characters),
     )
-    // All sound goes through AudioService (rules); preloaded in main().
+    // Tüm sesler AudioService üzerinden gider (kurallar); main() içinde önceden yüklenir.
     ..registerLazySingleton<AudioService>(
       () => AudioService(
         backend: AudioplayersBackend(),
@@ -119,27 +119,27 @@ Future<void> configureDependencies({
       ),
       dispose: (a) => a.detachLifecycle(),
     )
-    // All vibration goes through HapticsService (rules).
+    // Tüm titreşimler HapticsService üzerinden gider (kurallar).
     ..registerLazySingleton<HapticsService>(
       () => HapticsService(settings: player.state.settings),
     )
-    // Shake to open the portal; active only while the portal page listens.
+    // Portalı açmak için sallama; yalnızca portal sayfası dinlerken etkin.
     ..registerLazySingleton<ShakeDetector>(
       ShakeDetector.new,
       dispose: (d) => d.dispose(),
     )
-    // Image disk-cache downloads (SPEC §3 Images); survives page changes.
+    // Görsellerin disk önbelleğine indirilmesi (SPEC §3 Görseller); sayfa değişince sürer.
     ..registerLazySingleton<ImageDownloadController>(
       ImageDownloadController.new,
       dispose: (c) => c.dispose(),
     )
-    // The only tilt sensor subscription in the app (sensors rules).
+    // Uygulamadaki tek eğim sensörü aboneliği (sensör kuralları).
     ..registerLazySingleton<TiltStream>(
       TiltStream.new,
       dispose: (t) => t.dispose(),
     )
-    // The app's only unseeded Random is created here, in composition code;
-    // game logic always receives it (architecture rules).
+    // Uygulamanın tohumsuz tek Random'u burada, kompozisyon kodunda oluşturulur;
+    // oyun mantığı onu her zaman parametre olarak alır (mimari kurallar).
     ..registerLazySingleton<BattleRepository>(
       () => BattleRepositoryImpl(
         apiData: getIt(),
@@ -200,7 +200,7 @@ Future<void> configureDependencies({
             shaders: getIt(),
             audio: getIt(),
             feedback: UiFeedback(audio: getIt(), haptics: getIt()),
-            // Owned cards + deck art into the disk cache, in the background.
+            // Sahip olunan kartlar + deste görselleri arka planda disk önbelleğine alınır.
             onShown: () {
               final cards = getIt<CollectionRepository>();
               unawaited(

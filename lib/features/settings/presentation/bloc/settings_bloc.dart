@@ -6,8 +6,8 @@ import '../../domain/settings_repository.dart';
 import 'settings_event.dart';
 import 'settings_state.dart';
 
-/// Settings (SPEC §2.9, D2). Applying settings to audio/haptics is a side
-/// effect done by the page's listener.
+/// Ayarlar (SPEC §2.9, D2). Ayarları ses/titreşime uygulamak, sayfanın
+/// dinleyicisinin yaptığı bir yan etkidir.
 class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
   SettingsBloc(this._repository) : super(const SettingsState()) {
     on<SettingsStarted>((e, emit) => emit(_load()));

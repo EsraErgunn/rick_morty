@@ -4,12 +4,12 @@ import 'package:flutter/material.dart';
 
 import '../../../app/theme/motion.dart';
 
-/// Tap to flip between [front] and [back]: Y rotation with perspective,
-/// faces swap at 90° so only one is ever visible (animation rules).
-/// With reduced motion the faces swap instantly.
+/// [front] ile [back] arasında çevirmek için dokun: perspektifli Y dönüşü,
+/// yüzler 90°'de değişir, böylece hep yalnızca biri görünür (animasyon kuralları).
+/// Azaltılmış harekette yüzler anında değişir.
 ///
-/// Week 1 is silent; Week 2 adds sound + haptic from a `BlocListener` /
-/// [onFlipped] (no change here).
+/// 1. hafta sessizdir; 2. hafta bir `BlocListener` / [onFlipped] ile ses + titreşim
+/// ekler (burada değişiklik yok).
 class FlipCard extends StatefulWidget {
   const FlipCard({
     required this.front,
@@ -22,16 +22,17 @@ class FlipCard extends StatefulWidget {
   final Widget front;
   final Widget back;
 
-  /// Called when a flip finishes; `true` when the back is now showing.
+  /// Çevirme bitince çağrılır; arka yüz görünüyorsa `true`.
   final ValueChanged<bool>? onFlipped;
 
-  /// Starting face.
+  /// Başlangıç yüzü.
   final bool showBack;
 
   @override
   State<FlipCard> createState() => FlipCardState();
 }
 
+/// [FlipCard]'ın durumu; açılış sahnesi kartı GlobalKey ile [flip] ederek çevirebilsin diye açık.
 class FlipCardState extends State<FlipCard>
     with SingleTickerProviderStateMixin {
   late final AnimationController _controller = AnimationController(
@@ -46,7 +47,7 @@ class FlipCardState extends State<FlipCard>
 
   bool get showingBack => _controller.value >= 0.5;
 
-  /// Flips to the other face.
+  /// Diğer yüze çevirir.
   Future<void> flip() async {
     final toBack = _controller.value < 0.5;
     if (MediaQuery.disableAnimationsOf(context)) {

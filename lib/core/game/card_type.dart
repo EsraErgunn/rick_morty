@@ -1,8 +1,8 @@
-/// Card type from the API `species` [GM §3].
+/// API `species` alanından kart tipi [GM §3].
 ///
-/// Core triangle (arrow = super effective against):
-/// Human → Robot → Alien → Human. Beast and Myth have special traits
-/// (applied by the battle engine); Neutral has none.
+/// Ana üçgen (ok = şuna karşı süper etkili):
+/// İnsan → Robot → Uzaylı → İnsan. Canavar ve Efsanevi yaratığın özel özellikleri vardır
+/// (savaş motoru uygular); Nötr'ün yoktur.
 enum CardType {
   human,
   robot,
@@ -11,7 +11,7 @@ enum CardType {
   myth,
   neutral;
 
-  /// Maps an API species string. Unknown or new species become [neutral].
+  /// Bir API tür metnini eşler. Bilinmeyen veya yeni türler [neutral] olur.
   static CardType fromSpecies(String species) =>
       switch (species.trim().toLowerCase()) {
         'human' || 'humanoid' => human,
@@ -22,8 +22,8 @@ enum CardType {
         _ => neutral,
       };
 
-  /// The type this one is super effective against, or null outside the
-  /// triangle.
+  /// Bu tipin süper etkili olduğu tip; üçgenin dışındaysa
+  /// null.
   CardType? get strongAgainst => switch (this) {
     human => robot,
     robot => alien,
@@ -32,8 +32,8 @@ enum CardType {
   };
 }
 
-/// How well an attack lands because of types; the UI shows a text for the
-/// first two ("SÜPER ETKİLİ!", "Pek etkili değil…").
+/// Tipler yüzünden bir saldırının ne kadar etkili olduğu; arayüz ilk ikisi için
+/// bir yazı gösterir ("SÜPER ETKİLİ!", "Pek etkili değil…").
 enum Effectiveness {
   superEffective(1.5),
   notVeryEffective(0.75),
@@ -50,6 +50,6 @@ enum Effectiveness {
   }
 }
 
-/// Damage multiplier for [attacker] hitting [defender]: ×1.5, ×0.75 or ×1.
+/// [attacker] [defender]'a vurduğunda hasar çarpanı: ×1.5, ×0.75 veya ×1.
 double typeMultiplier(CardType attacker, CardType defender) =>
     Effectiveness.of(attacker, defender).multiplier;

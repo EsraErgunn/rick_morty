@@ -6,8 +6,8 @@ import '../game/featured.dart';
 import '../game/passives.dart';
 import '../game/rarity.dart';
 
-/// Everything a card shows, derived from a stored character (never stored
-/// itself, SPEC §3).
+/// Bir kartın gösterdiği her şey, kayıtlı bir karakterden türetilir (kendisi
+/// asla kaydedilmez, SPEC §3).
 final class GameCardData extends Equatable {
   const GameCardData({
     required this.id,
@@ -33,14 +33,14 @@ final class GameCardData extends Equatable {
   final CardStats stats;
   final Passive passive;
 
-  // Back facts (card detail page).
+  // Arka yüz bilgileri (kart detay sayfası).
   final String species;
   final String status;
   final String originName;
   final String locationName;
   final int episodeCount;
 
-  /// Set for featured characters [GM §12].
+  /// Öne çıkan karakterler için dolu [GM §12].
   final Signature? signature;
 
   bool get featured => signature != null;

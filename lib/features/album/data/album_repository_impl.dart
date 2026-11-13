@@ -7,6 +7,7 @@ import '../../../core/storage/player_store.dart';
 import '../../../core/storage/store_changes.dart';
 import '../domain/album_repository.dart';
 
+/// [AlbumRepository]'nin Hive depolarıyla çalışan uygulaması.
 class AlbumRepositoryImpl implements AlbumRepository {
   AlbumRepositoryImpl({
     required this._apiData,
@@ -18,11 +19,11 @@ class AlbumRepositoryImpl implements AlbumRepository {
   final PlayerStore _player;
   final CollectionStore _collection;
 
-  /// Claims run one after another, so two change events can never pay the
-  /// same episode twice.
+  /// Talepler birbiri ardına çalışır, böylece iki değişiklik olayı aynı
+  /// bölümü asla iki kez ödeyemez.
   Future<List<AlbumReward>> _claims = Future.value(const []);
 
-  /// Characters the album can show (synced ones only).
+  /// Albümün gösterebileceği karakterler (yalnızca senkronlanmış olanlar).
   List<int> _members(Episode e) => [
     for (final id in e.characterIds)
       if (_apiData.character(id) != null) id,

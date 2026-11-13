@@ -7,10 +7,11 @@ import 'hive_type_ids.dart';
 
 part 'stored_models.g.dart';
 
-// Storage shapes of the API entities. Entities stay free of Hive; these
-// classes map to and from them. Field numbers are permanent: add new fields
-// with new numbers, never reuse one.
+// API varlıklarının depolama biçimleri. Varlıklar Hive'dan bağımsız kalır; bu
+// sınıflar onlara ve onlardan dönüşüm yapar. Alan numaraları kalıcıdır: yeni alanları
+// yeni numaralarla ekle, hiçbirini yeniden kullanma.
 
+/// Hive'da saklanan karakter kaydı ([Character] varlığına dönüştürülür).
 @HiveType(typeId: HiveTypeIds.storedCharacter)
 class StoredCharacter {
   StoredCharacter({
@@ -84,6 +85,7 @@ class StoredCharacter {
   );
 }
 
+/// Hive'da saklanan bölüm kaydı ([Episode] varlığına dönüştürülür).
 @HiveType(typeId: HiveTypeIds.storedEpisode)
 class StoredEpisode {
   StoredEpisode({
@@ -122,6 +124,7 @@ class StoredEpisode {
   );
 }
 
+/// Hive'da saklanan konum kaydı ([Location] varlığına dönüştürülür).
 @HiveType(typeId: HiveTypeIds.storedLocation)
 class StoredLocation {
   StoredLocation({

@@ -1,46 +1,46 @@
 import 'package:flutter/animation.dart';
 
-/// Animation tokens (animation rules, `.claude/rules/animation-audio.md`).
+/// Animasyon token'ları (animasyon kuralları, `.claude/rules/animation-audio.md`).
 ///
-/// Widgets never use raw durations or curves; they read them from here.
+/// Widget'lar asla ham süre veya eğri kullanmaz; buradan okurlar.
 abstract final class AppMotion {
-  /// Taps, toggles, small state changes.
+  /// Dokunuşlar, anahtarlar, küçük durum değişiklikleri.
   static const Duration fast = Duration(milliseconds: 150);
 
-  /// Moves, card flip, screen-level transitions.
+  /// Hareketler, kart çevirme, ekran düzeyindeki geçişler.
   static const Duration normal = Duration(milliseconds: 300);
 
-  /// Reveals and emphasis.
+  /// Ortaya çıkışlar ve vurgu.
   static const Duration slow = Duration(milliseconds: 600);
 
-  /// Portal opening, legendary reveal. The minimum; sequences may run longer.
+  /// Portalın açılması, efsanevi açılış. En az bu kadar; diziler daha uzun sürebilir.
   static const Duration cinematic = Duration(milliseconds: 1500);
 
-  /// A loader is shown only if loading takes longer than this (no flicker).
+  /// Yükleyici yalnızca yükleme bundan uzun sürerse gösterilir (titreme olmasın).
   static const Duration loaderShowDelay = Duration(milliseconds: 300);
 
-  /// Once shown, a loader stays at least this long.
+  /// Bir kez gösterildiyse yükleyici en az bu kadar kalır.
   static const Duration loaderMinVisible = slow;
 
-  /// One full turn of the waiting portal.
-  /// Longest the splash waits for the loader to close after a successful
-  /// sync (min visible + close + margin); then it navigates anyway.
+  /// Bekleyen portalın bir tam dönüşü.
+  /// Başarılı bir senkrondan sonra splash'in yükleyicinin kapanmasını bekleyeceği en uzun süre
+  /// (en az görünme + kapanma + pay); sonra yine de geçiş yapar.
   static const Duration splashExitLimit = Duration(milliseconds: 1500);
 
-  /// A shader that does not load and warm up within this falls back to
-  /// its static drawing.
+  /// Bu süre içinde yüklenip ısınmayan bir shader
+  /// statik çizimine geri döner.
   static const Duration shaderLoadLimit = Duration(seconds: 3);
 
   static const Duration portalSpin = Duration(milliseconds: 3200);
 
-  /// Shake hint: one swing; three swings then [hintPause] (SPEC §4.3).
+  /// Sallama ipucu: bir salınım; üç salınım, sonra [hintPause] (SPEC §4.3).
   static const Duration hintSwing = normal;
   static const Duration hintPause = Duration(milliseconds: 1200);
 
-  /// Coin counter shake when a portal is not affordable (3 cycles).
+  /// Portal için coin yetmediğinde coin sayacının sallanması (3 tur).
   static const Duration coinShake = normal;
 
-  /// Reveal scene (SPEC §4.3, D7).
+  /// Açılış sahnesi (SPEC §4.3, D7).
   static const Duration revealCharge = slow;
   static const Duration revealBurst = fast;
   static const Duration revealEmerge = slow;
@@ -51,78 +51,78 @@ abstract final class AppMotion {
   static const Duration revealAutoFlip = Duration(milliseconds: 4000);
   static const Duration revealHover = Duration(milliseconds: 1200);
 
-  /// Reduced motion: the whole reveal is one crossfade.
+  /// Azaltılmış hareket: tüm açılış tek bir geçişli solmadır.
   static const Duration revealReduced = slow;
 
-  /// Menu items enter one after another (SPEC §4.2).
+  /// Menü öğeleri birbiri ardına girer (SPEC §4.2).
   static const Duration stagger = Duration(milliseconds: 40);
 
-  /// Empty-collection call to action breathes (scale 1.0 to 1.04).
+  /// Boş koleksiyondaki eylem çağrısı nefes alır (ölçek 1.0'dan 1.04'e).
   static const Duration breathe = Duration(milliseconds: 1200);
   static const double breatheScale = 1.04;
 
-  /// Demo unlock: taps on the version label must fall in this window (D2).
+  /// Demo kilidi açma: sürüm yazısına dokunuşlar bu süre içinde olmalı (D2).
   static const Duration demoTapWindow = Duration(seconds: 3);
 
-  /// Pop-in of new elements.
-  /// Battle (SPEC §4.7): cards deal in with this stagger.
+  /// Yeni öğelerin belirerek gelmesi.
+  /// Savaş (SPEC §4.7): kartlar bu aralıklarla dağıtılır.
   static const Duration battleDealStagger = Duration(milliseconds: 80);
 
-  /// Gap after each replayed event; a whole turn stays ≤ 1.6 s.
+  /// Tekrar oynatılan her olaydan sonraki boşluk; bir tur en fazla 1,6 sn sürer.
   static const Duration battleGap = fast;
 
-  /// A hit, dodge or faint holds the replay this long (`normal` + gap).
+  /// Vuruş, kaçma veya bayılma tekrar oynatmayı bu kadar bekletir (`normal` + boşluk).
   static const Duration battleHit = Duration(milliseconds: 450);
 
-  /// Reduced motion: every replay step is a short fade.
+  /// Azaltılmış hareket: her tekrar adımı kısa bir solmadır.
   static const Duration battleReduced = fast;
 
-  /// The 2× toggle divides replay durations by this.
+  /// 2× anahtarı tekrar sürelerini buna böler.
   static const int battleFastFactor = 2;
 
-  /// Attack: wind-up, leap, impact, return. The hit event starts at
-  /// [battleAttackImpact], while the attacker is still on the target.
+  /// Saldırı: hazırlık, sıçrama, çarpma, dönüş. Vuruş olayı
+  /// [battleAttackImpact] anında, saldıran hâlâ hedefin üstündeyken başlar.
   static const Duration battleAttack = Duration(milliseconds: 700);
   static const Duration battleAttackImpact = Duration(milliseconds: 400);
 
-  /// Crit / super-effective hit: bigger shake and flashing light.
+  /// Kritik / süper etkili vuruş: daha büyük sarsıntı ve yanıp sönen ışık.
   static const Duration battleHeavyHit = slow;
 
-  /// Faint: the card spins, shrinks and is pulled into a small portal.
+  /// Bayılma: kart döner, küçülür ve küçük bir portala çekilir.
   static const Duration battleFaint = Duration(milliseconds: 900);
 
-  /// Victory: the winners hop one after another.
+  /// Zafer: kazananlar birbiri ardına zıplar.
   static const Duration battleVictory = Duration(milliseconds: 1200);
   static const Duration battleVictoryStagger = Duration(milliseconds: 160);
 
-  /// Rick's 2.5D victory / defeat reaction (cut-out leaves the card). The
-  /// battle end holds the replay this long so the reaction can finish.
+  /// Rick'in 2.5D zafer / yenilgi tepkisi (kesilmiş görsel karttan çıkar). Savaş
+  /// sonu, tepki bitebilsin diye tekrar oynatmayı bu kadar bekletir.
   static const Duration battleRickReaction = Duration(milliseconds: 2000);
 
-  /// Intro: one loop of a page illustration (shake wiggle, type cycle,
-  /// battle clash).
+  /// Tanıtım: bir sayfa görselinin bir döngüsü (sallama kıpırtısı, tip döngüsü,
+  /// savaş çarpışması).
   static const Duration onboardingLoop = Duration(milliseconds: 2400);
 
-  /// Idle float of a battle card (one up-down cycle); phases differ per slot.
+  /// Savaş kartının boşta süzülmesi (bir aşağı-yukarı döngü); fazlar slota göre değişir.
   static const Duration battleIdle = Duration(milliseconds: 2400);
 
-  /// Gentle float of cards in the collection and deck grids.
+  /// Koleksiyon ve deste ızgaralarındaki kartların hafif süzülmesi.
   static const Duration gridFloat = Duration(milliseconds: 3200);
 
   static const Curve popIn = Curves.easeOutBack;
 
-  /// Movement between positions, card flip.
+  /// Konumlar arası hareket, kart çevirme.
   static const Curve move = Curves.easeInOutCubic;
 
-  /// Rewards (coins, victory).
+  /// Ödüller (coin, zafer).
   static const Curve reward = Curves.elasticOut;
 
-  /// Falling under gravity (quadratic ease-in).
+  /// Yerçekimiyle düşüş (karesel hızlanan giriş).
   static const Curve fall = Curves.easeInQuad;
 
-  /// Something coming out of the portal depth.
+  /// Portalın derinliğinden çıkan bir şey.
   static const Curve emerge = Curves.easeOutCubic;
 
-  /// Perspective entry for 3D rotations: `Matrix4..setEntry(3, 2, perspective)`.
+  /// 3D dönüşler için perspektif değeri: `Matrix4..setEntry(3, 2, perspective)`.
   static const double perspective = 0.001;
 }

@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/services.dart';
 import 'package:portalcards/app/theme/typography.dart';
 
-/// Bundled font files per Flutter family (pubspec).
+/// Flutter ailesi başına paketlenmiş yazı tipi dosyaları (pubspec).
 const Map<String, List<String>> fontFiles = {
   AppFonts.display: [
     'assets/fonts/grandstander/Grandstander-Bold.ttf',
@@ -15,8 +15,8 @@ const Map<String, List<String>> fontFiles = {
   ],
 };
 
-/// Loads the real fonts so goldens show real glyphs (tests use a box font
-/// by default). Material Icons stay as boxes in tests; that is expected.
+/// Altın görüntüler gerçek karakterler göstersin diye gerçek yazı tiplerini yükler (testler varsayılan
+/// olarak kutu yazı tipi kullanır). Material Icons testlerde kutu olarak kalır; bu beklenen bir durum.
 Future<void> loadAppFonts() async {
   for (final entry in fontFiles.entries) {
     final loader = FontLoader(entry.key);

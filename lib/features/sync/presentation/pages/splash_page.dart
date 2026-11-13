@@ -15,18 +15,18 @@ import '../bloc/sync_event.dart';
 import '../bloc/sync_state.dart';
 import '../widgets/sync_status_view.dart';
 
-/// First screen: syncs the API (or skips if synced), then calls [onDone]
-/// (the router opens the menu). Expects a [SyncBloc] above it.
+/// İlk ekran: API'yi senkronlar (senkronluysa atlar), sonra [onDone] çağırır
+/// (router menüyü açar). Üstünde bir [SyncBloc] bekler.
 class SplashPage extends StatefulWidget {
   const SplashPage({required this.onDone, this.shaders, super.key});
 
-  /// Called once sync succeeded and the loader has settled.
+  /// Senkron başarılı olup yükleyici yerleşince bir kez çağrılır.
   final VoidCallback onDone;
 
-  /// Portal shader for the loader (null = spiral painter).
+  /// Yükleyici için portal shader'ı (null = sarmal çizici).
   final ShaderCache? shaders;
 
-  /// Portal brightness while a failure is shown (SPEC §4.1).
+  /// Bir hata gösterilirken portal parlaklığı (SPEC §4.1).
   static const double dimIntensity = 0.05;
 
   @override
@@ -38,9 +38,9 @@ class _SplashPageState extends State<SplashPage> {
   bool _done = false;
   Timer? _fallback;
 
-  /// Navigates once, whichever comes first: the loader settled, or the
-  /// fallback timer (which needs no frame, so a stalled frame pipeline can
-  /// never keep the app on the splash).
+  /// Hangisi önce gelirse bir kez geçiş yapar: yükleyici yerleşti ya da
+  /// yedek zamanlayıcı (kare gerektirmez, böylece takılan bir kare hattı
+  /// uygulamayı asla splash'te tutamaz).
   void _finish() {
     if (_done || !mounted) return;
     _done = true;
@@ -59,8 +59,8 @@ class _SplashPageState extends State<SplashPage> {
     return BlocListener<SyncBloc, SyncState>(
       listenWhen: (a, b) => a.status != b.status,
       listener: (context, state) {
-        // Navigation waits for the loader to settle (see onSettled), but
-        // never longer than the loader could take to close.
+        // Geçiş yükleyicinin yerleşmesini bekler (bkz. onSettled), ama
+        // yükleyicinin kapanabileceği süreden asla uzun değil.
         final success = state.status == SyncStatus.success;
         if (success) {
           _fallback?.cancel();
@@ -69,8 +69,8 @@ class _SplashPageState extends State<SplashPage> {
         setState(() => _loaderActive = !success);
       },
       child: Scaffold(
-        // The art's green glow is at its center; with BoxFit.cover that is
-        // the screen center, where the loader sits.
+        // Görselin yeşil parıltısı merkezindedir; BoxFit.cover ile bu
+        // ekran merkezi, yani yükleyicinin durduğu yerdir.
         body: ScreenBackground(
           asset: Backgrounds.splash,
           child: LayoutBuilder(

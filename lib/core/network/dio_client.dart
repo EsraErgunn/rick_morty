@@ -8,10 +8,10 @@ import '../logging/app_logger.dart';
 import 'endpoints.dart';
 import 'retry_interceptor.dart';
 
-/// Thin Dio wrapper for the Rick and Morty API. Never throws: every call
-/// returns `Either<Failure, T>`.
+/// Rick and Morty API'si için ince Dio sarmalayıcısı. Asla hata fırlatmaz: her çağrı
+/// `Either<Failure, T>` döndürür.
 class ApiClient {
-  /// Throws [ArgumentError] for a non-HTTPS [baseUrl] (also in release).
+  /// HTTPS olmayan bir [baseUrl] için [ArgumentError] fırlatır (release'de de).
   ApiClient({
     String baseUrl = Endpoints.baseUrl,
     HttpClientAdapter? adapter,
@@ -33,7 +33,7 @@ class ApiClient {
     );
   }
 
-  /// Per request phase (architecture rules).
+  /// İstek aşaması başına (mimari kurallar).
   static const Duration timeout = Duration(seconds: 15);
 
   final Dio _dio;
@@ -45,7 +45,7 @@ class ApiClient {
     return url;
   }
 
-  /// GET [path] and return the JSON object body.
+  /// [path] adresine GET yapar ve JSON nesne gövdesini döndürür.
   Future<Either<Failure, Map<String, dynamic>>> getJson(
     String path, {
     Map<String, Object>? query,
@@ -78,8 +78,8 @@ class ApiClient {
             ? ServerFailure(status)
             : ClientFailure(status);
       case DioExceptionType.unknown:
-        // Socket and TLS problems (no network, a proxy re-signing HTTPS)
-        // are connection problems for the player.
+        // Soket ve TLS sorunları (ağ yok, HTTPS'i yeniden imzalayan bir proxy)
+        // oyuncu için bağlantı sorunudur.
         return e.error is IOException
             ? NetworkFailure('${e.error.runtimeType}')
             : UnexpectedFailure(e.type.name);

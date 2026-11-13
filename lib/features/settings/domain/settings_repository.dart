@@ -3,8 +3,8 @@ import 'package:fpdart/fpdart.dart';
 import '../../../core/errors/failures.dart';
 import '../../../core/storage/player_state.dart';
 
-/// Settings screen data (SPEC §2.9): toggles, volumes, demo mode (D2),
-/// progress reset.
+/// Ayarlar ekranı verileri (SPEC §2.9): anahtarlar, ses seviyeleri, demo modu (D2),
+/// ilerleme sıfırlama.
 abstract interface class SettingsRepository {
   PlayerSettings get settings;
   bool get demoUnlocked;
@@ -14,13 +14,13 @@ abstract interface class SettingsRepository {
   Future<Either<Failure, Unit>> saveSettings(PlayerSettings settings);
   Future<Either<Failure, Unit>> setDemoUnlocked(bool unlocked);
 
-  /// +1000 coins through Economy, reason `demo`. Returns the new balance.
+  /// Economy üzerinden +1000 coin, sebep `demo`. Yeni bakiyeyi döndürür.
   Future<Either<Failure, int>> addDemoCoins();
 
-  /// Next portal gives a legendary (one-shot, [GM §7.2]).
+  /// Sonraki portal efsanevi verir (tek seferlik, [GM §7.2]).
   Future<Either<Failure, Unit>> armLegendary();
 
-  /// Player state back to a new player's, collection emptied; synced API
-  /// data and settings stay (SPEC §2.9 AC3).
+  /// Oyuncu durumu yeni bir oyuncununkine döner, koleksiyon boşaltılır; senkronlanmış API
+  /// verileri ve ayarlar kalır (SPEC §2.9 AC3).
   Future<Either<Failure, Unit>> resetProgress();
 }

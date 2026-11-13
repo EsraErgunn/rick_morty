@@ -11,13 +11,13 @@ import '../features/sync/fake_sync_repository.dart';
 Future<GoRouter> _pumpApp(WidgetTester tester) async {
   final router = createRouter(syncRepository: FakeSyncRepository(hold: true));
   await tester.pumpWidget(PortalCardsApp(router: router));
-  // Splash keeps syncing (held), so its portal never settles: pump once.
+  // Splash senkronlamaya devam eder (bekletilir), bu yüzden portalı asla yerleşmez: bir kez pump et.
   await tester.pump();
   return router;
 }
 
 void main() {
-  /// Every placeholder route in SPEC §2 → its title (splash is real now).
+  /// SPEC §2'deki her yer tutucu rota → başlığı (splash artık gerçek).
   final routes = <String, String>{
     AppRoutes.menu: 'Ana menü',
     AppRoutes.portal: 'Portal',
@@ -63,7 +63,7 @@ void main() {
     final router = await _pumpApp(tester);
     expect(router.state.uri.path, AppRoutes.splash);
     expect(find.text('Evrenler indiriliyor'), findsOneWidget);
-    await tester.pumpWidget(const SizedBox()); // dispose loader timers
+    await tester.pumpWidget(const SizedBox()); // yükleyici zamanlayıcılarını temizle
   });
 
   testWidgets('unknown route shows "Sayfa bulunamadı" and returns to menu', (

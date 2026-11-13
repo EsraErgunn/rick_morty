@@ -32,7 +32,7 @@ BattleCard card(
   hp: hp,
 );
 
-/// Random with fixed doubles (for exact crit/dodge/Belirsiz control).
+/// Sabit double değerli Random (kritik/kaçma/Belirsiz'i tam kontrol için).
 class ScriptedRandom implements Random {
   ScriptedRandom(this.doubles);
 
@@ -99,7 +99,7 @@ void main() {
       );
       final d = events(player(s, 0, 0, noCrit)).whereType<Damaged>().single;
       expect(d.effectiveness, Effectiveness.superEffective);
-      // 24 rolled, capped at the attacker's ATK [GM §6].
+      // 24 çekildi, saldıranın ATK değeriyle sınırlandı [GM §6].
       expect(d.amount, 20);
     });
 
@@ -113,7 +113,7 @@ void main() {
           .single;
       expect(d.isCrit, isTrue);
       expect(d.signature, Signature.genius);
-      // 24 rolled, capped at the attacker's ATK [GM §6].
+      // 24 çekildi, saldıranın ATK değeriyle sınırlandı [GM §6].
       expect(d.amount, 20);
 
       final plain = BattleEngine.start([card(1)], [card(2)]);
@@ -194,7 +194,7 @@ void main() {
       final low = events(player(s, 0, 0, ScriptedRandom([0.9, 0.9])))
           .whereType<Damaged>()
           .single;
-      expect(high.amount, 50); // 60 rolled, capped at ATK 50
+      expect(high.amount, 50); // 60 çekildi, ATK 50 ile sınırlandı
       expect(low.amount, 40);
     });
   });
@@ -238,7 +238,7 @@ void main() {
         Signature.awJeez,
       );
       final counter = BattleEngine.aiTurn(hit.state, noCrit);
-      // 30 rolled, capped at ATK 20 [GM §6].
+      // 30 çekildi, ATK 20 ile sınırlandı [GM §6].
       expect(counter.events.whereType<Damaged>().single.amount, 20);
     });
 
@@ -345,7 +345,7 @@ void main() {
         ],
         active: Side.enemy,
       );
-      expect(BattleAi.choose(s, Side.enemy), (1, 0)); // Robot → Alien
+      expect(BattleAi.choose(s, Side.enemy), (1, 0)); // Robot → Uzaylı
     });
 
     test('otherwise highest ATK on the lowest HP', () {

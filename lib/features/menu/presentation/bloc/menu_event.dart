@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 
+/// Ana menünün olaylarının temel sınıfı.
 sealed class MenuEvent extends Equatable {
   const MenuEvent();
 
@@ -7,12 +8,12 @@ sealed class MenuEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-/// Menu shown (or shown again after another screen).
+/// Menü gösterildi (ya da başka bir ekrandan sonra yeniden gösterildi).
 final class MenuStarted extends MenuEvent {
   const MenuStarted();
 }
 
-/// Stored data changed (coins, cards, deck), on this or any other screen.
+/// Kayıtlı veriler değişti (coin, kart, deste), bu ya da başka bir ekranda.
 final class MenuDataChanged extends MenuEvent {
   const MenuDataChanged();
 }

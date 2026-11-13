@@ -8,18 +8,18 @@ import '../../l10n/app_localizations.dart';
 import '../theme/card_style.dart';
 import '../theme/spacing.dart';
 
-/// Debug-only screen (`/debug/card-lab`, registered only in debug builds):
-/// real synced characters through `CardFactory`, one per rarity and type.
-/// Tap a card to flip it; long press opens its detail page.
+/// Yalnızca debug ekranı (`/debug/card-lab`, sadece debug derlemede kayıtlı):
+/// `CardFactory` ile gerçek senkronlanmış karakterler, her nadirlik ve tipten bir tane.
+/// Karta dokununca döner; uzun basınca detay sayfası açılır.
 class CardLabPage extends StatelessWidget {
   const CardLabPage({required this.cards, this.onOpen, super.key});
 
   final List<GameCardData> cards;
 
-  /// Long press: open the card detail (tilt + holo).
+  /// Uzun basma: kart detayını açar (eğim + holo).
   final ValueChanged<int>? onOpen;
 
-  /// The ids of the test fixtures: all rarities, types and statuses.
+  /// Test fikstürlerinin id'leri: tüm nadirlikler, tipler ve durumlar.
   static const List<int> characterIds = [1, 2, 23, 63, 71, 82, 86, 309];
 
   static const int _columns = 2;

@@ -7,6 +7,7 @@ import '../../../core/storage/player_state.dart';
 import '../../../core/storage/player_store.dart';
 import '../domain/settings_repository.dart';
 
+/// [SettingsRepository]'nin Hive depolarıyla çalışan uygulaması.
 class SettingsRepositoryImpl implements SettingsRepository {
   const SettingsRepositoryImpl({
     required this._player,

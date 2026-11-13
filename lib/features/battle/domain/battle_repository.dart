@@ -7,7 +7,7 @@ import '../../../core/cards/game_card_data.dart';
 import '../../../core/errors/failures.dart';
 import '../../../core/game/battle_model.dart';
 
-/// What a finished battle paid out ([GM §8]).
+/// Biten bir savaşın ödediği ([GM §8]).
 final class BattleReward extends Equatable {
   const BattleReward({
     required this.result,
@@ -38,22 +38,23 @@ final class BattleReward extends Equatable {
   ];
 }
 
+/// Savaş ekranının veri kaynağı: deste, rakip üretimi ve ödüller.
 abstract interface class BattleRepository {
-  /// The player's deck as cards (empty slots skipped).
+  /// Oyuncunun destesi kart olarak (boş slotlar atlanır).
   List<GameCardData> deck();
 
-  /// Fires whenever the player's stored data (deck, coins, wins) changes.
+  /// Oyuncunun kayıtlı verileri (deste, coin, galibiyet) her değiştiğinde tetiklenir.
   Stream<void> get changes;
 
   int get wins;
   int get tier;
 
-  /// A new opponent team for the current tier [GM §6].
+  /// Mevcut kademe için yeni bir rakip takım [GM §6].
   List<GameCardData> opponents(Random random);
 
-  /// Credits the reward once per [battleId] (a second call returns the same
-  /// reward without paying again) and updates `wins`. Leaving mid-battle
-  /// is a defeat (decision Q4).
+  /// Ödülü [battleId] başına bir kez öder (ikinci çağrı tekrar ödemeden aynı
+  /// ödülü döndürür) ve `wins` değerini günceller. Savaşın ortasında çıkmak
+  /// yenilgi sayılır (karar S4).
   Future<Either<Failure, BattleReward>> finish(
     String battleId,
     BattleResult result,

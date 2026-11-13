@@ -4,8 +4,10 @@ import '../../../../core/cards/game_card_data.dart';
 import '../../../../core/errors/failures.dart';
 import '../../domain/collection_repository.dart';
 
+/// Kart detayının yüklenme durumu (kart bulunamazsa notFound).
 enum CardDetailStatus { initial, success, notFound }
 
+/// Kart detay ekranının durumu: kart, sahiplik ve deste bilgisi.
 final class CardDetailState extends Equatable {
   const CardDetailState({
     this.status = CardDetailStatus.initial,
@@ -24,7 +26,7 @@ final class CardDetailState extends Equatable {
   bool get inDeck => card != null && deck.contains(card!.id);
   bool get deckFull => deck.length >= CollectionRepository.deckSize;
 
-  /// The add action is offered only for owned cards and a deck with room.
+  /// Ekleme işlemi yalnızca sahip olunan kartlarda ve destede yer varsa sunulur.
   bool get canAdd => owned && !inDeck && !deckFull;
 
   @override

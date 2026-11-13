@@ -4,21 +4,23 @@ import '../../../../core/cards/game_card_data.dart';
 import '../../../../core/game/battle_model.dart';
 import '../../domain/battle_repository.dart';
 
+/// Savaş ekranının aşaması.
 enum BattlePhase {
   loading,
 
-  /// The deck has fewer than 3 cards.
+  /// Destede 3'ten az kart var.
   noDeck,
   preBattle,
 
-  /// Waiting for the player's attacker + target.
+  /// Oyuncunun saldıran + hedef seçmesi bekleniyor.
   choosing,
 
-  /// The page is replaying [BattleViewState.queue]; input is blocked.
+  /// Sayfa [BattleViewState.queue] kuyruğunu tekrar oynatıyor; girdi engelli.
   replaying,
   finished,
 }
 
+/// Savaş ekranının tüm durumu (değişmez).
 final class BattleViewState extends Equatable {
   const BattleViewState({
     this.phase = BattlePhase.loading,
@@ -40,32 +42,32 @@ final class BattleViewState extends Equatable {
   final List<GameCardData> playerCards;
   final List<GameCardData> enemyCards;
 
-  /// The engine's authoritative state (already past the queued events).
+  /// Motorun asıl durumu (sıradaki olayların zaten ötesinde).
   final BattleState? battle;
 
-  /// What the stage shows: [battle] before [queue], moved forward one event
-  /// at a time by the replay.
+  /// Sahnenin gösterdiği: [queue] öncesindeki [battle], tekrar oynatmayla
+  /// her seferinde bir olay ilerletilir.
   final BattleState? view;
 
-  /// Events still to replay; the page animates [current].
+  /// Henüz tekrar oynatılacak olaylar; sayfa [current] olayını canlandırır.
   final List<BattleEvent> queue;
 
-  /// Increases with every replay step, so equal consecutive events still
-  /// reach the page.
+  /// Her tekrar adımında artar, böylece art arda gelen eşit olaylar da
+  /// sayfaya ulaşır.
   final int replayTick;
 
-  /// The player's chosen attacker index.
+  /// Oyuncunun seçtiği saldıran indeksi.
   final int? selected;
 
-  /// 2× replay speed.
+  /// 2× tekrar oynatma hızı.
   final bool fast;
 
-  /// Paid once, as soon as the engine reports the end (AC5).
+  /// Motor sonu bildirir bildirmez bir kez ödenir (AC5).
   final BattleReward? reward;
   final int tier;
   final int wins;
 
-  /// The player left mid-battle (counted as a defeat).
+  /// Oyuncu savaşın ortasında çıktı (yenilgi sayıldı).
   final bool left;
 
   BattleEvent? get current => queue.isEmpty ? null : queue.first;

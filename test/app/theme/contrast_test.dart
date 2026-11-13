@@ -4,7 +4,7 @@ import 'dart:ui' show Color;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:portalcards/app/theme/colors.dart';
 
-/// WCAG 2.x relative luminance of an sRGB channel value in [0, 1].
+/// [0, 1] aralığındaki bir sRGB kanal değerinin WCAG 2.x göreli parlaklığı.
 double _linear(double c) =>
     c <= 0.04045 ? c / 12.92 : math.pow((c + 0.055) / 1.055, 2.4).toDouble();
 
@@ -24,8 +24,8 @@ const double _large = 3;
 
 typedef _Pair = (String name, Color fg, Color bg, double min);
 
-/// Pairs from SPEC §5.8 T2, plus the non-text pairs the UI relies on.
-/// Text on rarity frames is [AppColors.ink] (decided 2026-11-12).
+/// SPEC §5.8 T2'deki çiftler, artı arayüzün dayandığı yazı dışı çiftler.
+/// Nadirlik çerçeveleri üstündeki yazı [AppColors.ink] (2026-11-12'de karar verildi).
 const List<_Pair> _pairs = [
   ('paper on void', AppColors.paper, AppColors.voidBase, _body),
   ('paper on voidRaised', AppColors.paper, AppColors.voidRaised, _body),
@@ -43,7 +43,7 @@ const List<_Pair> _pairs = [
   ('ink on rarityRare', AppColors.ink, AppColors.rarityRare, _body),
   ('ink on rarityEpic', AppColors.ink, AppColors.rarityEpic, _body),
   ('ink on rarityLegendary', AppColors.ink, AppColors.rarityLegendary, _body),
-  // Colored text and indicators on the background (low HP number, progress).
+  // Arka plan üstündeki renkli yazı ve göstergeler (düşük HP sayısı, ilerleme).
   ('warn on void', AppColors.warn, AppColors.voidBase, _body),
   ('danger on void', AppColors.danger, AppColors.voidBase, _body),
   ('portal on void', AppColors.portal, AppColors.voidBase, _large),
@@ -53,7 +53,7 @@ const List<_Pair> _pairs = [
     AppColors.voidBase,
     _large,
   ),
-  // Frame against the card body (non-text graphic).
+  // Kart gövdesine karşı çerçeve (yazı dışı grafik).
   (
     'rarityCommon frame on voidRaised',
     AppColors.rarityCommon,

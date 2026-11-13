@@ -1,6 +1,6 @@
 import 'json_reader.dart';
 
-/// `/character` item as returned by the API.
+/// API'nin döndürdüğü hâliyle `/character` öğesi.
 class CharacterDto {
   const CharacterDto({
     required this.id,
@@ -17,7 +17,7 @@ class CharacterDto {
     required this.episodeIds,
   });
 
-  /// Throws [FormatException] for a malformed item.
+  /// Bozuk bir öğe için [FormatException] fırlatır.
   factory CharacterDto.fromJson(Map<String, dynamic> json) {
     final origin = json.object('origin');
     final location = json.object('location');

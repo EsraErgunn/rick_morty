@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import '../../app/theme/spacing.dart';
 import '../../l10n/app_localizations.dart';
 
-/// The visible back button of every screen except the menu: theme icon
-/// style, at least a 48 dp touch target, plays [onFeedback] (button_tap)
-/// and then pops. A page with a [PopScope] (battle) still gets its say,
-/// because the default pop is [Navigator.maybePop]; [onPressed] replaces it.
+/// Menü dışındaki her ekranın görünür geri butonu: tema ikon
+/// stili, en az 48 dp dokunma alanı, [onFeedback] (button_tap) çalar
+/// ve sonra geri döner. [PopScope] olan bir sayfa (savaş) yine söz sahibidir,
+/// çünkü varsayılan geri dönüş [Navigator.maybePop]'tur; [onPressed] bunun yerine geçer.
 class AppBackButton extends StatelessWidget {
   const AppBackButton({required this.onFeedback, this.onPressed, super.key});
 

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../../../../app/theme/motion.dart';
 
-/// Repeats [AppMotion.onboardingLoop] and builds with its progress (0..1).
-/// Reduced motion: no loop, [restAt] is used.
+/// [AppMotion.onboardingLoop]'u tekrarlar ve ilerlemesiyle (0..1) kurar.
+/// Azaltılmış hareket: döngü yok, [restAt] kullanılır.
 class LoopBuilder extends StatefulWidget {
   const LoopBuilder({required this.builder, this.restAt = 0, super.key});
 

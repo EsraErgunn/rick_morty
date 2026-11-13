@@ -61,7 +61,7 @@ class FakeBattleRepository implements BattleRepository {
 BattleBloc _bloc(FakeBattleRepository repo, {int seed = 7}) =>
     BattleBloc(repository: repo, random: Random(seed), newBattleId: () => 'b1');
 
-/// Replays everything queued, the way the page does.
+/// Sıradaki her şeyi, sayfanın yaptığı gibi tekrar oynatır.
 void _drain(BattleBloc bloc) {
   for (var i = 0; i < bloc.state.queue.length; i++) {
     bloc.add(const BattleReplayAdvanced());
@@ -142,7 +142,7 @@ void main() {
       expect(s.queue.first, const TurnStarted(Side.player, 1));
       expect(s.queue[1], const Attacked(Side.player, 0, 0));
       expect(s.queue, contains(const TurnStarted(Side.enemy, 2)));
-      // The stage still shows full HP until the replay moves on.
+      // Tekrar oynatma ilerleyene kadar sahne hâlâ tam HP gösterir.
       expect(s.view!.enemy[0].hp, s.view!.enemy[0].maxHp);
       await bloc.close();
     });

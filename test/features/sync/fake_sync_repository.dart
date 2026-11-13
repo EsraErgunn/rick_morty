@@ -4,7 +4,7 @@ import 'package:fpdart/fpdart.dart';
 import 'package:portalcards/core/errors/failures.dart';
 import 'package:portalcards/features/sync/domain/sync_repository.dart';
 
-/// Scriptable [SyncRepository] for bloc and widget tests.
+/// Bloc ve widget testleri için senaryolanabilir [SyncRepository].
 class FakeSyncRepository implements SyncRepository {
   FakeSyncRepository({
     this.progress = const [],
@@ -12,13 +12,13 @@ class FakeSyncRepository implements SyncRepository {
     this.hold = false,
   }) : results = results ?? [right(unit)];
 
-  /// Reported in order on every run.
+  /// Her çalıştırmada sırayla bildirilir.
   final List<SyncProgress> progress;
 
-  /// One per run; the last repeats.
+  /// Çalıştırma başına bir; sonuncusu tekrar eder.
   final List<Either<Failure, Unit>> results;
 
-  /// If true, a run waits for [release] before finishing.
+  /// True ise bir çalıştırma bitmeden önce [release]'i bekler.
   final bool hold;
   Completer<void> _gate = Completer<void>();
 

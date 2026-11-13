@@ -13,11 +13,11 @@ import '../../../core/storage/api_data_store.dart';
 import '../../../core/storage/player_store.dart';
 import '../domain/portal_repository.dart';
 
-/// Write order (SPEC §2.3 AC8): every check and the roll happen first,
-/// then (1) the collection gets the card, (2) one `PlayerStore.update`
-/// saves coins, `portalsOpened`, the demo flag and the shake hint. If the
-/// app dies between (1) and (2) the player keeps a free card; it never
-/// loses coins without a card.
+/// Yazım sırası (SPEC §2.3 AC8): tüm kontroller ve çekiliş önce yapılır,
+/// sonra (1) koleksiyon kartı alır, (2) tek bir `PlayerStore.update`
+/// coin'leri, `portalsOpened` değerini, demo işaretini ve sallama ipucunu kaydeder. Uygulama
+/// (1) ile (2) arasında kapanırsa oyuncu bedava bir kart kazanır; kartsız
+/// asla coin kaybetmez.
 class PortalRepositoryImpl implements PortalRepository {
   PortalRepositoryImpl({
     required this._apiData,

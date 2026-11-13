@@ -4,11 +4,13 @@ import '../../../../core/game/card_type.dart';
 import '../../../../core/game/rarity.dart';
 import '../../domain/collection_repository.dart';
 
+/// Koleksiyon verisinin yüklenme durumu.
 enum CollectionStatus { initial, success }
 
-/// Sort orders (SPEC §2.4 AC2); rarity (highest first) is the default.
+/// Sıralama düzenleri (SPEC §2.4 AC2); varsayılan nadirlik (en yüksek önce).
 enum CollectionSort { rarity, name, newest }
 
+/// Koleksiyon ekranının durumu: kartlar, filtreler ve sıralama.
 final class CollectionState extends Equatable {
   const CollectionState({
     this.status = CollectionStatus.initial,
@@ -21,18 +23,18 @@ final class CollectionState extends Equatable {
 
   final CollectionStatus status;
 
-  /// Every owned card (unfiltered).
+  /// Sahip olunan tüm kartlar (filtresiz).
   final List<CollectionEntry> entries;
   final int total;
 
-  /// Empty set = no filter on that dimension.
+  /// Boş küme = o boyutta filtre yok.
   final Set<Rarity> rarities;
   final Set<CardType> types;
   final CollectionSort sort;
 
   bool get hasFilter => rarities.isNotEmpty || types.isNotEmpty;
 
-  /// Cards after filters and sort.
+  /// Filtre ve sıralama sonrası kartlar.
   List<CollectionEntry> get visible {
     final list = [
       for (final e in entries)

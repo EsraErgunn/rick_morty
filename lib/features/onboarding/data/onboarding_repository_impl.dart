@@ -8,6 +8,7 @@ import '../../../core/storage/api_data_store.dart';
 import '../../../core/storage/player_store.dart';
 import '../domain/onboarding_repository.dart';
 
+/// [OnboardingRepository]'nin oyuncu deposu ve API verileriyle çalışan uygulaması.
 class OnboardingRepositoryImpl implements OnboardingRepository {
   const OnboardingRepositoryImpl({
     required this._player,
@@ -17,8 +18,8 @@ class OnboardingRepositoryImpl implements OnboardingRepository {
   final PlayerStore _player;
   final ApiDataStore _apiData;
 
-  /// Known characters across the rarities (the card lab fixtures); Rick
-  /// last, so the legendary card is his 2.5D one.
+  /// Nadirlikler boyunca bilinen karakterler (kart laboratuvarı fikstürleri); Rick
+  /// en sonda, böylece efsanevi kart onun 2.5D kartı olur.
   static const List<int> _candidates = [309, 86, 82, 71, 63, 23, 2, 1];
 
   @override

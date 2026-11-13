@@ -4,7 +4,7 @@ import '../../core/game/card_type.dart';
 import '../../core/game/rarity.dart';
 import 'colors.dart';
 
-/// Rarity frame tokens (SPEC §5.5).
+/// Nadirlik çerçevesi token'ları (SPEC §5.5).
 class RarityStyle {
   const RarityStyle({
     required this.color,
@@ -16,16 +16,16 @@ class RarityStyle {
 
   final Color color;
 
-  /// Width of the colored frame band in card design units.
+  /// Renkli çerçeve bandının kart tasarım birimi cinsinden genişliği.
   final double frameWidth;
 
-  /// Corner cut (0 = rounded corners).
+  /// Köşe kesiği (0 = yuvarlak köşeler).
   final double notch;
 
-  /// Rare: 1 unit `paper` line inside the frame.
+  /// Nadir: çerçevenin içinde 1 birimlik `paper` çizgisi.
   final bool innerLine;
 
-  /// Legendary: portal-ring emblem at top center.
+  /// Efsanevi: üst ortada portal halkası amblemi.
   final bool emblem;
 
   static RarityStyle of(Rarity rarity) => switch (rarity) {
@@ -54,14 +54,14 @@ class RarityStyle {
   };
 }
 
-/// Card geometry. The card is laid out at this design size and scaled to
-/// fit (grid thumbnail or detail page), so text sizes stay proportional.
+/// Kart geometrisi. Kart bu tasarım boyutunda yerleştirilir ve sığacak şekilde
+/// ölçeklenir (ızgara küçük resmi ya da detay sayfası), böylece yazı boyutları orantılı kalır.
 abstract final class CardMetrics {
   static const double designWidth = 250;
   static const double aspect = 5 / 7;
   static const double designHeight = designWidth / aspect;
 
-  /// Share of the body height used by the art (SPEC §5.5: 60%).
+  /// Gövde yüksekliğinin görsele ayrılan payı (SPEC §5.5: %60).
   static const double artShare = 0.6;
 
   static const double innerLineWidth = 1;
@@ -69,37 +69,37 @@ abstract final class CardMetrics {
   static const double padding = 8;
   static const double iconSize = 16;
 
-  /// Featured characters: portal-green inner line [GM §12.1].
+  /// Öne çıkan karakterler: portal yeşili iç çizgi [GM §12.1].
   static const double featuredLine = 2;
   static const double featuredBadge = 20;
 
-  /// Featured 2.5D art: the cut-out character is drawn this much larger
-  /// than the art window width and rises this far above its top edge.
+  /// Öne çıkan 2.5D görsel: kesilmiş karakter, görsel penceresinin genişliğinden
+  /// bu kadar büyük çizilir ve üst kenarının bu kadar üstüne çıkar.
   static const double featuredCutoutScale = 1.1;
   static const double featuredPopOut = 12;
 
-  /// Tilt parallax in design units at full tilt: the character moves
-  /// against the background (background deeper, character nearer).
+  /// Tam eğimde tasarım birimi cinsinden eğim paralaksı: karakter arka plana
+  /// göre hareket eder (arka plan daha derinde, karakter daha yakında).
   static const double featuredParallaxBack = 3;
   static const double featuredParallaxFront = 9;
 
-  /// The background is drawn this much larger so its edges never show.
+  /// Arka plan kenarları hiç görünmesin diye bu kadar büyük çizilir.
   static const double featuredBackOverscan = 1.06;
 
-  /// Background brightness behind the cut-out (depth cue).
+  /// Kesilmiş karakterin arkasındaki arka plan parlaklığı (derinlik ipucu).
   static const double featuredBackBrightness = 0.7;
 
-  /// Art window brightness while the character is out of the card.
+  /// Karakter karttan çıkmışken görsel penceresinin parlaklığı.
   static const double featuredEmptyArt = 0.35;
 
-  /// Max 3D tilt in degrees (flutter_tilt `TiltConfig.angle`, SPEC §4.5).
+  /// Derece cinsinden en fazla 3D eğim (flutter_tilt `TiltConfig.angle`, SPEC §4.5).
   static const double tiltAngle = 6;
 
-  /// Max strength of the tilt light sheen (0..1).
+  /// Eğim ışık parlamasının en yüksek gücü (0..1).
   static const double tiltLight = 0.2;
 }
 
-/// Material icon per card type (type is never shown by color alone).
+/// Kart tipi başına Material ikonu (tip asla yalnızca renkle gösterilmez).
 abstract final class CardTypeIcons {
   static IconData of(CardType type) => switch (type) {
     CardType.human => Icons.person,

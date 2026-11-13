@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 
+/// Splash/senkron ekranının olaylarının temel sınıfı.
 sealed class SyncEvent extends Equatable {
   const SyncEvent();
 
@@ -7,12 +8,12 @@ sealed class SyncEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-/// Splash opened: download what is missing (or skip if synced).
+/// Splash açıldı: eksik olanı indir (senkronluysa atla).
 final class SyncStarted extends SyncEvent {
   const SyncStarted();
 }
 
-/// "Tekrar dene" tapped after a failure: resume from the last saved page.
+/// Bir hatadan sonra "Tekrar dene" dokunuldu: son kaydedilen sayfadan devam et.
 final class SyncRetryRequested extends SyncEvent {
   const SyncRetryRequested();
 }

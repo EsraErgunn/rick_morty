@@ -1,7 +1,7 @@
 import 'dart:async';
 
-/// One stream that fires whenever any of [sources] fires. Each listener gets
-/// its own subscriptions, cancelled with it.
+/// [sources] kaynaklarından herhangi biri tetiklendiğinde tetiklenen tek bir akış. Her dinleyici
+/// kendi aboneliklerini alır, kendisiyle birlikte iptal edilir.
 Stream<void> mergeChanges(List<Stream<void>> sources) {
   late StreamController<void> controller;
   final subs = <StreamSubscription<void>>[];

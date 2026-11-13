@@ -20,7 +20,7 @@ import '../bloc/menu_state.dart';
 import '../widgets/breathing.dart';
 import '../widgets/menu_entry.dart';
 
-/// Where each menu entry leads (the router supplies these).
+/// Her menü öğesinin nereye gittiği (router bunları sağlar).
 class MenuActions {
   const MenuActions({
     required this.portal,
@@ -39,12 +39,12 @@ class MenuActions {
   final VoidCallback album;
   final VoidCallback settings;
 
-  /// Debug builds only.
+  /// Yalnızca debug derlemeler.
   final VoidCallback? debugCardLab;
 }
 
-/// Main menu (SPEC §2.2, §4.2, §5.6): portal hero, coins, entries.
-/// Expects a [MenuBloc] above it.
+/// Ana menü (SPEC §2.2, §4.2, §5.6): portal görseli, coin'ler, öğeler.
+/// Üstünde bir [MenuBloc] bekler.
 class MenuPage extends StatefulWidget {
   const MenuPage({
     required this.shaders,
@@ -55,7 +55,7 @@ class MenuPage extends StatefulWidget {
     super.key,
   });
 
-  /// Called once when the menu opens (background image warm-up, T36).
+  /// Menü açılınca bir kez çağrılır (arka plan görsellerini ısıtma, T36).
   final VoidCallback? onShown;
 
   final ShaderCache shaders;
@@ -86,8 +86,8 @@ class _MenuPageState extends State<MenuPage> {
         a.summary != null &&
         b.summary != null &&
         a.summary!.coins != b.summary!.coins,
-    // The summary also refreshes while another screen covers the menu
-    // (portal, battle, settings); the coin sound plays only when it shows.
+    // Özet, başka bir ekran menüyü örterken de yenilenir
+    // (portal, savaş, ayarlar); coin sesi yalnızca menü görünürken çalar.
     listener: (context, state) {
       if (ModalRoute.isCurrentOf(context) ?? true) widget.feedback.coins();
     },

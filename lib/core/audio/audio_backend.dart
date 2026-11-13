@@ -5,38 +5,38 @@ import 'package:audioplayers/audioplayers.dart';
 import '../logging/app_logger.dart';
 import 'audio_assets.dart';
 
-/// One playing music track.
+/// Çalan tek bir müzik parçası.
 abstract interface class MusicHandle {
   Future<void> setVolume(double volume);
   Future<void> pause();
   Future<void> resume();
   Future<void> stop();
 
-  /// Completes when a non-looping track reaches its end.
+  /// Döngüsüz bir parça sonuna ulaşınca tamamlanır.
   Future<void> get completed;
 }
 
-/// The only place that talks to the audio plugin (animation-audio rules:
-/// widgets never create players). Injected into `AudioService`, faked in
-/// tests.
+/// Ses eklentisiyle konuşan tek yer (animasyon-ses kuralları:
+/// widget'lar asla oynatıcı oluşturmaz). `AudioService`'e enjekte edilir, testlerde
+/// sahtesi kullanılır.
 abstract interface class AudioBackend {
   Future<void> preload(Iterable<Sfx> sounds);
   Future<void> playSfx(Sfx sound, double volume);
 
-  /// Starts [track] at [volume]; loops if the track loops.
+  /// [track] parçasını [volume] seviyesinde başlatır; parça döngülüyse döngüye girer.
   Future<MusicHandle> startMusic(Music track, double volume);
 }
 
-/// audioplayers implementation: one low-latency pool per sound effect
-/// (overlap allowed), one media player per music track.
+/// audioplayers uygulaması: her ses efekti için bir düşük gecikmeli havuz
+/// (üst üste binebilir), her müzik parçası için bir medya oynatıcı.
 class AudioplayersBackend implements AudioBackend {
   static const int _voicesPerSfx = 3;
 
-  /// SFX must not take Android audio focus: with the default context every
-  /// effect requested `AUDIOFOCUS_GAIN`, the looping music player got a
-  /// permanent focus loss and audioplayers paused it for good (the battle
-  /// music stopped at the first tap). Effects now mix with the music, which
-  /// keeps the focus.
+  /// SFX, Android ses odağını almamalı: varsayılan bağlamda her
+  /// efekt `AUDIOFOCUS_GAIN` istiyordu, döngüdeki müzik oynatıcısı
+  /// kalıcı odak kaybı yaşıyor ve audioplayers onu tamamen duraklatıyordu (savaş
+  /// müziği ilk dokunuşta duruyordu). Efektler artık müzikle karışır,
+  /// odak müzikte kalır.
   static final AudioContext _sfxContext = AudioContextConfig(
     focus: AudioContextConfigFocus.mixWithOthers,
   ).build();

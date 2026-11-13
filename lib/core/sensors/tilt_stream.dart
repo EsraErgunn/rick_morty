@@ -5,10 +5,10 @@ import 'package:sensors_plus/sensors_plus.dart';
 
 import 'sensor_support.dart';
 
-/// One accelerometer reading in m/s² (gravity included).
+/// m/s² cinsinden tek bir ivmeölçer okuması (yerçekimi dahil).
 typedef Gravity = ({double x, double y, double z});
 
-/// Opens a raw accelerometer stream. Injected so tests need no sensor.
+/// Ham bir ivmeölçer akışı açar. Testler sensöre ihtiyaç duymasın diye enjekte edilir.
 typedef GravitySource = Stream<Gravity> Function();
 
 Stream<Gravity> _deviceGravity() => deviceHasMotionSensors
@@ -16,13 +16,13 @@ Stream<Gravity> _deviceGravity() => deviceHasMotionSensors
           .map((e) => (x: e.x, y: e.y, z: e.z))
     : const Stream.empty();
 
-/// Device tilt for the card 3D tilt and the holo (sensors rules): the
-/// **only** tilt sensor subscription in the app.
+/// Kartın 3D eğimi ve holo için cihaz eğimi (sensör kuralları): uygulamadaki
+/// **tek** eğim sensörü aboneliği.
 ///
-/// accelerometer → relative to the pose when it started → low-pass
-/// (α 0.15) → clamp to [-1, 1]. `dx` > 0: right edge down; `dy` > 0: top
-/// edge away from the user. The sensor is open only while someone listens
-/// and the stream is not [pause]d.
+/// ivmeölçer → başladığı andaki duruşa göre → alçak geçiren filtre
+/// (α 0.15) → [-1, 1] aralığına sınırla. `dx` > 0: sağ kenar aşağıda; `dy` > 0: üst
+/// kenar kullanıcıdan uzakta. Sensör yalnızca biri dinlerken ve akış
+/// [pause] ile duraklatılmamışken açıktır.
 class TiltStream {
   TiltStream({this._source = _deviceGravity}) {
     _out = StreamController<Offset>.broadcast(
@@ -34,7 +34,7 @@ class TiltStream {
   static const double alpha = 0.15;
   static const double gravity = 9.81;
 
-  /// Tilt (in g) that maps to full deflection ±1 (about ±20°).
+  /// Tam sapma ±1'e karşılık gelen eğim (g cinsinden) (yaklaşık ±20°).
   static const double fullTiltG = 0.35;
 
   final GravitySource _source;
@@ -44,22 +44,22 @@ class TiltStream {
   Offset? _baseline;
   Offset _filtered = Offset.zero;
 
-  /// Open sensor subscriptions right now (0 or 1). For tests and the
-  /// "exactly one subscription" check.
+  /// Şu an açık sensör abonelikleri (0 veya 1). Testler ve
+  /// "tam olarak tek abonelik" kontrolü için.
   int get activeSubscriptions => _sub == null ? 0 : 1;
 
-  /// Last value sent, (0, 0) at rest.
+  /// Gönderilen son değer, dururken (0, 0).
   Offset get current => _filtered;
 
   Stream<Offset> get stream => _out.stream;
 
-  /// App in background or screen hidden: close the sensor (battery).
+  /// Uygulama arka planda ya da ekran gizli: sensörü kapat (pil).
   void pause() {
     _paused = true;
     _close();
   }
 
-  /// Back on screen: reopen and take the current pose as rest.
+  /// Ekrana geri dönüldü: yeniden aç ve mevcut duruşu durma konumu olarak al.
   void resume() {
     _paused = false;
     if (_out.hasListener) _open();
@@ -78,7 +78,7 @@ class TiltStream {
   }
 
   void _onReading(Gravity g) {
-    // Roll from x (sign flipped so right edge down is positive), pitch from y.
+    // Yalpa x'ten (sağ kenar aşağı pozitif olsun diye işaret ters çevrildi), yunuslama y'den.
     final raw = Offset(-g.x / gravity, -g.y / gravity);
     final rest = _baseline ??= raw;
     final target = (raw - rest) / fullTiltG;

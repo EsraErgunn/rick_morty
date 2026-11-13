@@ -9,20 +9,20 @@ import 'package:portalcards/l10n/app_localizations.dart';
 
 import '../fixtures/fixtures.dart';
 
-/// Real card data from a fixture through the real factory.
+/// Gerçek fabrika üzerinden bir fikstürden gerçek kart verisi.
 GameCardData fixtureCard(int id) => CardFactory.fromCharacter(
   parseCharacter(loadCharacter(id)).getOrElse((f) => throw StateError('$f')),
 );
 
-/// One fixture per rarity: common Conroy, rare Cyclops Rick, epic Arcade
-/// Alien, legendary Rick.
+/// Nadirlik başına bir fikstür: sıradan Conroy, nadir Cyclops Rick, epik Arcade
+/// Alien, efsanevi Rick.
 const List<int> oneCardPerRarity = [71, 86, 23, 1];
 
-/// Flat art stand-in (no network in tests).
+/// Düz görsel yedeği (testlerde ağ yok).
 Widget testArt(String url, String name) =>
     const ColoredBox(color: AppColors.portalHot);
 
-/// Material app with theme and Turkish l10n around [child].
+/// [child] etrafında tema ve Türkçe l10n bulunan Material uygulaması.
 Widget testApp(Widget child, {bool reduceMotion = false}) => MaterialApp(
   theme: AppTheme.dark,
   locale: const Locale('tr'),
@@ -34,8 +34,8 @@ Widget testApp(Widget child, {bool reduceMotion = false}) => MaterialApp(
   ),
 );
 
-/// Advances [total] in 50 ms frames, so chained animations (one starting
-/// when another ends) all get frames, as on a device.
+/// [total] süresini 50 ms'lik karelerle ilerletir, böylece zincirleme animasyonlar (biri
+/// diğeri bitince başlayan) bir cihazdaki gibi kare alır.
 Future<void> frames(WidgetTester tester, Duration total) async {
   const step = Duration(milliseconds: 50);
   for (var t = Duration.zero; t < total; t += step) {

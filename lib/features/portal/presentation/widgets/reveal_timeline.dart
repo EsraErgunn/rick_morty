@@ -1,13 +1,13 @@
 import '../../../../app/theme/motion.dart';
 
-/// One phase of the intro, as fractions of the whole timeline.
+/// Girişin bir aşaması, tüm zaman çizelgesinin kesirleri olarak.
 final class RevealPhase {
   const RevealPhase(this.start, this.end);
 
   final double start;
   final double end;
 
-  /// 0 before the phase, 1 after it, linear inside.
+  /// Aşamadan önce 0, sonra 1, içinde doğrusal.
   double progress(double t) {
     if (t <= start) return 0;
     if (t >= end) return 1;
@@ -17,11 +17,11 @@ final class RevealPhase {
   bool contains(double t) => t >= start && t < end;
 }
 
-/// Beats that make a sound / vibration (SPEC §4.3).
+/// Ses / titreşim çıkaran vuruşlar (SPEC §4.3).
 enum RevealBeat { charge, burst, land }
 
-/// The reveal intro (SPEC §4.3, D7): charge → burst → emerge → fall →
-/// land (squash, rebound, settle). Pure timing, no widgets: tested alone.
+/// Açılış girişi (SPEC §4.3, D7): şarj → patlama → çıkış → düşüş →
+/// iniş (basılma, sekme, yerleşme). Yalnızca zamanlama, widget yok: tek başına test edilir.
 final class RevealTimeline {
   RevealTimeline({required bool legendary})
     : _parts = [
@@ -55,14 +55,14 @@ final class RevealTimeline {
   late final RevealPhase fall;
   late final RevealPhase land;
 
-  /// Where each beat fires (fraction of the timeline).
+  /// Her vuruşun tetiklendiği yer (zaman çizelgesinin kesri).
   double beatAt(RevealBeat beat) => switch (beat) {
     RevealBeat.charge => charge.start,
     RevealBeat.burst => burst.start,
     RevealBeat.land => land.start,
   };
 
-  /// Beats crossed when the timeline moves from [from] to [to].
+  /// Zaman çizelgesi [from]'dan [to]'ya geçerken aşılan vuruşlar.
   List<RevealBeat> beatsBetween(double from, double to) => [
     for (final b in RevealBeat.values)
       if ((from < beatAt(b) || (from == 0 && beatAt(b) == 0)) &&
@@ -70,8 +70,8 @@ final class RevealTimeline {
         b,
   ];
 
-  /// Squash & stretch scale (x, y) during [land] (SPEC §4.3): squash, rebound,
-  /// settle, each a third of the phase.
+  /// [land] sırasında basılma-esneme ölçeği (x, y) (SPEC §4.3): basılma, sekme,
+  /// yerleşme; her biri aşamanın üçte biri.
   static (double, double) squash(double p) {
     const keys = [(1.0, 1.0), (1.14, 0.82), (0.96, 1.06), (1.0, 1.0)];
     if (p <= 0) return keys.first;

@@ -38,7 +38,7 @@ Future<void> _closeAll() => Hive.close();
 void main() {
   useTempHive();
 
-  // 45 characters = 3 pages, 21 episodes = 2 pages, 5 locations = 1 page.
+  // 45 karakter = 3 sayfa, 21 bölüm = 2 sayfa, 5 konum = 1 sayfa.
   const fullOrder = [
     'character 1',
     'episode 1',
@@ -84,7 +84,7 @@ void main() {
 
       await repo.sync(onProgress: progress.add);
 
-      // Third report = after location page 1: every total is in.
+      // Üçüncü bildirim = konum 1. sayfasından sonra: tüm toplamlar geldi.
       expect(progress[2].total, 71);
     },
   );
@@ -99,7 +99,7 @@ void main() {
 
       expect(failed, left<Failure, Unit>(const NetworkFailure()));
       expect(remote.calls, fullOrder.take(5));
-      expect(store.characterCount, 40); // character pages 1 and 2
+      expect(store.characterCount, 40); // karakter sayfaları 1 ve 2
       expect(store.episodeCount, 20);
       expect(store.locationCount, 5);
       expect(player.state.syncProgress, {
@@ -109,7 +109,7 @@ void main() {
       });
       expect(repo.isSynced, isFalse);
 
-      // Relaunch: storage reopened from disk, same remote.
+      // Yeniden açılış: depolama diskten yeniden açıldı, aynı uzak kaynak.
       await _closeAll();
       remote.calls.clear();
       (repo, store, player) = await _open(remote);

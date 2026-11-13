@@ -18,9 +18,9 @@ import '../widgets/portal_result_view.dart';
 import '../widgets/shake_hint.dart';
 import '../../../../core/widgets/app_back_button.dart';
 
-/// Portal screen (SPEC §2.3, §5.6). Expects a [PortalBloc] above it.
-/// Shake is listened to only while this page is shown and the app is in
-/// the foreground (AC7); the button is the fallback.
+/// Portal ekranı (SPEC §2.3, §5.6). Üstünde bir [PortalBloc] bekler.
+/// Sallama yalnızca bu sayfa gösterilirken ve uygulama ön plandayken
+/// dinlenir (AC7); buton yedektir.
 class PortalPage extends StatefulWidget {
   const PortalPage({
     required this.shaders,
@@ -36,7 +36,7 @@ class PortalPage extends StatefulWidget {
   final ShakeDetector shake;
   final PortalFeedback feedback;
 
-  /// "Savaşa git" is offered only with a full deck (SPEC §2.3 AC2).
+  /// "Savaşa git" yalnızca deste doluysa sunulur (SPEC §2.3 AC2).
   final bool deckReady;
   final VoidCallback onGoToBattle;
   final VoidCallback onGoToCollection;

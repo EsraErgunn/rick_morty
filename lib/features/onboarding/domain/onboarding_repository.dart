@@ -3,13 +3,13 @@ import 'package:fpdart/fpdart.dart';
 import '../../../core/cards/game_card_data.dart';
 import '../../../core/errors/failures.dart';
 
-/// First-launch intro: whether it was seen, and real cards to show in it.
+/// İlk açılış tanıtımı: görülüp görülmediği ve içinde gösterilecek gerçek kartlar.
 abstract interface class OnboardingRepository {
-  /// The intro was shown (or skipped) once.
+  /// Tanıtım bir kez gösterildi (ya da geçildi).
   bool get seen;
 
-  /// Synced cards from common to legendary (one per rarity, as found), for
-  /// the "collect your cards" page. Empty if nothing is synced.
+  /// Sıradandan efsaneviye senkronlanmış kartlar (bulunduğu kadarıyla nadirlik başına bir),
+  /// "kartlarını topla" sayfası için. Hiçbir şey senkronlanmadıysa boş.
   List<GameCardData> showcaseCards();
 
   Future<Either<Failure, Unit>> markSeen();

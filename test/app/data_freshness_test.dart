@@ -25,10 +25,10 @@ import 'package:portalcards/features/sync/data/mappers.dart';
 import '../core/storage/hive_test_helper.dart';
 import '../fixtures/fixtures.dart';
 
-/// The menu stays mounted under every other screen (they are its child
-/// routes), so a bloc that read the stores once shows stale data after
-/// going back. Every bloc below is opened first, then the data changes
-/// somewhere else, the way it happens on the phone.
+/// Menü diğer her ekranın altında açık kalır (onlar onun alt
+/// rotalarıdır), bu yüzden depoları bir kez okuyan bir bloc geri dönünce eski veri
+/// gösterir. Aşağıdaki her bloc önce açılır, sonra veri başka bir yerde
+/// değişir; telefonda olduğu gibi.
 void main() {
   useTempHive();
 

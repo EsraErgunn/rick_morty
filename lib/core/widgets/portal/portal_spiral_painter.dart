@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import '../../../app/theme/colors.dart';
 import '../../../app/theme/spacing.dart';
 
-/// Non-shader portal: flat disc, three spiral arms, ink ring. Used when
-/// `portal.frag` cannot be loaded (and by `PortalLoader`'s fallback).
+/// Shader'sız portal: düz disk, üç sarmal kol, mürekkep halka. `portal.frag`
+/// yüklenemezse kullanılır (ve `PortalLoader`'ın yedeğinde).
 class PortalSpiralPainter extends CustomPainter {
   const PortalSpiralPainter({
     required this.turn,
@@ -14,10 +14,10 @@ class PortalSpiralPainter extends CustomPainter {
     this.color = AppColors.portal,
   });
 
-  /// 0.0 to 1.0, one full rotation.
+  /// 0.0 ile 1.0 arası, bir tam dönüş.
   final double turn;
 
-  /// 0.0 (dim) to 1.0 (full).
+  /// 0.0 (sönük) ile 1.0 (tam) arası.
   final double intensity;
   final Color color;
 

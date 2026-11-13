@@ -52,7 +52,7 @@ void main() {
     await pumpFlip(tester);
     await tester.tap(find.byType(FlipCard));
 
-    // Sample the whole animation: exactly one face every frame.
+    // Tüm animasyonu örnekle: her karede tam olarak bir yüz.
     for (var t = 0; t < 10; t++) {
       await tester.pump(AppMotion.normal ~/ 10);
       final faces =

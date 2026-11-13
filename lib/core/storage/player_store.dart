@@ -3,8 +3,8 @@ import 'package:hive_ce/hive.dart';
 import 'hive_init.dart';
 import 'player_state.dart';
 
-/// The `player` box: one [PlayerState] under a fixed key. Opening it creates
-/// the starting state exactly once (SPEC §2.1 AC6).
+/// `player` kutusu: sabit bir anahtar altında tek bir [PlayerState]. Açılınca
+/// başlangıç durumunu tam olarak bir kez oluşturur (SPEC §2.1 AC6).
 class PlayerStore {
   PlayerStore._(this._box);
 
@@ -20,9 +20,9 @@ class PlayerStore {
 
   PlayerState get state => _box.get(_key)!;
 
-  /// Fires after every write (coins, deck, settings, progress). The single
-  /// source screens listen to, so a screen kept under another one never
-  /// shows stale data.
+  /// Her yazımdan sonra tetiklenir (coin, deste, ayarlar, ilerleme). Ekranların
+  /// dinlediği tek kaynak; böylece başka bir ekranın altında kalan ekran asla
+  /// eski veri göstermez.
   Stream<void> get changes => _box.watch().map((_) {});
 
   Future<void> save(PlayerState state) => _box.put(_key, state);
@@ -36,7 +36,7 @@ class PlayerStore {
   Future<void> close() => _box.close();
 }
 
-/// The `collection` box: owned cards keyed by character id.
+/// `collection` kutusu: karakter id'sine göre anahtarlanmış sahip olunan kartlar.
 class CollectionStore {
   CollectionStore._(this._box);
 
@@ -53,10 +53,10 @@ class CollectionStore {
 
   Iterable<OwnedCard> get cards => _box.values;
 
-  /// Fires after every write (a card won, a copy added, a reset).
+  /// Her yazımdan sonra tetiklenir (kart kazanıldı, kopya eklendi, sıfırlama).
   Stream<void> get changes => _box.watch().map((_) {});
 
-  /// Adds one copy; the first copy records [at].
+  /// Bir kopya ekler; ilk kopya [at] zamanını kaydeder.
   Future<OwnedCard> addCopy(int characterId, DateTime at) async {
     final current = _box.get(characterId);
     final next = OwnedCard(

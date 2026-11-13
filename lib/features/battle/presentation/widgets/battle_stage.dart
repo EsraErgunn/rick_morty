@@ -15,9 +15,9 @@ import 'battle_card_slot.dart';
 import 'battle_cues.dart';
 import 'event_band.dart';
 
-/// The stage (SPEC §4.7): enemy row on top, event band in the middle,
-/// player row at the bottom. Replays [BattleViewState.current] one event at
-/// a time and calls [onAdvance] when its animation is done.
+/// Sahne (SPEC §4.7): üstte rakip sırası, ortada olay bandı,
+/// altta oyuncu sırası. [BattleViewState.current] olayını her seferinde bir
+/// olay olarak tekrar oynatır ve animasyonu bitince [onAdvance] çağırır.
 class BattleStage extends StatefulWidget {
   const BattleStage({
     required this.state,
@@ -120,7 +120,7 @@ class _BattleStageState extends State<BattleStage>
                       side: side,
                       fx: _fx[(side, i)] ?? const SlotFx(),
                       speed: _speed,
-                      // Different float phases, so the team never bobs in sync.
+                      // Farklı süzülme fazları, böylece takım asla aynı anda sallanmaz.
                       idlePhase:
                           (i / cards.length + (side == Side.enemy ? 0.5 : 0)) %
                           1,

@@ -4,6 +4,7 @@ import '../../../../core/game/card_type.dart';
 import '../../../../core/game/rarity.dart';
 import 'collection_state.dart';
 
+/// Koleksiyon ekranının olaylarının temel sınıfı.
 sealed class CollectionEvent extends Equatable {
   const CollectionEvent();
 
@@ -11,17 +12,17 @@ sealed class CollectionEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-/// Page opened (or shown again): load the owned cards.
+/// Sayfa açıldı (ya da yeniden gösterildi): sahip olunan kartları yükle.
 final class CollectionStarted extends CollectionEvent {
   const CollectionStarted();
 }
 
-/// Stored cards or deck changed (a portal, the card detail, a reset).
+/// Kayıtlı kartlar veya deste değişti (bir portal, kart detayı, sıfırlama).
 final class CollectionDataChanged extends CollectionEvent {
   const CollectionDataChanged();
 }
 
-/// A rarity chip tapped: add or remove it from the filter.
+/// Bir nadirlik çipine dokunuldu: filtreye ekle ya da çıkar.
 final class CollectionRarityToggled extends CollectionEvent {
   const CollectionRarityToggled(this.rarity);
 
@@ -31,7 +32,7 @@ final class CollectionRarityToggled extends CollectionEvent {
   List<Object?> get props => [rarity];
 }
 
-/// A type chip tapped: add or remove it from the filter.
+/// Bir tip çipine dokunuldu: filtreye ekle ya da çıkar.
 final class CollectionTypeToggled extends CollectionEvent {
   const CollectionTypeToggled(this.type);
 
@@ -41,11 +42,12 @@ final class CollectionTypeToggled extends CollectionEvent {
   List<Object?> get props => [type];
 }
 
-/// "Hepsi": clear every filter.
+/// "Hepsi": tüm filtreleri temizle.
 final class CollectionFiltersCleared extends CollectionEvent {
   const CollectionFiltersCleared();
 }
 
+/// Sıralama düzeni değiştirildi.
 final class CollectionSortChanged extends CollectionEvent {
   const CollectionSortChanged(this.sort);
 

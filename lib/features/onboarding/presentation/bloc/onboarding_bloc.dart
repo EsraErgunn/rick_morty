@@ -4,6 +4,7 @@ import '../../domain/onboarding_repository.dart';
 import 'onboarding_event.dart';
 import 'onboarding_state.dart';
 
+/// İlk açılış tanıtımının akışı: vitrin kartları, sayfa ve bitirme.
 class OnboardingBloc extends Bloc<OnboardingEvent, OnboardingState> {
   OnboardingBloc(this._repository) : super(const OnboardingState()) {
     on<OnboardingStarted>(
@@ -22,8 +23,8 @@ class OnboardingBloc extends Bloc<OnboardingEvent, OnboardingState> {
         return;
       }
       emit(state.copyWith(status: OnboardingStatus.loading));
-      // A failed write only means the intro shows again next launch; the
-      // player still goes on to the menu.
+      // Başarısız bir yazım yalnızca tanıtımın sonraki açılışta yeniden çıkacağı anlamına gelir;
+      // oyuncu yine de menüye geçer.
       final result = await _repository.markSeen();
       emit(
         state.copyWith(

@@ -55,7 +55,7 @@ void main() {
   testWidgets('beats in order: charge, burst, land (sound + haptic)', (
     tester,
   ) async {
-    final r = resultFor(71); // common Conroy
+    final r = resultFor(71); // sıradan Conroy
     await pumpScene(tester, r);
     await tester.pump();
     expect(rec.sounds, [Sfx.portalCharge]);
@@ -88,7 +88,7 @@ void main() {
   testWidgets('tap before landing does nothing; after landing it flips', (
     tester,
   ) async {
-    final r = resultFor(23); // epic Arcade Alien
+    final r = resultFor(23); // epik Arcade Alien
     await pumpScene(tester, r);
     await tester.pump(const Duration(milliseconds: 900));
     expect(find.byType(FlipCard), findsOneWidget);
@@ -122,7 +122,7 @@ void main() {
     await tester.tap(find.byType(FlipCard));
     await frames(tester, const Duration(milliseconds: 1200));
     expect(rec.sounds, contains(Sfx.legendaryReveal));
-    // Rick is also featured: image drop, then the rays.
+    // Rick aynı zamanda öne çıkan karakter: görsel düşüşü, sonra ışınlar.
     await frames(tester, const Duration(seconds: 2));
     expect(finished, 1);
     await tester.pumpWidget(const SizedBox());
@@ -132,12 +132,12 @@ void main() {
   testWidgets('featured: art drops into the card, then the name callout', (
     tester,
   ) async {
-    final r = resultFor(1); // Rick: featured + legendary
+    final r = resultFor(1); // Rick: öne çıkan + efsanevi
     await pumpScene(tester, r);
     await finishIntro(tester, r);
     await tester.tap(find.byType(FlipCard));
     await frames(tester, const Duration(milliseconds: 1150));
-    // Flip done: image is falling, art window still empty.
+    // Çevirme bitti: görsel düşüyor, görsel penceresi hâlâ boş.
     expect(find.byKey(const ValueKey('featured-drop')), findsOneWidget);
     expect(find.byKey(const ValueKey('art-empty')), findsOneWidget);
 
@@ -165,7 +165,7 @@ void main() {
   testWidgets('reduced motion: one crossfade, same sounds, no shake', (
     tester,
   ) async {
-    final r = resultFor(86); // rare
+    final r = resultFor(86); // nadir
     await pumpScene(tester, r, reduce: true);
     await tester.pump(const Duration(milliseconds: 700));
     await tester.pump(const Duration(seconds: 1));
@@ -190,7 +190,7 @@ void main() {
     await tester.pump(const Duration(milliseconds: 700));
     await tester.pumpWidget(const SizedBox());
     expect(tester.takeException(), isNull);
-    // The legendary sting's music crossfade keeps running after the scene.
+    // Efsanevi sting'in müzik geçişi sahneden sonra da sürer.
     await tester.pump(const Duration(seconds: 1));
   });
 

@@ -17,7 +17,7 @@ import '../bloc/deck_state.dart';
 import '../widgets/deck_slots.dart';
 import '../../../../core/widgets/app_back_button.dart';
 
-/// Deck builder (SPEC §2.6, §4.6). Expects a [DeckBloc] above it.
+/// Deste kurucu (SPEC §2.6, §4.6). Üstünde bir [DeckBloc] bekler.
 class DeckPage extends StatelessWidget {
   const DeckPage({required this.feedback, super.key});
 
@@ -115,7 +115,7 @@ class DeckPage extends StatelessWidget {
   }
 }
 
-/// Human → Robot → Alien corners present in the deck (SPEC §2.6 AC3).
+/// Destede bulunan İnsan → Robot → Uzaylı köşeleri (SPEC §2.6 AC3).
 class _Coverage extends StatelessWidget {
   const _Coverage({required this.types});
 

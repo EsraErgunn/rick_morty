@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-/// An episode: one album page [GM §9].
+/// Bir bölüm: bir albüm sayfası [GM §9].
 final class Episode extends Equatable {
   const Episode({
     required this.id,
@@ -13,10 +13,10 @@ final class Episode extends Equatable {
   final int id;
   final String name;
 
-  /// As given by the API, e.g. `December 2, 2013`.
+  /// API'nin verdiği hâliyle, ör. `December 2, 2013`.
   final String airDate;
 
-  /// Season/episode code, e.g. `S01E01` (album sort key).
+  /// Sezon/bölüm kodu, ör. `S01E01` (albüm sıralama anahtarı).
   final String code;
   final List<int> characterIds;
 

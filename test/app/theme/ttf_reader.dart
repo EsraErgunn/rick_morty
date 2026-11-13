@@ -1,7 +1,7 @@
 import 'dart:typed_data';
 
-/// Minimal TrueType reader for tests: the set of code points a font maps
-/// (cmap formats 4 and 12) and its OpenType GSUB feature tags.
+/// Testler için en küçük TrueType okuyucu: bir yazı tipinin eşlediği kod noktaları
+/// kümesi (cmap biçim 4 ve 12) ve OpenType GSUB özellik etiketleri.
 class TtfReader {
   TtfReader(Uint8List bytes) : _data = ByteData.sublistView(bytes) {
     final count = _data.getUint16(4);

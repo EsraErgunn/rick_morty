@@ -4,11 +4,13 @@ import '../../../../core/cards/game_card_data.dart';
 import '../../../../core/game/card_type.dart';
 import '../../../collection/domain/collection_repository.dart';
 
+/// Deste verisinin yüklenme durumu.
 enum DeckStatus { initial, success }
 
-/// What changed last, for the page's sound/haptic listener.
+/// Sayfanın ses/titreşim dinleyicisi için en son ne değiştiği.
 enum DeckChange { none, added, removed, completed }
 
+/// Deste ekranının durumu: sahip olunan kartlar ve destedeki slotlar.
 final class DeckState extends Equatable {
   const DeckState({
     this.status = DeckStatus.initial,
@@ -21,7 +23,7 @@ final class DeckState extends Equatable {
   final DeckStatus status;
   final List<GameCardData> owned;
 
-  /// Deck card ids in slot order (max 3).
+  /// Slot sırasıyla destedeki kart id'leri (en fazla 3).
   final List<int> deck;
   final DeckChange change;
   final int changeTick;
@@ -30,7 +32,7 @@ final class DeckState extends Equatable {
 
   bool get complete => deck.length == size;
 
-  /// Slot i's card or null.
+  /// i. slotun kartı ya da null.
   GameCardData? slot(int i) {
     if (i >= deck.length) return null;
     for (final c in owned) {
@@ -51,7 +53,7 @@ final class DeckState extends Equatable {
       : (deckCards.fold(0, (s, c) => s + c.stats.spd) / deckCards.length)
             .round();
 
-  /// Which corners of the Human → Robot → Alien triangle the deck has.
+  /// Destenin İnsan → Robot → Uzaylı üçgeninin hangi köşelerine sahip olduğu.
   Set<CardType> get coverage => {
     for (final c in deckCards)
       if (c.type == CardType.human ||

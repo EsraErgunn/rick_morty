@@ -153,11 +153,11 @@ void main() {
     await pumpPage(tester);
     await tester.tap(find.byKey(const ValueKey('portal-open-button')));
     await tester.pump();
-    // Legendary Rick: charge + burst + cinematic emerge + fall + land.
+    // Efsanevi Rick: şarj + patlama + sinematik çıkış + düşüş + iniş.
     await tester.pump(const Duration(seconds: 3));
     await tester.pump(const Duration(milliseconds: 100));
     await tester.tap(find.byType(FlipCard));
-    // Gold sweep, flip, rays, then the actions fade in.
+    // Altın süpürme, çevirme, ışınlar, sonra eylemler belirir.
     await frames(tester, const Duration(milliseconds: 2500));
 
     expect(rec.sounds, containsAll([Sfx.cardFlip, Sfx.legendaryReveal]));

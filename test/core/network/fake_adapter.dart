@@ -3,7 +3,7 @@ import 'dart:typed_data';
 
 import 'package:dio/dio.dart';
 
-/// One scripted reply: a status + JSON body, or a thrown [DioExceptionType].
+/// Senaryolu tek bir yanıt: bir durum + JSON gövde ya da fırlatılan bir [DioExceptionType].
 class FakeReply {
   const FakeReply(this.status, [this.body = const {}, this.headers = const {}])
     : error = null;
@@ -19,12 +19,12 @@ class FakeReply {
   final DioExceptionType? error;
 }
 
-/// [HttpClientAdapter] that replays [replies] in order (the last one repeats)
-/// and records every requested URI.
+/// [replies] yanıtlarını sırayla tekrarlayan (sonuncusu tekrar eder) ve istenen her URI'yi
+/// kaydeden [HttpClientAdapter].
 class FakeAdapter implements HttpClientAdapter {
   FakeAdapter(this.replies);
 
-  /// Answers by path + query, e.g. `'/character?page=2'`.
+  /// Yol + sorguya göre cevaplar, ör. `'/character?page=2'`.
   FakeAdapter.byRoute(this.routes) : replies = const [];
 
   final List<FakeReply> replies;

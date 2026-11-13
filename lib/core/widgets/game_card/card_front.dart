@@ -12,12 +12,12 @@ import 'card_labels.dart';
 import 'featured_art.dart';
 import 'rarity_frame_painter.dart';
 
-/// Front face at design size (SPEC §5.5): name plate, art, type + rarity
-/// row, 2x2 stats, passive. Text on the frame is `ink`, on the body `paper`.
+/// Tasarım boyutunda ön yüz (SPEC §5.5): isim plakası, görsel, tip + nadirlik
+/// satırı, 2x2 istatistik, pasif. Çerçeve üstündeki yazı `ink`, gövdedeki `paper`.
 ///
-/// Rick ([FeaturedArt.has]) is 2.5D: the background and the cut-out character
-/// are separate layers; the character rises above the art window and moves
-/// more than the background when the card tilts ([tilt]).
+/// Rick ([FeaturedArt.has]) 2.5D'dir: arka plan ve kesilmiş karakter
+/// ayrı katmanlardır; karakter görsel penceresinin üstüne taşar ve kart
+/// eğilince arka plandan daha fazla hareket eder ([tilt]).
 class CardFront extends StatelessWidget {
   const CardFront({
     required this.data,
@@ -29,19 +29,19 @@ class CardFront extends StatelessWidget {
 
   final GameCardData data;
 
-  /// Empty art window (featured entrance: the image falls in later).
+  /// Boş görsel penceresi (öne çıkan giriş: görsel sonradan düşer).
   final bool hideArt;
 
-  /// Card tilt for the featured parallax (null: layers rest).
+  /// Öne çıkan paralaks için kart eğimi (null: katmanlar durur).
   final ValueListenable<Offset>? tilt;
 
-  /// 2.5D card: the character has left the card (battle reaction); the
-  /// cut-out is hidden and the window dims.
+  /// 2.5D kart: karakter karttan çıktı (savaş tepkisi); kesilmiş
+  /// görsel gizlenir ve pencere kararır.
   final bool characterOut;
 
   static const double plateHeight = 36;
 
-  /// The art window in card design units (for the featured entrance).
+  /// Kart tasarım birimleri cinsinden görsel penceresi (öne çıkan giriş için).
   static Rect artRect(GameCardData data) {
     final style = RarityStyle.of(data.rarity);
     final body = RarityFramePainter(
@@ -76,8 +76,8 @@ class CardFront extends StatelessWidget {
       key: ValueKey('card-front-${data.rarity.name}'),
       painter: painter,
       child: Stack(
-        // The legendary emblem sits half above the top edge; the body comes
-        // first so the featured head passes under the name plate text.
+        // Efsanevi amblem yarısı üst kenarın üstünde durur; gövde önce gelir,
+        // böylece öne çıkan karakterin kafası isim plakası yazısının altından geçer.
         clipBehavior: Clip.none,
         children: [
           Positioned.fromRect(
@@ -126,8 +126,8 @@ class CardFront extends StatelessWidget {
           ),
           if (FeaturedArt.has(data.id) && !hideArt && !characterOut) _cutout(),
           Positioned(
-            // Room for the featured badge on both sides keeps the name
-            // centered and clear of the badge.
+            // Öne çıkan rozeti için iki yanda bırakılan boşluk ismi
+            // ortada ve rozetten uzak tutar.
             left: style.frameWidth + CardMetrics.padding + badgeRoom,
             right: style.frameWidth + CardMetrics.padding + badgeRoom,
             top: style.frameWidth,
@@ -167,6 +167,7 @@ class CardFront extends StatelessWidget {
   }
 }
 
+/// Rick'in kesilmiş görsel katmanını kart ön yüzüne yerleştirir.
 extension on CardFront {
   Widget _cutout() {
     final art = CardFront.artRect(data);
@@ -228,8 +229,8 @@ class _CardInfo extends StatelessWidget {
                 style: AppTypography.caption,
               ),
             ),
-            // Rarity color stays on the frame: as small text on the body,
-            // epic purple is only 4.10:1 (needs 4.5).
+            // Nadirlik rengi çerçevede kalır: gövdede küçük yazı olarak
+            // epik mor yalnızca 4.10:1 (4.5 gerekir).
             Text(l10n.rarityName(data.rarity), style: AppTypography.caption),
           ],
         ),

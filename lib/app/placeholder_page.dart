@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'theme/spacing.dart';
 
-/// Temporary screen for routes whose feature is not built yet.
-/// Shows the screen title (and an optional [action], e.g. a debug link).
+/// Özelliği henüz yazılmamış rotalar için geçici ekran.
+/// Ekran başlığını (ve isteğe bağlı bir [action], ör. debug bağlantısı) gösterir.
 class PlaceholderPage extends StatelessWidget {
   const PlaceholderPage({required this.title, this.action, super.key});
 

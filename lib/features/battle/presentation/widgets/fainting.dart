@@ -5,10 +5,10 @@ import 'package:flutter/material.dart';
 import '../../../../app/theme/motion.dart';
 import '../../../../core/widgets/portal/portal_spiral_painter.dart';
 
-/// Fainted card (SPEC §4.7): it spins, shrinks and is pulled into a small
-/// portal that opens behind it and closes again; a faint grey ghost stays
-/// in the slot. Reverses when a Zombi card revives. Reduced motion: a quick
-/// fade only.
+/// Bayılan kart (SPEC §4.7): döner, küçülür ve arkasında açılıp yeniden kapanan
+/// küçük bir portala çekilir; slotta soluk gri bir hayalet kalır.
+/// Zombi kart dirilince tersine işler. Azaltılmış hareket: yalnızca kısa bir
+/// solma.
 class Fainting extends StatelessWidget {
   const Fainting({
     required this.fainted,
@@ -54,7 +54,7 @@ class Fainting extends StatelessWidget {
         if (reduced) {
           return Opacity(opacity: 1 - (1 - _ghostOpacity) * f, child: grey);
         }
-        // The portal is widest halfway through and gone at the end.
+        // Portal yarı yolda en geniş, sonunda kaybolmuş olur.
         final portal = math.sin(math.pi * f);
         return Stack(
           alignment: Alignment.center,

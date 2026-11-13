@@ -8,17 +8,17 @@ import 'portal/portal_spiral_painter.dart';
 import 'portal/portal_view.dart';
 import 'shader_cache.dart';
 
-/// The waiting portal: opens from a point (scale 0 → 1, `popIn`), then
-/// spins while [active].
+/// Bekleyen portal: bir noktadan açılır (ölçek 0 → 1, `popIn`), sonra
+/// [active] iken döner.
 ///
-/// Anti-flicker: if [active] turns false within [AppMotion.loaderShowDelay]
-/// the portal never appears; once it appears it stays at least
-/// [AppMotion.loaderMinVisible]. [onSettled] fires once the portal is gone
-/// (or immediately if it never appeared) after [active] became false.
-/// With reduced motion it only fades.
+/// Titreme önleme: [active], [AppMotion.loaderShowDelay] içinde false olursa
+/// portal hiç görünmez; görünürse en az [AppMotion.loaderMinVisible]
+/// kalır. [active] false olduktan sonra portal kaybolunca [onSettled] bir kez
+/// tetiklenir (hiç görünmediyse hemen).
+/// Azaltılmış harekette yalnızca solar.
 ///
-/// The inside is the `portal.frag` vortex ([PortalView], SPEC D8) when
-/// [shaders] is given, otherwise the spiral painter (fallback and tests).
+/// [shaders] verilirse içi `portal.frag` girdabıdır ([PortalView], SPEC D8),
+/// verilmezse sarmal çizici (yedek ve testler).
 class PortalLoader extends StatefulWidget {
   const PortalLoader({
     required this.active,
@@ -31,12 +31,12 @@ class PortalLoader extends StatefulWidget {
 
   final bool active;
 
-  /// 0.0 (dim, e.g. on error) to 1.0 (full).
+  /// 0.0 (sönük, ör. hatada) ile 1.0 (tam) arası.
   final double intensity;
   final VoidCallback? onSettled;
   final double size;
 
-  /// Shader cache for the vortex; null = spiral painter.
+  /// Girdap için shader önbelleği; null = sarmal çizici.
   final ShaderCache? shaders;
 
   @override
@@ -120,8 +120,8 @@ class _PortalLoaderState extends State<PortalLoader>
     _settle();
   }
 
-  /// Reports after the current frame: [onSettled] usually navigates, which
-  /// must not happen during build (e.g. from [didUpdateWidget]).
+  /// Mevcut kareden sonra bildirir: [onSettled] genelde sayfa değiştirir ve bu
+  /// build sırasında olmamalıdır (ör. [didUpdateWidget] içinden).
   void _settle() {
     if (_settled) return;
     _settled = true;
@@ -129,7 +129,7 @@ class _PortalLoaderState extends State<PortalLoader>
       ..addPostFrameCallback((_) {
         if (mounted && !widget.active) widget.onSettled?.call();
       })
-      // A post-frame callback needs a frame; make sure one comes.
+      // Kare sonrası geri çağrının bir kareye ihtiyacı var; birinin geldiğinden emin ol.
       ..scheduleFrame();
   }
 

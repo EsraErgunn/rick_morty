@@ -2,9 +2,10 @@ import 'package:equatable/equatable.dart';
 
 import '../../../../core/cards/game_card_data.dart';
 
+/// Tanıtımın bitirilme durumu.
 enum OnboardingStatus { initial, loading, success, failure }
 
-/// [status] success = the intro is finished and the page may leave.
+/// [status] success = tanıtım bitti ve sayfa çıkabilir.
 final class OnboardingState extends Equatable {
   const OnboardingState({
     this.status = OnboardingStatus.initial,
@@ -17,7 +18,7 @@ final class OnboardingState extends Equatable {
   final OnboardingStatus status;
   final int page;
 
-  /// Common → legendary showcase cards (may be empty).
+  /// Sıradandan efsaneviye vitrin kartları (boş olabilir).
   final List<GameCardData> cards;
 
   bool get isLast => page == pageCount - 1;

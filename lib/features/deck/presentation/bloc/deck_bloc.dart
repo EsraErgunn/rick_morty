@@ -6,8 +6,8 @@ import '../../../collection/domain/collection_repository.dart';
 import 'deck_event.dart';
 import 'deck_state.dart';
 
-/// Deck builder (SPEC §2.6): fill the first empty slot, empty a slot, no
-/// duplicates, saved at once. Uses the collection's deck storage.
+/// Deste kurucu (SPEC §2.6): ilk boş slotu doldur, bir slotu boşalt, tekrar
+/// yok, hemen kaydedilir. Koleksiyonun deste depolamasını kullanır.
 class DeckBloc extends Bloc<DeckEvent, DeckState> {
   DeckBloc(this._repository) : super(const DeckState()) {
     on<DeckStarted>(_load);

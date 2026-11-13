@@ -8,6 +8,7 @@ import '../../../core/storage/player_store.dart';
 import '../../../core/storage/store_changes.dart';
 import '../domain/collection_repository.dart';
 
+/// [CollectionRepository]'nin Hive depolarıyla çalışan uygulaması.
 class CollectionRepositoryImpl implements CollectionRepository {
   const CollectionRepositoryImpl({
     required this._apiData,
