@@ -20,6 +20,7 @@ import '../core/sensors/tilt_stream.dart';
 import '../core/storage/api_data_store.dart';
 import '../core/storage/hive_init.dart';
 import '../core/storage/player_store.dart';
+import '../core/storage/starter_gift.dart';
 import '../core/widgets/shader_cache.dart';
 import '../features/album/data/album_repository_impl.dart';
 import '../features/album/domain/album_repository.dart';
@@ -87,6 +88,11 @@ Future<void> configureDependencies({
   final apiData = await ApiDataStore.open();
   final player = await PlayerStore.open();
   final collection = await CollectionStore.open();
+  await StarterGift.apply(
+    player: player,
+    collection: collection,
+    now: DateTime.now(),
+  );
   // Shaders load once per run, before any card needs them.
   final shaders = ShaderCache(
     enabled: !shadersDisabled(isRelease: kReleaseMode),

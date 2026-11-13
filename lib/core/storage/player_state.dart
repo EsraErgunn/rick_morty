@@ -68,6 +68,7 @@ class PlayerState extends Equatable {
     this.portalsOpened = 0,
     this.shakeHintSeen = false,
     this.onboardingSeen = false,
+    this.starterChecked = false,
     this.completedAlbums = const [],
     this.demoUnlocked = false,
     this.forceNextLegendary = false,
@@ -99,6 +100,11 @@ class PlayerState extends Equatable {
   /// The first-launch intro was shown (or skipped) once.
   @HiveField(15)
   final bool onboardingSeen;
+
+  /// The starter Rick rule was applied once: a player who opened portals
+  /// before it existed got Rick as a gift [GM §7.1].
+  @HiveField(16)
+  final bool starterChecked;
 
   /// Episode ids whose album reward was paid.
   @HiveField(6)
@@ -140,6 +146,7 @@ class PlayerState extends Equatable {
     int? portalsOpened,
     bool? shakeHintSeen,
     bool? onboardingSeen,
+    bool? starterChecked,
     List<int>? completedAlbums,
     bool? demoUnlocked,
     bool? forceNextLegendary,
@@ -157,6 +164,7 @@ class PlayerState extends Equatable {
     portalsOpened: portalsOpened ?? this.portalsOpened,
     shakeHintSeen: shakeHintSeen ?? this.shakeHintSeen,
     onboardingSeen: onboardingSeen ?? this.onboardingSeen,
+    starterChecked: starterChecked ?? this.starterChecked,
     completedAlbums: completedAlbums ?? this.completedAlbums,
     demoUnlocked: demoUnlocked ?? this.demoUnlocked,
     forceNextLegendary: forceNextLegendary ?? this.forceNextLegendary,
@@ -177,6 +185,7 @@ class PlayerState extends Equatable {
     portalsOpened,
     shakeHintSeen,
     onboardingSeen,
+    starterChecked,
     completedAlbums,
     demoUnlocked,
     forceNextLegendary,
