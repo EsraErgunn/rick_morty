@@ -99,7 +99,9 @@ abstract final class BattleEngine {
       final atk =
           attacker.atk *
           (attacker.teamSpirit ? SignatureRules.teamSpiritAtkMultiplier : 1);
-      final amount = max(
+      // [GM §6] one hit never deals more than the attacker's ATK stat; the
+      // crit and effectiveness flags (callouts, sounds) stay as rolled.
+      final rolled = max(
         1,
         (atk *
                 eff.multiplier *
@@ -110,6 +112,7 @@ abstract final class BattleEngine {
                 (defenseScale + defender.def))
             .round(),
       );
+      final amount = min(rolled, attacker.atk);
       final hpAfter = max(0, defender.hp - amount);
       defender = defender.copyWith(hp: hpAfter);
       events.add(

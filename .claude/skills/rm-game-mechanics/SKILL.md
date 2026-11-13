@@ -106,6 +106,7 @@ Tests must check: same id → identical stats; legendary average > epic average 
 ```
 crit     = random < 0.10 ? 1.5 : 1.0
 dmg      = max(1, round(ATK * typeMult * crit * passiveMult * (50 / (50 + DEF))))
+dmg      = min(dmg, attacker ATK)        // cap: one hit never exceeds the attacker's ATK stat
 ```
 - A card at HP ≤ 0 faints (unless Zombi revives it).
 - Battle ends when one side has no alive cards. Turn limit 40 → draw.

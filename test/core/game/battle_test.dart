@@ -99,7 +99,8 @@ void main() {
       );
       final d = events(player(s, 0, 0, noCrit)).whereType<Damaged>().single;
       expect(d.effectiveness, Effectiveness.superEffective);
-      expect(d.amount, (20 * 1.5 * 50 / 62).round());
+      // 24 rolled, capped at the attacker's ATK [GM §6].
+      expect(d.amount, 20);
     });
 
     test('crit ×1.5; Rick (Dahi) crits at 20 % and shows DAHİ', () {
@@ -112,7 +113,8 @@ void main() {
           .single;
       expect(d.isCrit, isTrue);
       expect(d.signature, Signature.genius);
-      expect(d.amount, (20 * 1.5 * 50 / 62).round());
+      // 24 rolled, capped at the attacker's ATK [GM §6].
+      expect(d.amount, 20);
 
       final plain = BattleEngine.start([card(1)], [card(2)]);
       expect(
@@ -192,7 +194,7 @@ void main() {
       final low = events(player(s, 0, 0, ScriptedRandom([0.9, 0.9])))
           .whereType<Damaged>()
           .single;
-      expect(high.amount, 60);
+      expect(high.amount, 50); // 60 rolled, capped at ATK 50
       expect(low.amount, 40);
     });
   });
@@ -236,7 +238,8 @@ void main() {
         Signature.awJeez,
       );
       final counter = BattleEngine.aiTurn(hit.state, noCrit);
-      expect(counter.events.whereType<Damaged>().single.amount, 30);
+      // 30 rolled, capped at ATK 20 [GM §6].
+      expect(counter.events.whereType<Damaged>().single.amount, 20);
     });
 
     test('Mr. Meeseeks: a KO heals 20 % of max HP (once)', () {
