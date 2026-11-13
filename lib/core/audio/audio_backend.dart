@@ -32,6 +32,15 @@ abstract interface class AudioBackend {
 class AudioplayersBackend implements AudioBackend {
   static const int _voicesPerSfx = 3;
 
+  /// SFX must not take Android audio focus: with the default context every
+  /// effect requested `AUDIOFOCUS_GAIN`, the looping music player got a
+  /// permanent focus loss and audioplayers paused it for good (the battle
+  /// music stopped at the first tap). Effects now mix with the music, which
+  /// keeps the focus.
+  static final AudioContext _sfxContext = AudioContextConfig(
+    focus: AudioContextConfigFocus.mixWithOthers,
+  ).build();
+
   final Map<Sfx, AudioPool> _pools = {};
 
   @override
@@ -43,6 +52,7 @@ class AudioplayersBackend implements AudioBackend {
           source: AssetSource(sfx.asset),
           maxPlayers: _voicesPerSfx,
           playerMode: PlayerMode.lowLatency,
+          audioContext: _sfxContext,
         );
       } on Object catch (e) {
         AppLogger.warning('sfx preload failed: ${sfx.file}', e);
@@ -59,6 +69,7 @@ class AudioplayersBackend implements AudioBackend {
             source: AssetSource(sound.asset),
             maxPlayers: _voicesPerSfx,
             playerMode: PlayerMode.lowLatency,
+          audioContext: _sfxContext,
           ));
       await pool.start(volume: volume);
     } on Object catch (e) {

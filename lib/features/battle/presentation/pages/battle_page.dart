@@ -80,8 +80,17 @@ class _BattlePageState extends State<BattlePage> {
     final l10n = AppLocalizations.of(context);
     final bloc = context.read<BattleBloc>();
     return BlocConsumer<BattleBloc, BattleViewState>(
-      listenWhen: (a, b) => !a.left && b.left,
-      listener: (context, state) => widget.onExit(),
+      listenWhen: (a, b) => (!a.left && b.left) || a.phase != b.phase,
+      listener: (context, state) {
+        if (state.left) return widget.onExit();
+        // Music follows the phase: arena loop until the result, then silence;
+        // "Yeni savaş" starts the loop again.
+        if (state.phase == BattlePhase.finished) {
+          widget.feedback.resultShown();
+        } else {
+          widget.feedback.enter();
+        }
+      },
       builder: (context, state) => PopScope(
         canPop: !_playing(state),
         onPopInvokedWithResult: (didPop, _) {

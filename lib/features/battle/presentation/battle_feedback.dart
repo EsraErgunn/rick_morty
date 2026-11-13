@@ -20,8 +20,14 @@ class BattleFeedback {
     unawaited(haptics.play(moment));
   }
 
+  /// Arena music: `battle_loop`, looping, from the pre-battle screen until
+  /// the result (a no-op while it already plays; respects the music toggle).
   void enter() => unawaited(audio.playMusic(Music.battleLoop));
 
+  /// Result screen: the music stops (the victory/defeat sound plays alone).
+  void resultShown() => unawaited(audio.stopMusic());
+
+  /// Back to the menu: `menu_loop`.
   void leave() => unawaited(audio.playMusic(Music.menuLoop));
 
   /// Attacker / target selection.
@@ -57,7 +63,6 @@ class BattleFeedback {
           _do(Sfx.superEffective, HapticMoment.hit);
         }
       case BattleEnded(:final result):
-        unawaited(audio.stopMusic());
         switch (result) {
           case BattleResult.victory:
             _do(Sfx.victory, HapticMoment.crit);
