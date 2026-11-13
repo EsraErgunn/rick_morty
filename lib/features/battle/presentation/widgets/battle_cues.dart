@@ -106,20 +106,35 @@ final class BattleCues {
     BattleEnded(:final result) => _ended(result),
   };
 
-  /// The winners hop one after another (none on a draw).
+  /// The winners hop one after another, the losers get a defeat cue
+  /// (only Rick's 2.5D card shows it); nothing on a draw. The hold covers
+  /// Rick's reaction.
   static BattleCues _ended(BattleResult result) {
     final winner = switch (result) {
       BattleResult.victory => Side.player,
       BattleResult.defeat => Side.enemy,
       BattleResult.draw => null,
     };
+    final loser = switch (winner) {
+      Side.player => Side.enemy,
+      Side.enemy => Side.player,
+      null => null,
+    };
     return BattleCues(
-      duration: AppMotion.battleVictory + AppMotion.battleVictoryStagger * 2,
+      duration:
+          AppMotion.battleRickReaction + AppMotion.battleVictoryStagger * 2,
       slots: {
         if (winner != null)
           for (var i = 0; i < _team; i++)
             (winner, i): SlotCue(
               SlotMotion.victory,
+              null,
+              AppMotion.battleVictoryStagger * i,
+            ),
+        if (loser != null)
+          for (var i = 0; i < _team; i++)
+            (loser, i): SlotCue(
+              SlotMotion.defeat,
               null,
               AppMotion.battleVictoryStagger * i,
             ),

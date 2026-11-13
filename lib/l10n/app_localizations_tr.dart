@@ -479,4 +479,10 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get albumDone => 'Tamamlandı';
+
+  @override
+  String get rickVictoryLine => 'Wubba lubba dub dub!';
+
+  @override
+  String get rickDefeatLine => 'Bu… bu imkânsız, Morty!';
 }

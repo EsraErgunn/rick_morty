@@ -9,13 +9,26 @@ import '../../../../app/theme/spacing.dart';
 import '../../../../app/theme/typography.dart';
 import '../../../../core/cards/game_card_data.dart';
 import '../../../../core/game/battle_model.dart';
+import '../../../../core/widgets/game_card/featured_art.dart';
 import '../../../../core/widgets/game_card/game_card.dart';
 import 'fainting.dart';
 import 'hp_bar.dart';
+import 'rick_reaction.dart';
 import 'slot_motion.dart';
 
 /// What a slot is doing right now (set by the replay, SPEC §4.7).
-enum SlotMotion { none, lunge, shake, heavyShake, dodge, revive, victory }
+enum SlotMotion {
+  none,
+  lunge,
+  shake,
+  heavyShake,
+  dodge,
+  revive,
+  victory,
+
+  /// The battle is lost; only Rick's 2.5D card reacts (cut-out collapses).
+  defeat,
+}
 
 /// A floating number or word above a card.
 final class SlotPopup {
@@ -87,6 +100,30 @@ class _BattleCardSlotState extends State<BattleCardSlot>
   bool _reduced = false;
 
   @override
+  void initState() {
+    super.initState();
+    // Rick's card shows its art again once his reaction is over.
+    _c.addStatusListener((status) {
+      if (status == AnimationStatus.completed && _rick && mounted) {
+        setState(() {});
+      }
+    });
+  }
+
+  bool get _rick => FeaturedArt.has(widget.card.id);
+
+  /// Rick reacts to the battle end: victory if he is still standing,
+  /// defeat always (his side lost).
+  bool get _rickReacting =>
+      _rick &&
+      _c.isAnimating &&
+      switch (widget.fx.motion) {
+        SlotMotion.victory => widget.state.alive,
+        SlotMotion.defeat => true,
+        _ => false,
+      };
+
+  @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     _reduced = MediaQuery.disableAnimationsOf(context);
@@ -108,9 +145,13 @@ class _BattleCardSlotState extends State<BattleCardSlot>
       SlotMotion.shake => AppMotion.battleHit,
       SlotMotion.heavyShake => AppMotion.battleHeavyHit,
       SlotMotion.revive => AppMotion.slow,
+      SlotMotion.victory when _rick => AppMotion.battleRickReaction,
       SlotMotion.victory => AppMotion.battleVictory,
+      SlotMotion.defeat when _rick => AppMotion.battleRickReaction,
+      SlotMotion.defeat => Duration.zero,
       _ => AppMotion.normal,
     };
+    if (base == Duration.zero) return;
     _c
       ..duration = (base + fx.delay) * widget.speed
       ..forward(from: 0);
@@ -144,6 +185,8 @@ class _BattleCardSlotState extends State<BattleCardSlot>
       SlotMotion.shake => SlotPoses.hit(v, widget.side, heavy: false),
       SlotMotion.heavyShake => SlotPoses.hit(v, widget.side, heavy: true),
       SlotMotion.dodge => SlotPoses.dodge(v),
+      // Rick's card stays put while he leaps out of it.
+      SlotMotion.victory when _rick => SlotPose.rest,
       SlotMotion.victory => SlotPoses.victory(v),
       _ => SlotPose.rest,
     };
@@ -204,6 +247,14 @@ class _BattleCardSlotState extends State<BattleCardSlot>
                       ),
                     ),
                   ),
+                if (_rickReacting)
+                  Positioned.fill(
+                    child: RickReaction(
+                      card: widget.card,
+                      victory: widget.fx.motion == SlotMotion.victory,
+                      v: v,
+                    ),
+                  ),
                 if (hitting && v > 0)
                   Positioned.fill(
                     child: IgnorePointer(
@@ -223,7 +274,10 @@ class _BattleCardSlotState extends State<BattleCardSlot>
       child: Fainting(
         fainted: !widget.state.alive,
         speed: widget.speed,
-        child: GameCard(data: widget.card),
+        child: GameCard(
+          data: widget.card,
+          characterOut: _rickReacting && widget.fx.motion == SlotMotion.victory,
+        ),
       ),
     );
     return GestureDetector(

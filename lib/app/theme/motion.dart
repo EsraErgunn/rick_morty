@@ -95,6 +95,10 @@ abstract final class AppMotion {
   static const Duration battleVictory = Duration(milliseconds: 1200);
   static const Duration battleVictoryStagger = Duration(milliseconds: 160);
 
+  /// Rick's 2.5D victory / defeat reaction (cut-out leaves the card). The
+  /// battle end holds the replay this long so the reaction can finish.
+  static const Duration battleRickReaction = Duration(milliseconds: 2000);
+
   /// Idle float of a battle card (one up-down cycle); phases differ per slot.
   static const Duration battleIdle = Duration(milliseconds: 2400);
 

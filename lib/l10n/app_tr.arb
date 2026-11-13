@@ -709,5 +709,13 @@
   "albumDone": "Tamamlandı",
   "@albumDone": {
     "description": "Badge on a completed episode."
+  },
+  "rickVictoryLine": "Wubba lubba dub dub!",
+  "@rickVictoryLine": {
+    "description": "Rick's speech bubble when his side wins a battle."
+  },
+  "rickDefeatLine": "Bu… bu imkânsız, Morty!",
+  "@rickDefeatLine": {
+    "description": "Rick's speech bubble when his side loses a battle."
   }
 }

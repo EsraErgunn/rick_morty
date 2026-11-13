@@ -107,6 +107,19 @@ abstract final class AppSizes {
   static const double battleStageShake = 7;
   static const double battleStageCritShake = 14;
 
+  /// Rick's battle reaction (design units of the card).
+  static const double rickLeap = 110;
+  static const double rickLeapScale = 0.4;
+  static const double rickSink = 40;
+  static const double rickSquash = 0.25;
+  static const double rickTopple = 1.2;
+  static const double rickToppleShift = 24;
+  static const double rickBubbleWidth = 150;
+  static const double rickBubbleTail = 10;
+  static const double confettiSize = 6;
+  static const double confettiSpread = 150;
+  static const double confettiFall = 180;
+
   static const double hpBar = 8;
 
   /// Minimum touch target (Material / accessibility).

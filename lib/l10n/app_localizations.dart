@@ -933,6 +933,18 @@ abstract class AppLocalizations {
   /// In tr, this message translates to:
   /// **'Tamamlandı'**
   String get albumDone;
+
+  /// Rick's speech bubble when his side wins a battle.
+  ///
+  /// In tr, this message translates to:
+  /// **'Wubba lubba dub dub!'**
+  String get rickVictoryLine;
+
+  /// Rick's speech bubble when his side loses a battle.
+  ///
+  /// In tr, this message translates to:
+  /// **'Bu… bu imkânsız, Morty!'**
+  String get rickDefeatLine;
 }
 
 class _AppLocalizationsDelegate
