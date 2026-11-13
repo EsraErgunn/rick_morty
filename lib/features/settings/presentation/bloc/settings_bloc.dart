@@ -35,7 +35,13 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
         ),
       );
     });
+    on<GodModeToggled>((e, emit) async {
+      final r = await _repository.setGodMode(e.on);
+      r.match((f) => emit(state.copyWith(failure: f)), (_) => emit(_load()));
+    });
     on<DemoClosed>((e, emit) async {
+      // Demo kapanınca god mode da kapanır; gerçek ilerleme geri gelir.
+      if (_repository.godMode) await _repository.setGodMode(false);
       await _repository.setDemoUnlocked(false);
       _taps.clear();
       emit(state.copyWith(demoUnlocked: false));
@@ -61,6 +67,7 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
     demoUnlocked: _repository.demoUnlocked,
     legendaryArmed: _repository.legendaryArmed,
     coins: _repository.coins,
+    godMode: _repository.godMode,
   );
 
   Future<void> _onVersionTapped(

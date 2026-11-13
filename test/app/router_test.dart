@@ -63,7 +63,9 @@ void main() {
     final router = await _pumpApp(tester);
     expect(router.state.uri.path, AppRoutes.splash);
     expect(find.text('Evrenler indiriliyor'), findsOneWidget);
-    await tester.pumpWidget(const SizedBox()); // yükleyici zamanlayıcılarını temizle
+    await tester.pumpWidget(
+      const SizedBox(),
+    ); // yükleyici zamanlayıcılarını temizle
   });
 
   testWidgets('unknown route shows "Sayfa bulunamadı" and returns to menu', (

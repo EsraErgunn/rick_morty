@@ -68,6 +68,7 @@ class PlayerState extends Equatable {
     this.portalsOpened = 0,
     this.shakeHintSeen = false,
     this.onboardingSeen = false,
+    this.godMode = false,
     this.completedAlbums = const [],
     this.demoUnlocked = false,
     this.forceNextLegendary = false,
@@ -99,6 +100,14 @@ class PlayerState extends Equatable {
   /// İlk açılış tanıtımı bir kez gösterildi (ya da geçildi).
   @HiveField(15)
   final bool onboardingSeen;
+
+  // HiveField 16 kullanılmaz: geri alınan "ilk portal Rick" kuralında
+  // kullanıldı, alan numaraları asla yeniden kullanılmaz.
+
+  /// God mode açık: tüm kartlar, sınırsız coin, her portal efsanevi, en
+  /// yüksek kademe [GM §7.2]. Gerçek durum `GodModeStore` içinde yedekli.
+  @HiveField(17)
+  final bool godMode;
 
   /// Albüm ödülü ödenmiş bölüm id'leri.
   @HiveField(6)
@@ -140,6 +149,7 @@ class PlayerState extends Equatable {
     int? portalsOpened,
     bool? shakeHintSeen,
     bool? onboardingSeen,
+    bool? godMode,
     List<int>? completedAlbums,
     bool? demoUnlocked,
     bool? forceNextLegendary,
@@ -157,6 +167,7 @@ class PlayerState extends Equatable {
     portalsOpened: portalsOpened ?? this.portalsOpened,
     shakeHintSeen: shakeHintSeen ?? this.shakeHintSeen,
     onboardingSeen: onboardingSeen ?? this.onboardingSeen,
+    godMode: godMode ?? this.godMode,
     completedAlbums: completedAlbums ?? this.completedAlbums,
     demoUnlocked: demoUnlocked ?? this.demoUnlocked,
     forceNextLegendary: forceNextLegendary ?? this.forceNextLegendary,
@@ -177,6 +188,7 @@ class PlayerState extends Equatable {
     portalsOpened,
     shakeHintSeen,
     onboardingSeen,
+    godMode,
     completedAlbums,
     demoUnlocked,
     forceNextLegendary,

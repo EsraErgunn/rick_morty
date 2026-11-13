@@ -10,6 +10,10 @@ abstract final class HiveBoxes {
   static const String locations = 'locations';
   static const String player = 'player';
   static const String collection = 'collection';
+
+  /// God mode açıkken gerçek oyuncu durumu ve koleksiyonun yedeği.
+  static const String godBackupPlayer = 'god_backup_player';
+  static const String godBackupCollection = 'god_backup_collection';
 }
 
 /// Adaptörleri kaydeder (işlem başına bir kez) ve Hive'ı [directory] klasörüne yönlendirir.

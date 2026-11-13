@@ -1023,6 +1023,18 @@ abstract class AppLocalizations {
   /// In tr, this message translates to:
   /// **'Tanıtımı tekrar göster'**
   String get settingsReplayIntro;
+
+  /// Demo panel: switch that unlocks everything.
+  ///
+  /// In tr, this message translates to:
+  /// **'God mode'**
+  String get settingsGodMode;
+
+  /// Demo panel: what god mode does.
+  ///
+  /// In tr, this message translates to:
+  /// **'Tüm kartlar, sınırsız coin, her portal efsanevi, en yüksek kademe. Kapatınca gerçek ilerlemen geri gelir.'**
+  String get settingsGodModeHint;
 }
 
 class _AppLocalizationsDelegate

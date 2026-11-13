@@ -14,6 +14,7 @@ final class SettingsState extends Equatable {
     this.demoUnlocked = false,
     this.legendaryArmed = false,
     this.coins = 0,
+    this.godMode = false,
     this.demoUnlockedTick = 0,
     this.resetTick = 0,
     this.failure,
@@ -24,6 +25,9 @@ final class SettingsState extends Equatable {
   final bool demoUnlocked;
   final bool legendaryArmed;
   final int coins;
+
+  /// God mode açık [GM §7.2].
+  final bool godMode;
 
   /// Demo paneli açılınca artar (bir kez ses + titreşim).
   final int demoUnlockedTick;
@@ -38,6 +42,7 @@ final class SettingsState extends Equatable {
     bool? demoUnlocked,
     bool? legendaryArmed,
     int? coins,
+    bool? godMode,
     int? demoUnlockedTick,
     int? resetTick,
     Failure? failure,
@@ -47,6 +52,7 @@ final class SettingsState extends Equatable {
     demoUnlocked: demoUnlocked ?? this.demoUnlocked,
     legendaryArmed: legendaryArmed ?? this.legendaryArmed,
     coins: coins ?? this.coins,
+    godMode: godMode ?? this.godMode,
     demoUnlockedTick: demoUnlockedTick ?? this.demoUnlockedTick,
     resetTick: resetTick ?? this.resetTick,
     failure: failure,
@@ -58,6 +64,7 @@ final class SettingsState extends Equatable {
     settings,
     demoUnlocked,
     legendaryArmed,
+    godMode,
     coins,
     demoUnlockedTick,
     resetTick,

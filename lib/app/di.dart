@@ -19,6 +19,7 @@ import '../core/sensors/shake_detector.dart';
 import '../core/sensors/tilt_stream.dart';
 import '../core/storage/api_data_store.dart';
 import '../core/storage/hive_init.dart';
+import '../core/storage/god_mode_store.dart';
 import '../core/storage/player_store.dart';
 import '../core/widgets/shader_cache.dart';
 import '../features/album/data/album_repository_impl.dart';
@@ -87,6 +88,7 @@ Future<void> configureDependencies({
   final apiData = await ApiDataStore.open();
   final player = await PlayerStore.open();
   final collection = await CollectionStore.open();
+  final godBackup = await GodModeStore.open();
   // Shader'lar her çalıştırmada, herhangi bir kart ihtiyaç duymadan önce bir kez yüklenir.
   final shaders = ShaderCache(
     enabled: !shadersDisabled(isRelease: kReleaseMode),
@@ -98,6 +100,7 @@ Future<void> configureDependencies({
     ..registerSingleton<ApiDataStore>(apiData)
     ..registerSingleton<PlayerStore>(player)
     ..registerSingleton<CollectionStore>(collection)
+    ..registerSingleton<GodModeStore>(godBackup)
     ..registerSingleton<ShaderCache>(shaders)
     ..registerLazySingleton<SyncRemoteDataSource>(
       () => ApiSyncRemoteDataSource(getIt()),
@@ -244,7 +247,13 @@ Future<void> configureDependencies({
         ),
         settingsPage: (context) => BlocProvider(
           create: (_) => SettingsBloc(
-            SettingsRepositoryImpl(player: getIt(), collection: getIt()),
+            SettingsRepositoryImpl(
+              player: getIt(),
+              collection: getIt(),
+              godBackup: getIt(),
+              apiData: getIt(),
+              clock: DateTime.now,
+            ),
           )..add(const SettingsStarted()),
           child: SettingsPage(
             audio: getIt(),

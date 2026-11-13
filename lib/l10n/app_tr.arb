@@ -777,5 +777,13 @@
   "settingsReplayIntro": "Tanıtımı tekrar göster",
   "@settingsReplayIntro": {
     "description": "Settings: opens the first-launch intro again (demo)."
+  },
+  "settingsGodMode": "God mode",
+  "@settingsGodMode": {
+    "description": "Demo panel: switch that unlocks everything."
+  },
+  "settingsGodModeHint": "Tüm kartlar, sınırsız coin, her portal efsanevi, en yüksek kademe. Kapatınca gerçek ilerlemen geri gelir.",
+  "@settingsGodModeHint": {
+    "description": "Demo panel: what god mode does."
   }
 }

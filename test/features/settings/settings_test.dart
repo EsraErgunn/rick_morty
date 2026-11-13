@@ -13,6 +13,8 @@ import 'package:portalcards/core/feedback/ui_feedback.dart';
 import 'package:portalcards/core/haptics/haptics_service.dart';
 import 'package:portalcards/core/storage/player_state.dart';
 import 'package:portalcards/core/storage/player_store.dart';
+import 'package:portalcards/core/storage/god_mode_store.dart';
+import 'package:portalcards/core/storage/api_data_store.dart';
 import 'package:portalcards/features/settings/data/settings_repository_impl.dart';
 import 'package:portalcards/features/settings/domain/settings_repository.dart';
 import 'package:portalcards/features/settings/presentation/bloc/settings_bloc.dart';
@@ -34,7 +36,15 @@ class _MemorySettings implements SettingsRepository {
   bool legendaryArmed = false;
   @override
   int coins = 300;
+  @override
+  bool godMode = false;
   int resets = 0;
+
+  @override
+  Future<Either<Failure, Unit>> setGodMode(bool on) async {
+    godMode = on;
+    return right(unit);
+  }
 
   @override
   Future<Either<Failure, Unit>> saveSettings(PlayerSettings s) async {
@@ -82,6 +92,9 @@ void main() {
       final repo = SettingsRepositoryImpl(
         player: await PlayerStore.open(),
         collection: await CollectionStore.open(),
+        godBackup: await GodModeStore.open(),
+        apiData: await ApiDataStore.open(),
+        clock: DateTime.now,
       );
       expect((await repo.addDemoCoins()).getOrElse((_) => -1), 1300);
       expect(repo.coins, 1300);
@@ -106,6 +119,9 @@ void main() {
       final repo = SettingsRepositoryImpl(
         player: player,
         collection: collection,
+        godBackup: await GodModeStore.open(),
+        apiData: await ApiDataStore.open(),
+        clock: DateTime.now,
       );
 
       await repo.resetProgress();

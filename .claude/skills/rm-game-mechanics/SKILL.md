@@ -149,6 +149,7 @@ Difficulty tier = number of wins / 3 (max 4). Opponent rarities by tier:
 - **+1000 coin:** goes through `Economy` with reason `demo`, like every other coin change.
 - **Next portal Legendary:** arms a one-shot flag `player.forceNextLegendary`. The next portal skips the rarity roll and uses Legendary (the character pick and §7.1 / §7.3 still apply). The flag is cleared when that portal's result is saved.
 - The portal still costs 100 coins. Demo mode changes nothing else (no stat, battle or reward changes).
+- **God mode (owner decision 2026-11-13, presentation only):** a switch in the demo panel (`player.godMode`). Turning it on backs up the real player state and collection (`GodModeStore`), adds every synced character to the collection, sets coins to 999,999 (`Economy` reason `demo`) and wins to 12 (tier 4). While on, every portal is legendary (like `forceNextLegendary`) and coins are topped up to 999,999 after each portal. Turning it off (or closing demo mode) restores the backup; settings and the demo unlock stay as they are. Stats, battle rules and rewards are unchanged. Values live in `core/game/god_mode.dart`.
 
 ### 7.3 Empty pool fallback
 - Applies whenever a rule needs an unowned character of a rarity (§7.1) and none is left.

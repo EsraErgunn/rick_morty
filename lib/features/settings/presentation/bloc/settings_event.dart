@@ -54,3 +54,13 @@ final class DemoClosed extends SettingsEvent {
 final class ProgressResetConfirmed extends SettingsEvent {
   const ProgressResetConfirmed();
 }
+
+/// Demo panelindeki god mode anahtarı değişti.
+final class GodModeToggled extends SettingsEvent {
+  const GodModeToggled(this.on);
+
+  final bool on;
+
+  @override
+  List<Object?> get props => [on];
+}

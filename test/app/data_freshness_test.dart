@@ -6,6 +6,7 @@ import 'package:portalcards/core/entities/character.dart';
 import 'package:portalcards/core/game/battle_model.dart';
 import 'package:portalcards/core/storage/api_data_store.dart';
 import 'package:portalcards/core/storage/player_store.dart';
+import 'package:portalcards/core/storage/god_mode_store.dart';
 import 'package:portalcards/features/battle/data/battle_repository_impl.dart';
 import 'package:portalcards/features/battle/presentation/bloc/battle_bloc.dart';
 import 'package:portalcards/features/battle/presentation/bloc/battle_event.dart';
@@ -184,6 +185,9 @@ void main() {
     await SettingsRepositoryImpl(
       player: player,
       collection: collection,
+      godBackup: await GodModeStore.open(),
+      apiData: await ApiDataStore.open(),
+      clock: DateTime.now,
     ).addDemoCoins();
     await settle();
 

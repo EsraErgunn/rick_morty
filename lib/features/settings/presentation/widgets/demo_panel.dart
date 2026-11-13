@@ -34,6 +34,17 @@ class DemoPanel extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Text(l10n.settingsDemoTitle, style: AppTypography.title),
+            SwitchListTile(
+              key: const ValueKey('god-mode'),
+              contentPadding: EdgeInsets.zero,
+              title: Text(l10n.settingsGodMode),
+              subtitle: Text(
+                l10n.settingsGodModeHint,
+                style: AppTypography.caption,
+              ),
+              value: state.godMode,
+              onChanged: (v) => send(GodModeToggled(v)),
+            ),
             const SizedBox(height: AppSpacing.sm),
             FilledButton(
               onPressed: () => send(const DemoCoinsRequested()),

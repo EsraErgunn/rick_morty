@@ -6,6 +6,7 @@ import '../../../core/cards/card_factory.dart';
 import '../../../core/cards/rarity_pool.dart';
 import '../../../core/errors/failures.dart';
 import '../../../core/game/economy.dart';
+import '../../../core/game/god_mode.dart';
 import '../../../core/game/portal_roll.dart';
 import '../../../core/game/rarity.dart';
 import '../../../core/logging/app_logger.dart';
@@ -57,7 +58,8 @@ class PortalRepositoryImpl implements PortalRepository {
       pool: {for (final r in Rarity.values) r: _pool.ids(r)},
       owned: _collection.ownedIds,
       portalsOpened: state.portalsOpened,
-      forceLegendary: state.forceNextLegendary,
+      // God mode'da her portal efsanevi [GM §7.2].
+      forceLegendary: state.forceNextLegendary || state.godMode,
       random: _random,
     );
     final character = _apiData.character(pick.characterId);
@@ -72,7 +74,12 @@ class PortalRepositoryImpl implements PortalRepository {
             CoinReason.duplicate,
           )
         : null;
-    final coinsAfter = refund?.after ?? spend.after;
+    final paid = refund?.after ?? spend.after;
+    // God mode: coin her portaldan sonra yeniden tamamlanır [GM §7.2].
+    final topUp = state.godMode
+        ? Economy.earn(paid, GodModeRules.coins - paid, CoinReason.demo)
+        : null;
+    final coinsAfter = topUp?.after ?? paid;
 
     try {
       await _collection.addCopy(card.id, _clock());
@@ -91,6 +98,7 @@ class PortalRepositoryImpl implements PortalRepository {
 
     AppLogger.info('$spend');
     if (refund != null) AppLogger.info('$refund');
+    if (topUp != null) AppLogger.info('$topUp');
     AppLogger.info('portal: $pick');
 
     return right(

@@ -68,6 +68,17 @@ class CollectionStore {
     return next;
   }
 
+  /// Verilen kartları olduğu gibi yazar (god mode yedeğini geri yükleme).
+  Future<void> putAll(Iterable<OwnedCard> cards) =>
+      _box.putAll({for (final c in cards) c.characterId: c});
+
+  /// [ids] içinde sahip olunmayan her karakteri bir kopya olarak ekler.
+  Future<void> addMissing(Iterable<int> ids, DateTime at) => _box.putAll({
+    for (final id in ids)
+      if (!_box.containsKey(id))
+        id: OwnedCard(characterId: id, copies: 1, firstObtainedAt: at),
+  });
+
   Future<void> clear() => _box.clear();
 
   Future<void> close() => _box.close();
