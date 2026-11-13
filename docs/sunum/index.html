@@ -1,0 +1,428 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Portal Cards Sunumu</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Grandstander:wght@700;900&family=Atkinson+Hyperlegible+Next:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --void: #15112B; --raised: #231B45; --ink: #0B0918;
+  --paper: #F2ECDF; --muted: #A9A3BF;
+  --portal: #8FE04A; --hot: #D4FF7A; --danger: #FF5A4E; --warn: #FF9F43;
+  --common: #9AA5B1; --rare: #3FA9F5; --epic: #A55EEA; --legend: #F7B731;
+  --head: 'Grandstander', system-ui, sans-serif;
+  --body: 'Atkinson Hyperlegible Next', system-ui, sans-serif;
+}
+* { box-sizing: border-box; margin: 0; }
+html, body { height: 100%; }
+body {
+  background: var(--void); color: var(--paper); font-family: var(--body);
+  overflow: hidden;
+}
+.deck { position: relative; height: 100vh; height: 100dvh; }
+.slide {
+  position: absolute; inset: 0; padding: clamp(20px, 5vw, 72px);
+  display: flex; flex-direction: column; justify-content: center; gap: 24px;
+  opacity: 0; visibility: hidden; transform: translateX(40px);
+  transition: opacity .45s ease, transform .45s cubic-bezier(.2,.9,.3,1.2), visibility .45s;
+  overflow-y: auto;
+  background:
+    radial-gradient(circle at 85% 15%, rgba(143,224,74,.12), transparent 40%),
+    radial-gradient(circle at 10% 90%, rgba(165,94,234,.14), transparent 45%),
+    var(--void);
+}
+.slide.on { opacity: 1; visibility: visible; transform: none; }
+.slide.past { transform: translateX(-40px); }
+h1, h2, h3 { font-family: var(--head); font-weight: 900; line-height: 1.05; }
+h1 { font-size: clamp(44px, 9vw, 112px); color: var(--portal);
+  text-shadow: 4px 4px 0 var(--ink), -2px -2px 0 var(--ink), 2px -2px 0 var(--ink), -2px 2px 0 var(--ink); }
+h2 { font-size: clamp(30px, 5vw, 60px); color: var(--paper); text-shadow: 3px 3px 0 var(--ink); }
+h2 span, .accent { color: var(--portal); }
+h3 { font-size: clamp(18px, 2.2vw, 26px); font-weight: 700; }
+p, li { font-size: clamp(16px, 1.8vw, 22px); line-height: 1.5; }
+.lead { font-size: clamp(18px, 2.4vw, 28px); color: var(--muted); max-width: 46ch; }
+.kicker { font-family: var(--head); font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+  color: var(--hot); font-size: clamp(13px, 1.3vw, 16px); }
+.row { display: flex; gap: clamp(16px, 3vw, 40px); align-items: center; flex-wrap: wrap; }
+.grow { flex: 1 1 320px; min-width: 0; }
+.panel {
+  background: var(--raised); border: 3px solid var(--ink); border-radius: 18px;
+  box-shadow: 5px 5px 0 var(--ink); padding: 18px 20px;
+}
+.grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+.panel h3 { margin-bottom: 6px; color: var(--hot); }
+.panel p { color: var(--paper); font-size: clamp(15px, 1.5vw, 18px); }
+ul.clean { list-style: none; padding: 0; display: grid; gap: 10px; }
+ul.clean li::before { content: "◉ "; color: var(--portal); }
+
+/* Game card (mirrors the app's GameCard) */
+.card {
+  --r: var(--common);
+  width: clamp(120px, 15vw, 190px); aspect-ratio: 5 / 7; flex: none;
+  background: var(--raised); border: 4px solid var(--r); border-radius: 14px;
+  outline: 3px solid var(--ink); box-shadow: 6px 6px 0 var(--ink);
+  display: flex; flex-direction: column; overflow: hidden; position: relative;
+  transform: rotate(var(--tilt, 0deg)); transition: transform .3s;
+}
+.card:hover { transform: rotate(0) translateY(-6px) scale(1.04); }
+.card .name { font-family: var(--head); font-weight: 700; font-size: clamp(11px, 1.2vw, 15px);
+  padding: 5px 8px; background: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.card .art { flex: 1; position: relative; background: var(--r); display: grid; place-items: center; }
+.card .art img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.card .art .ini { font-family: var(--head); font-weight: 900; font-size: 48px; color: var(--ink); }
+.card .stats { display: flex; justify-content: space-between; padding: 5px 8px; background: var(--ink);
+  font-size: clamp(10px, 1vw, 13px); font-weight: 700; }
+.card.rare { --r: var(--rare); } .card.epic { --r: var(--epic); }
+.card.legend { --r: var(--legend); }
+.card.legend::after, .card.epic::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none; mix-blend-mode: color-dodge;
+  background: linear-gradient(115deg, transparent 30%, rgba(255,120,200,.35) 42%, rgba(120,255,220,.35) 50%, rgba(255,240,120,.35) 58%, transparent 70%);
+  background-size: 250% 250%; animation: holo 4s linear infinite;
+}
+.card.epic::after { opacity: .6; }
+@keyframes holo { from { background-position: 0% 0%; } to { background-position: 100% 100%; } }
+.fan { display: flex; justify-content: center; }
+.fan .card + .card { margin-left: -28px; }
+
+/* Portal */
+.portal { width: clamp(180px, 26vw, 340px); aspect-ratio: 1; flex: none; animation: spin 14s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Rarity chips */
+.chip { display: inline-flex; align-items: center; gap: 8px; padding: 6px 14px; border-radius: 999px;
+  border: 3px solid var(--ink); font-weight: 700; color: var(--ink); box-shadow: 3px 3px 0 var(--ink); }
+.bar { height: 12px; border-radius: 99px; background: var(--ink); border: 2px solid var(--ink); overflow: hidden; }
+.bar i { display: block; height: 100%; border-radius: 99px; }
+
+/* Flow */
+.flow { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+.step { background: var(--raised); border: 3px solid var(--ink); border-radius: 14px; box-shadow: 4px 4px 0 var(--ink);
+  padding: 10px 14px; font-family: var(--head); font-weight: 700; font-size: clamp(14px, 1.6vw, 20px); }
+.step.hot { background: var(--portal); color: var(--ink); }
+.arrow { color: var(--portal); font-size: 26px; font-weight: 900; }
+
+.big { font-family: var(--head); font-weight: 900; font-size: clamp(42px, 6vw, 80px); color: var(--portal);
+  text-shadow: 3px 3px 0 var(--ink); line-height: 1; }
+.cue { font-family: var(--head); font-weight: 900; display: inline-block; padding: 6px 14px; border: 3px solid var(--ink);
+  border-radius: 10px; box-shadow: 4px 4px 0 var(--ink); transform: rotate(-4deg); color: var(--ink); }
+code { font-family: ui-monospace, Consolas, monospace; background: var(--ink); padding: 2px 6px; border-radius: 6px;
+  font-size: .9em; color: var(--hot); }
+.note { color: var(--muted); font-size: 14px; }
+
+/* Nav */
+.nav { position: fixed; bottom: 14px; left: 0; right: 0; display: flex; justify-content: center; align-items: center; gap: 12px; z-index: 5; }
+.nav button { width: 44px; height: 44px; border-radius: 50%; border: 3px solid var(--ink); background: var(--portal);
+  color: var(--ink); font-weight: 900; font-size: 20px; cursor: pointer; box-shadow: 3px 3px 0 var(--ink); }
+.nav button:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--ink); }
+.dots { display: flex; gap: 6px; }
+.dots span { width: 9px; height: 9px; border-radius: 50%; background: var(--raised); border: 2px solid var(--ink); }
+.dots span.on { background: var(--portal); }
+@media (max-width: 640px) {
+  .slide { justify-content: flex-start; padding-top: 28px; padding-bottom: 80px; }
+  .fan .card + .card { margin-left: -44px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .portal, .card::after { animation: none !important; }
+  .slide { transition: opacity .2s; transform: none !important; }
+}
+</style>
+</head>
+<body>
+<main class="deck" id="deck">
+
+<!-- 1. Title -->
+<section class="slide">
+  <div class="row">
+    <div class="grow">
+      <p class="kicker">Bitirme Projesi · Flutter · Android + iOS</p>
+      <h1>Portal Cards</h1>
+      <p class="lead">Rick and Morty evreninden kart topla, deste kur, boyutlar arası savaş. Gerçek API verisinden üretilen bir koleksiyon kartı oyunu.</p>
+    </div>
+    <svg class="portal" viewBox="0 0 200 200" aria-hidden="true">
+      <defs>
+        <radialGradient id="pg" cx="50%" cy="50%" r="50%">
+          <stop offset="0" stop-color="#F2FFD0"/><stop offset=".35" stop-color="#D4FF7A"/>
+          <stop offset=".75" stop-color="#8FE04A"/><stop offset="1" stop-color="#3E8A1C"/>
+        </radialGradient>
+      </defs>
+      <circle cx="100" cy="100" r="92" fill="url(#pg)" stroke="#0B0918" stroke-width="7"/>
+      <g fill="none" stroke="#3E8A1C" stroke-width="7" stroke-linecap="round" opacity=".8">
+        <path id="arm" d="M100 100 C 120 88, 150 92, 166 118"/>
+        <use href="#arm" transform="rotate(120 100 100)"/>
+        <use href="#arm" transform="rotate(240 100 100)"/>
+        <circle cx="100" cy="100" r="58" stroke-dasharray="40 22" opacity=".55"/>
+      </g>
+      <circle cx="100" cy="100" r="14" fill="#F2FFD0"/>
+    </svg>
+  </div>
+  <p class="note">Esra Ergün · Hayran projesi, ticari değil</p>
+</section>
+
+<!-- 2. Purpose -->
+<section class="slide">
+  <p class="kicker">Amaç</p>
+  <h2>Gerçek veriden <span>oyun</span> üretmek</h2>
+  <div class="grid">
+    <div class="panel"><h3>🎯 Hedef</h3><p>Herkese açık Rick and Morty API'sindeki 800'den fazla karakteri oynanabilir, dengeli kartlara dönüştürmek.</p></div>
+    <div class="panel"><h3>🎬 Zorunlu şart</h3><p>Animasyon ve ses efektleri. Projenin her anı hareket, ses ve titreşimle geri bildirim veriyor.</p></div>
+    <div class="panel"><h3>📴 Çevrimdışı</h3><p>İlk açılışta tüm veri telefona inir; sonra internet olmadan oynanır.</p></div>
+    <div class="panel"><h3>🧱 Mühendislik</h3><p>Temiz mimari, saf Dart oyun motoru ve 457 otomatik test.</p></div>
+  </div>
+</section>
+
+<!-- 3. Loop -->
+<section class="slide">
+  <p class="kicker">Oyun döngüsü</p>
+  <h2>Aç · Topla · Kur · <span>Savaş</span></h2>
+  <svg viewBox="0 0 760 300" style="width:100%;max-width:900px" role="img" aria-label="Portal aç, kart kazan, deste kur, savaş, coin kazan döngüsü">
+    <defs><marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#8FE04A"/></marker></defs>
+    <g font-family="Grandstander, sans-serif" font-weight="700" font-size="20" text-anchor="middle">
+      <g><rect x="20" y="40" width="160" height="70" rx="16" fill="#8FE04A" stroke="#0B0918" stroke-width="4"/><text x="100" y="72" fill="#0B0918">🌀 Portal aç</text><text x="100" y="96" fill="#0B0918" font-size="14">100 coin</text></g>
+      <g><rect x="300" y="40" width="160" height="70" rx="16" fill="#231B45" stroke="#0B0918" stroke-width="4"/><text x="380" y="72" fill="#F2ECDF">🃏 Kart kazan</text><text x="380" y="96" fill="#A9A3BF" font-size="14">nadirlik çekilişi</text></g>
+      <g><rect x="580" y="40" width="160" height="70" rx="16" fill="#231B45" stroke="#0B0918" stroke-width="4"/><text x="660" y="72" fill="#F2ECDF">🧩 Deste kur</text><text x="660" y="96" fill="#A9A3BF" font-size="14">3 kart</text></g>
+      <g><rect x="580" y="200" width="160" height="70" rx="16" fill="#231B45" stroke="#0B0918" stroke-width="4"/><text x="660" y="232" fill="#F2ECDF">⚔️ Savaş</text><text x="660" y="256" fill="#A9A3BF" font-size="14">3'e 3, sıra tabanlı</text></g>
+      <g><rect x="300" y="200" width="160" height="70" rx="16" fill="#F7B731" stroke="#0B0918" stroke-width="4"/><text x="380" y="232" fill="#0B0918">🪙 Coin kazan</text><text x="380" y="256" fill="#0B0918" font-size="14">zafer 100 + 25×kademe</text></g>
+    </g>
+    <g stroke="#8FE04A" stroke-width="4" fill="none" marker-end="url(#ah)">
+      <path d="M185 75 H292"/><path d="M465 75 H572"/><path d="M660 115 V192"/>
+      <path d="M575 235 H468"/><path d="M295 235 C 120 235, 100 180, 100 118"/>
+    </g>
+  </svg>
+</section>
+
+<!-- 4. API to card -->
+<section class="slide">
+  <p class="kicker">API → Kart</p>
+  <h2>Her karakter, <span>hep aynı</span> kart</h2>
+  <div class="row">
+    <div class="card legend" style="--tilt:-3deg">
+      <div class="name">Rick Sanchez</div>
+      <div class="art" data-id="1"><span class="ini">R</span></div>
+      <div class="stats"><span>❤ 152</span><span>⚔ 66</span><span>🛡 17</span><span>⚡ 17</span></div>
+    </div>
+    <div class="grow panel">
+      <ul class="clean">
+        <li><code>episode.length</code> → <b>nadirlik</b> (51 bölüm = Efsanevi)</li>
+        <li><code>species</code> → <b>tür</b> (İnsan / Robot / Uzaylı / Hayvan / Mitolojik)</li>
+        <li><code>status</code> → <b>pasif</b> (Ölü = Zombi, bir kez dirilir)</li>
+        <li><code>id</code> → <b>sabit istatistik</b> (Knuth hash, taban × nadirlik çarpanı × %85–115)</li>
+        <li><code>image</code> → kart görseli (önbelleğe alınır; inmezse baş harf gösterilir)</li>
+      </ul>
+    </div>
+  </div>
+  <p class="note">Kartlardaki değerler oyun motorunun (<code>lib/core/game/card_stats.dart</code>) gerçek çıktısıdır.</p>
+</section>
+
+<!-- 5. Rarity & types -->
+<section class="slide">
+  <p class="kicker">Nadirlik ve türler</p>
+  <h2>Dört nadirlik, bir <span>üçgen</span></h2>
+  <div class="row" style="align-items:stretch">
+    <div class="grow panel">
+      <div style="display:grid;gap:14px">
+        <div><span class="chip" style="background:var(--common)">Sıradan · 1 bölüm</span><div class="bar" style="margin-top:6px"><i style="width:60%;background:var(--common)"></i></div></div>
+        <div><span class="chip" style="background:var(--rare)">Nadir · 2–4</span><div class="bar" style="margin-top:6px"><i style="width:28%;background:var(--rare)"></i></div></div>
+        <div><span class="chip" style="background:var(--epic)">Epik · 5–19</span><div class="bar" style="margin-top:6px"><i style="width:10%;background:var(--epic)"></i></div></div>
+        <div><span class="chip" style="background:var(--legend)">Efsanevi · 20+</span><div class="bar" style="margin-top:6px"><i style="width:2%;background:var(--legend)"></i></div></div>
+      </div>
+      <p class="note" style="margin-top:10px">Çubuklar portal olasılığı: %60 · %28 · %10 · %2</p>
+    </div>
+    <div class="panel" style="flex:0 1 340px">
+      <svg viewBox="0 0 300 260" style="width:100%" role="img" aria-label="İnsan Robotu, Robot Uzaylıyı, Uzaylı İnsanı yener">
+        <defs><marker id="ah2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0L10 5L0 10z" fill="#8FE04A"/></marker></defs>
+        <g stroke="#8FE04A" stroke-width="4" fill="none" marker-end="url(#ah2)">
+          <path d="M170 50 L240 170"/><path d="M220 210 H80"/><path d="M60 170 L130 50"/>
+        </g>
+        <g font-family="Grandstander, sans-serif" font-weight="700" font-size="18" text-anchor="middle">
+          <circle cx="150" cy="38" r="32" fill="#F2ECDF" stroke="#0B0918" stroke-width="4"/><text x="150" y="44" fill="#0B0918">İnsan</text>
+          <circle cx="250" cy="210" r="32" fill="#3FA9F5" stroke="#0B0918" stroke-width="4"/><text x="250" y="216" fill="#0B0918">Robot</text>
+          <circle cx="50" cy="210" r="32" fill="#8FE04A" stroke="#0B0918" stroke-width="4"/><text x="50" y="216" fill="#0B0918" font-size="16">Uzaylı</text>
+        </g>
+      </svg>
+      <p style="text-align:center"><span class="cue" style="background:var(--portal)">SÜPER ETKİLİ! ×1.5</span></p>
+    </div>
+  </div>
+</section>
+
+<!-- 6. Screens -->
+<section class="slide">
+  <p class="kicker">Ekranlar</p>
+  <h2>Uygulamada <span>gezinme</span></h2>
+  <div class="flow">
+    <div class="step">Açılış<br><small class="note">API senkronu</small></div><span class="arrow">→</span>
+    <div class="step hot">Ana menü</div><span class="arrow">→</span>
+    <div class="step">Portal</div><div class="step">Koleksiyon → Kart detayı</div>
+    <div class="step">Deste</div><div class="step">Savaş</div><div class="step">Ayarlar</div>
+  </div>
+  <div class="grid">
+    <div class="panel"><h3>Portal</h3><p>Telefonu salla ya da dokun. Shader portal dolar, patlar, kart dönerek çıkar. Efsanevide kırmızı portal ve silüet.</p></div>
+    <div class="panel"><h3>Koleksiyon</h3><p>Nadirlik ve türe göre filtre, sıralama. Kart detayında 3B eğilme, holo ve arka yüz.</p></div>
+    <div class="panel"><h3>Deste</h3><p>Üç slot, toplam HP/ATK/DEF, ortalama hız ve tür kapsaması.</p></div>
+    <div class="panel"><h3>Ayarlar</h3><p>Ses, müzik, titreşim, tüm görselleri indir ve 7 dokunuşla açılan gizli demo modu.</p></div>
+  </div>
+  <p class="note">Menü dışındaki her ekranda sol üstte geri butonu var; Android geri tuşu da aynı yere döner.</p>
+</section>
+
+<!-- 7. Battle -->
+<section class="slide">
+  <p class="kicker">Savaş</p>
+  <h2>Motor hesaplar, ekran <span>oynatır</span></h2>
+  <div class="flow">
+    <div class="step">Oyuncu seçer</div><span class="arrow">→</span>
+    <div class="step hot">BattleEngine</div><span class="arrow">→</span>
+    <div class="step">Olay listesi</div><span class="arrow">→</span>
+    <div class="step">Animasyon + ses</div>
+  </div>
+  <div class="row">
+    <div class="fan">
+      <div class="card legend" style="--tilt:-6deg"><div class="name">Morty Smith</div><div class="art" data-id="2"><span class="ini">M</span></div><div class="stats"><span>❤ 140</span><span>⚔ 53</span></div></div>
+      <div class="card legend" style="--tilt:4deg"><div class="name">Summer Smith</div><div class="art" data-id="3"><span class="ini">S</span></div><div class="stats"><span>❤ 133</span><span>⚔ 52</span></div></div>
+    </div>
+    <div class="grow">
+      <p style="display:flex;flex-wrap:wrap;gap:12px;margin-bottom:14px">
+        <span class="cue" style="background:var(--danger)">KRİTİK!</span>
+        <span class="cue" style="background:var(--portal);transform:rotate(3deg)">SÜPER ETKİLİ!</span>
+        <span class="cue" style="background:var(--muted)">KAÇTI!</span>
+        <span class="cue" style="background:var(--legend);transform:rotate(2deg)">DAHİ!</span>
+      </p>
+      <div class="bar" style="height:16px;max-width:360px"><i style="width:42%;background:var(--warn)"></i></div>
+      <ul class="clean" style="margin-top:14px">
+        <li>Saldırı, sarsılma, uçan hasar sayıları, bayılma ve Zombi dirilişi</li>
+        <li>5 zorluk kademesi; her 3 zaferde rakip güçlenir</li>
+        <li>2× hız; ödül her savaşta yalnızca bir kez ödenir</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 8. Animation & sound -->
+<section class="slide">
+  <p class="kicker">Animasyon ve ses</p>
+  <h2>Her an <span>hissettirir</span></h2>
+  <div class="row">
+    <div class="fan">
+      <div class="card" style="--tilt:-5deg"><div class="name">Pickle Rick</div><div class="art" data-id="265"><span class="ini">P</span></div><div class="stats"><span>❤ 87</span><span>⚔ 41</span></div></div>
+      <div class="card epic" style="--tilt:5deg"><div class="name">Mr. Meeseeks</div><div class="art" data-id="242"><span class="ini">M</span></div><div class="stats"><span>❤ 147</span><span>⚔ 45</span></div></div>
+    </div>
+    <div class="grow grid">
+      <div class="panel"><h3>2 shader</h3><p><code>portal.frag</code> dönen portal, <code>holo.frag</code> nadirliğe göre holografik folyo.</p></div>
+      <div class="panel"><h3>15 + 3 ses</h3><p>15 efekt ve 3 müzik, <code>tools/audio</code> ile kodla sentezlendi. Stok ses yok.</p></div>
+      <div class="panel"><h3>Titreşim</h3><p>Portal, açılış, vuruş ve zafer anlarında ayrı titreşim.</p></div>
+      <div class="panel"><h3>Erişilebilir</h3><p>Ses, müzik ve titreşim kapatılabilir; azaltılmış hareket ayarına uyulur.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 9. Architecture -->
+<section class="slide">
+  <p class="kicker">Mimari</p>
+  <h2>Temiz mimari, <span>özellik bazlı</span></h2>
+  <svg viewBox="0 0 820 300" style="width:100%;max-width:960px" role="img" aria-label="Sunum katmanı domain'e, data katmanı domain'e bağlı; oyun motoru saf Dart">
+    <defs><marker id="ah3" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#8FE04A"/></marker></defs>
+    <g font-family="Atkinson Hyperlegible Next, sans-serif" font-size="16" text-anchor="middle">
+      <rect x="10" y="20" width="240" height="110" rx="16" fill="#231B45" stroke="#0B0918" stroke-width="4"/>
+      <text x="130" y="55" fill="#D4FF7A" font-family="Grandstander" font-weight="700" font-size="20">presentation</text>
+      <text x="130" y="82" fill="#F2ECDF">Bloc · sayfalar · widget'lar</text>
+      <text x="130" y="106" fill="#A9A3BF">ses/titreşim BlocListener'da</text>
+      <rect x="290" y="20" width="240" height="110" rx="16" fill="#8FE04A" stroke="#0B0918" stroke-width="4"/>
+      <text x="410" y="55" fill="#0B0918" font-family="Grandstander" font-weight="700" font-size="20">domain</text>
+      <text x="410" y="82" fill="#0B0918">depo arayüzleri</text>
+      <text x="410" y="106" fill="#0B0918">Flutter yok</text>
+      <rect x="570" y="20" width="240" height="110" rx="16" fill="#231B45" stroke="#0B0918" stroke-width="4"/>
+      <text x="690" y="55" fill="#D4FF7A" font-family="Grandstander" font-weight="700" font-size="20">data</text>
+      <text x="690" y="82" fill="#F2ECDF">Dio · Hive · DTO → varlık</text>
+      <text x="690" y="106" fill="#A9A3BF">Either&lt;Failure, T&gt;</text>
+      <rect x="150" y="190" width="520" height="90" rx="16" fill="#F7B731" stroke="#0B0918" stroke-width="4"/>
+      <text x="410" y="225" fill="#0B0918" font-family="Grandstander" font-weight="700" font-size="20">core/game · saf Dart oyun motoru</text>
+      <text x="410" y="254" fill="#0B0918">kurallar · savaş · yapay zekâ · ekonomi</text>
+    </g>
+    <g stroke="#8FE04A" stroke-width="4" fill="none" marker-end="url(#ah3)">
+      <path d="M252 75 H282"/><path d="M568 75 H538"/><path d="M410 132 V182"/>
+    </g>
+  </svg>
+  <p class="note">flutter_bloc · get_it · go_router · dio · hive_ce · cached_network_image · flutter_animate · audioplayers · sensors_plus · fpdart</p>
+</section>
+
+<!-- 10. Quality -->
+<section class="slide">
+  <p class="kicker">Kalite</p>
+  <h2>Ölçülebilir <span>sonuçlar</span></h2>
+  <div class="grid">
+    <div class="panel"><div class="big">457</div><p>otomatik test (birim, Bloc, widget, golden)</p></div>
+    <div class="panel"><div class="big">80+</div><p>küçük, tek amaçlı commit (Conventional Commits)</p></div>
+    <div class="panel"><div class="big">0</div><p>analiz uyarısı (<code>flutter analyze --fatal-infos</code>)</p></div>
+    <div class="panel"><div class="big">10k</div><p>çekilişle portal olasılıkları test edildi (±%2)</p></div>
+  </div>
+  <ul class="clean">
+    <li>Sihirli sayı yasağı test ile korunuyor: süre, renk, yazı boyutu yalnızca tema token'larından</li>
+    <li>Güvenlik profili L1: yalnız HTTPS, açık metin trafiği kapalı, release derlemede kod gizleme</li>
+  </ul>
+</section>
+
+<!-- 11. Next -->
+<section class="slide">
+  <p class="kicker">Sırada</p>
+  <h2>Sonraki <span>adımlar</span></h2>
+  <div class="grid">
+    <div class="panel"><h3>📖 Bölüm albümü</h3><p>Her bölüm bir sayfa; tamamlanınca ödül.</p></div>
+    <div class="panel"><h3>🗺️ Boyut haritası</h3><p>Konumlar gezegen olur, sakinleri rakip.</p></div>
+    <div class="panel"><h3>✨ Birleştirme</h3><p>3 kopya → yıldızlı kart animasyonu.</p></div>
+  </div>
+  <h1 style="font-size:clamp(40px,7vw,90px);margin-top:12px">Teşekkürler!</h1>
+  <p class="note">Rick and Morty, karakterleri ve görselleri Adult Swim / Warner Bros. Discovery'ye aittir. Bu proje ticari değildir ve mağazada yayınlanmayacaktır.</p>
+</section>
+
+</main>
+
+<nav class="nav" aria-label="Slayt gezinme">
+  <button id="prev" aria-label="Önceki slayt">‹</button>
+  <div class="dots" id="dots"></div>
+  <button id="next" aria-label="Sonraki slayt">›</button>
+</nav>
+
+<script>
+  // Character art from the public API; the initial letter stays if it fails.
+  document.querySelectorAll('.art[data-id]').forEach(function (el) {
+    var img = new Image();
+    img.alt = '';
+    img.onload = function () { el.appendChild(img); };
+    img.src = 'https://rickandmortyapi.com/api/character/avatar/' + el.dataset.id + '.jpeg';
+  });
+
+  var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+  var dots = document.getElementById('dots');
+  slides.forEach(function () { dots.appendChild(document.createElement('span')); });
+  var i = 0;
+  try { i = Math.min(slides.length - 1, parseInt(location.hash.slice(1), 10) - 1 || 0); } catch (e) {}
+  function show(n) {
+    i = Math.max(0, Math.min(slides.length - 1, n));
+    slides.forEach(function (s, k) {
+      s.classList.toggle('on', k === i);
+      s.classList.toggle('past', k < i);
+      dots.children[k].classList.toggle('on', k === i);
+    });
+    history.replaceState(null, '', '#' + (i + 1));
+  }
+  document.getElementById('prev').onclick = function () { show(i - 1); };
+  document.getElementById('next').onclick = function () { show(i + 1); };
+  document.addEventListener('keydown', function (e) {
+    if (['ArrowRight', 'PageDown', ' '].indexOf(e.key) >= 0) { e.preventDefault(); show(i + 1); }
+    if (['ArrowLeft', 'PageUp'].indexOf(e.key) >= 0) { e.preventDefault(); show(i - 1); }
+    if (e.key === 'Home') show(0);
+    if (e.key === 'End') show(slides.length - 1);
+  });
+  var x0 = null;
+  document.addEventListener('touchstart', function (e) { x0 = e.touches[0].clientX; }, { passive: true });
+  document.addEventListener('touchend', function (e) {
+    if (x0 === null) return;
+    var dx = e.changedTouches[0].clientX - x0;
+    if (Math.abs(dx) > 50) show(i + (dx < 0 ? 1 : -1));
+    x0 = null;
+  });
+  show(i);
+</script>
+</body>
+</html>
