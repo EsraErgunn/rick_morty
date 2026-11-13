@@ -21,6 +21,12 @@ import '../core/storage/api_data_store.dart';
 import '../core/storage/hive_init.dart';
 import '../core/storage/player_store.dart';
 import '../core/widgets/shader_cache.dart';
+import '../features/album/data/album_repository_impl.dart';
+import '../features/album/domain/album_repository.dart';
+import '../features/album/presentation/bloc/album_bloc.dart';
+import '../features/album/presentation/bloc/album_event.dart';
+import '../features/album/presentation/pages/album_episode_page.dart';
+import '../features/album/presentation/pages/album_page.dart';
 import '../features/collection/data/collection_repository_impl.dart';
 import '../features/collection/domain/collection_repository.dart';
 import '../features/collection/presentation/bloc/card_detail_bloc.dart';
@@ -153,6 +159,13 @@ Future<void> configureDependencies({
         random: Random(),
       ),
     )
+    ..registerLazySingleton<AlbumRepository>(
+      () => AlbumRepositoryImpl(
+        apiData: getIt(),
+        player: getIt(),
+        collection: getIt(),
+      ),
+    )
     ..registerLazySingleton<GoRouter>(
       () => createRouter(
         syncRepository: getIt(),
@@ -257,6 +270,20 @@ Future<void> configureDependencies({
             id: id,
             tiltStream: getIt(),
             shaders: getIt(),
+            feedback: UiFeedback(audio: getIt(), haptics: getIt()),
+          ),
+        ),
+        albumPage: (context) => BlocProvider(
+          create: (_) => AlbumBloc(getIt())..add(const AlbumStarted()),
+          child: AlbumPage(
+            feedback: UiFeedback(audio: getIt(), haptics: getIt()),
+            onOpen: (id) => context.push(AppRoutes.albumPage(id)),
+          ),
+        ),
+        albumEpisodePage: (context, id) => BlocProvider(
+          create: (_) =>
+              AlbumPageBloc(getIt(), id)..add(const AlbumPageStarted()),
+          child: AlbumEpisodePage(
             feedback: UiFeedback(audio: getIt(), haptics: getIt()),
           ),
         ),

@@ -57,6 +57,8 @@ GoRouter createRouter({
   WidgetBuilder? settingsPage,
   WidgetBuilder? deckPage,
   WidgetBuilder? battlePage,
+  WidgetBuilder? albumPage,
+  Widget Function(BuildContext context, int episodeId)? albumEpisodePage,
   bool debugRoutes = kDebugMode,
   String initialLocation = AppRoutes.splash,
 }) {
@@ -119,14 +121,24 @@ GoRouter createRouter({
           ),
           _screen(AppRoutes.deck, deckPage, (l10n, _) => l10n.deckTitle),
           _screen(AppRoutes.battle, battlePage, (l10n, _) => l10n.battleTitle),
-          _placeholder(
-            _child(AppRoutes.album),
-            (l10n, _) => l10n.albumTitle,
+          GoRoute(
+            path: _child(AppRoutes.album),
+            builder: (context, state) =>
+                albumPage?.call(context) ??
+                PlaceholderPage(title: AppLocalizations.of(context).albumTitle),
             routes: [
-              _placeholder(
-                ':episodeId',
-                (l10n, state) =>
-                    l10n.albumPageTitle(state.pathParameters['episodeId']!),
+              GoRoute(
+                path: ':episodeId',
+                builder: (context, state) {
+                  final raw = state.pathParameters['episodeId']!;
+                  final id = int.tryParse(raw);
+                  if (id == null || albumEpisodePage == null) {
+                    return PlaceholderPage(
+                      title: AppLocalizations.of(context).albumPageTitle(raw),
+                    );
+                  }
+                  return albumEpisodePage(context, id);
+                },
               ),
             ],
           ),

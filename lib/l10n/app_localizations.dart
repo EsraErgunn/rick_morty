@@ -897,6 +897,42 @@ abstract class AppLocalizations {
   /// In tr, this message translates to:
   /// **'Geri'**
   String get backTooltip;
+
+  /// Season header in the album list.
+  ///
+  /// In tr, this message translates to:
+  /// **'Sezon {season}'**
+  String albumSeason(int season);
+
+  /// Album overall progress.
+  ///
+  /// In tr, this message translates to:
+  /// **'{done}/{total} bölüm tamamlandı'**
+  String albumCompleted(int done, int total);
+
+  /// Episode page title, e.g. S01E01 · Pilot.
+  ///
+  /// In tr, this message translates to:
+  /// **'{code} · {name}'**
+  String albumEpisodeTitle(String code, String name);
+
+  /// Snackbar when an album page is completed and paid.
+  ///
+  /// In tr, this message translates to:
+  /// **'{code} tamamlandı! +{coins} coin'**
+  String albumReward(String code, int coins);
+
+  /// Album without synced episodes.
+  ///
+  /// In tr, this message translates to:
+  /// **'Bölüm verisi yok. İnternete bağlanıp uygulamayı yeniden aç.'**
+  String get albumEmpty;
+
+  /// Badge on a completed episode.
+  ///
+  /// In tr, this message translates to:
+  /// **'Tamamlandı'**
+  String get albumDone;
 }
 
 class _AppLocalizationsDelegate

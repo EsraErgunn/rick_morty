@@ -452,4 +452,31 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get backTooltip => 'Geri';
+
+  @override
+  String albumSeason(int season) {
+    return 'Sezon $season';
+  }
+
+  @override
+  String albumCompleted(int done, int total) {
+    return '$done/$total bölüm tamamlandı';
+  }
+
+  @override
+  String albumEpisodeTitle(String code, String name) {
+    return '$code · $name';
+  }
+
+  @override
+  String albumReward(String code, int coins) {
+    return '$code tamamlandı! +$coins coin';
+  }
+
+  @override
+  String get albumEmpty =>
+      'Bölüm verisi yok. İnternete bağlanıp uygulamayı yeniden aç.';
+
+  @override
+  String get albumDone => 'Tamamlandı';
 }

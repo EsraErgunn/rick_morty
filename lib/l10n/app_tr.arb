@@ -656,5 +656,58 @@
   "backTooltip": "Geri",
   "@backTooltip": {
     "description": "Back button tooltip."
+  },
+  "albumSeason": "Sezon {season}",
+  "@albumSeason": {
+    "description": "Season header in the album list.",
+    "placeholders": {
+      "season": {
+        "type": "int"
+      }
+    }
+  },
+  "albumCompleted": "{done}/{total} bölüm tamamlandı",
+  "@albumCompleted": {
+    "description": "Album overall progress.",
+    "placeholders": {
+      "done": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "albumEpisodeTitle": "{code} · {name}",
+  "@albumEpisodeTitle": {
+    "description": "Episode page title, e.g. S01E01 · Pilot.",
+    "placeholders": {
+      "code": {
+        "type": "String"
+      },
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "albumReward": "{code} tamamlandı! +{coins} coin",
+  "@albumReward": {
+    "description": "Snackbar when an album page is completed and paid.",
+    "placeholders": {
+      "code": {
+        "type": "String"
+      },
+      "coins": {
+        "type": "int"
+      }
+    }
+  },
+  "albumEmpty": "Bölüm verisi yok. İnternete bağlanıp uygulamayı yeniden aç.",
+  "@albumEmpty": {
+    "description": "Album without synced episodes."
+  },
+  "albumDone": "Tamamlandı",
+  "@albumDone": {
+    "description": "Badge on a completed episode."
   }
 }
