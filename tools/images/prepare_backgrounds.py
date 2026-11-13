@@ -3,7 +3,7 @@
     python tools/images/prepare_backgrounds.py
 
 Inputs (not in git, see .gitignore): assets/images/*_bg_source.(png|jpg)
-Outputs (in git): assets/images/menu_bg.webp, assets/images/splash_bg.webp
+Outputs (in git): assets/images/menu_bg.webp, splash_bg.webp, battle_bg.webp
 Width 1080 px (enough for phones at 3x on a 360 dp screen), quality 82.
 """
 
@@ -27,14 +27,15 @@ def convert(src: Path, out: Path) -> None:
 def main() -> int:
     folder = Path("assets/images")
     found = 0
-    for name in ("menu_bg", "splash_bg"):
+    names = ("menu_bg", "splash_bg", "battle_bg")
+    for name in names:
         src = next(iter(sorted(folder.glob(f"{name}_source.*"))), None)
         if src is None:
             print(f"missing {name}_source.(png|jpg)")
             continue
         convert(src, folder / f"{name}.webp")
         found += 1
-    return 0 if found == 2 else 1
+    return 0 if found == len(names) else 1
 
 
 if __name__ == "__main__":

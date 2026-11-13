@@ -107,11 +107,6 @@ abstract final class AppSizes {
   static const double battleStageShake = 7;
   static const double battleStageCritShake = 14;
 
-  /// Arena: background portal size as a share of the stage width, and the
-  /// glowing platform ring under each team.
-  static const double arenaPortalShare = 1.05;
-  static const double arenaRingHeight = 26;
-  static const double arenaStar = 1.6;
   static const double hpBar = 8;
 
   /// Minimum touch target (Material / accessibility).

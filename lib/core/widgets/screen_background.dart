@@ -59,4 +59,7 @@ class ScreenBackground extends StatelessWidget {
 abstract final class Backgrounds {
   static const String menu = 'assets/images/menu_bg.webp';
   static const String splash = 'assets/images/splash_bg.webp';
+
+  /// Battle arena: portal, two glowing platforms, cracked alien ground.
+  static const String battle = 'assets/images/battle_bg.webp';
 }

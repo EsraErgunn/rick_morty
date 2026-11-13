@@ -39,11 +39,4 @@ abstract final class AppColors {
   static const Color rarityRare = Color(0xFF3FA9F5);
   static const Color rarityEpic = Color(0xFFA55EEA);
   static const Color rarityLegendary = Color(0xFFF7B731);
-
-  /// Battle arena (drawn by `ArenaBackground`): space at the top, alien
-  /// ground at the bottom. Cracks and platforms glow in [portal].
-  static const Color arenaSpaceTop = Color(0xFF0A0820);
-  static const Color arenaSpaceBottom = Color(0xFF1E1650);
-  static const Color arenaGroundTop = Color(0xFF1B2A24);
-  static const Color arenaGroundBottom = Color(0xFF0C1410);
 }

@@ -56,7 +56,13 @@ class HpBar extends StatelessWidget {
         Text(
           '$hp/$maxHp',
           textAlign: TextAlign.center,
-          style: AppTypography.caption,
+          // Readable over the arena art.
+          style: AppTypography.caption.copyWith(
+            color: AppColors.paper,
+            shadows: const [
+              Shadow(color: AppColors.ink, offset: AppDepth.shadow),
+            ],
+          ),
         ),
       ],
     );

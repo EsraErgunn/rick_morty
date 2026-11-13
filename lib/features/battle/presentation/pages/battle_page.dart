@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../app/theme/colors.dart';
 import '../../../../app/theme/spacing.dart';
 import '../../../../app/theme/typography.dart';
 import '../../../../core/game/battle_model.dart';
@@ -11,10 +10,10 @@ import '../bloc/battle_bloc.dart';
 import '../bloc/battle_event.dart';
 import '../bloc/battle_state.dart';
 import '../widgets/battle_result_view.dart';
-import '../widgets/arena_background.dart';
 import '../widgets/battle_stage.dart';
 import '../widgets/pre_battle_view.dart';
 import '../../../../core/widgets/app_back_button.dart';
+import '../../../../core/widgets/screen_background.dart';
 
 /// Battle (SPEC §2.7, §4.7). Expects a [BattleBloc] above it.
 class BattlePage extends StatefulWidget {
@@ -99,9 +98,7 @@ class _BattlePageState extends State<BattlePage> {
           if (!didPop) _confirmLeave(context);
         },
         child: Scaffold(
-          backgroundColor: AppColors.arenaSpaceTop,
           appBar: AppBar(
-            backgroundColor: AppColors.arenaSpaceTop,
             title: Text(l10n.battleTitle),
             leading: AppBackButton(
               key: const ValueKey('battle-leave'),
@@ -122,7 +119,8 @@ class _BattlePageState extends State<BattlePage> {
                 ),
             ],
           ),
-          body: ArenaBackground(
+          body: ScreenBackground(
+            asset: Backgrounds.battle,
             child: SafeArea(
               top: false,
               child: switch (state.phase) {

@@ -95,9 +95,6 @@ abstract final class AppMotion {
   static const Duration battleVictory = Duration(milliseconds: 1200);
   static const Duration battleVictoryStagger = Duration(milliseconds: 160);
 
-  /// One turn of the arena's background portal (slow, behind the cards).
-  static const Duration arenaSpin = Duration(seconds: 40);
-
   /// Idle float of a battle card (one up-down cycle); phases differ per slot.
   static const Duration battleIdle = Duration(milliseconds: 2400);
 
