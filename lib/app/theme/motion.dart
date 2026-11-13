@@ -80,6 +80,15 @@ abstract final class AppMotion {
   /// The 2× toggle divides replay durations by this.
   static const int battleFastFactor = 2;
 
+  /// One turn of the arena's background portal (slow, behind the cards).
+  static const Duration arenaSpin = Duration(seconds: 40);
+
+  /// Idle float of a battle card (one up-down cycle); phases differ per slot.
+  static const Duration battleIdle = Duration(milliseconds: 2400);
+
+  /// Gentle float of cards in the collection and deck grids.
+  static const Duration gridFloat = Duration(milliseconds: 3200);
+
   static const Curve popIn = Curves.easeOutBack;
 
   /// Movement between positions, card flip.

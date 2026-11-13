@@ -89,6 +89,27 @@ abstract final class AppSizes {
   static const double battleNumberRise = 40;
   static const double battleFaintDrop = 12;
   static const double battleFaintTilt = 0.12;
+
+  /// Battle character animation (SPEC §4.7, delivery polish).
+  static const double battleIdleFloat = 5;
+  static const double battleWindUp = 14;
+  static const double battleHop = 22;
+  static const double battleLungeSpin = 0.14;
+  static const double battleSquash = 0.16;
+  static const double battleHitShake = 10;
+  static const double battleCritShake = 20;
+  static const double battleKnockTilt = 0.2;
+  static const double battleVictoryHop = 28;
+  static const double battleParticle = 7;
+  static const double battleParticleSpread = 56;
+  static const double battleStageShake = 7;
+  static const double battleStageCritShake = 14;
+
+  /// Arena: background portal size as a share of the stage width, and the
+  /// glowing platform ring under each team.
+  static const double arenaPortalShare = 1.05;
+  static const double arenaRingHeight = 26;
+  static const double arenaStar = 1.6;
   static const double hpBar = 8;
 
   /// Minimum touch target (Material / accessibility).

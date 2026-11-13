@@ -69,7 +69,7 @@ class AudioplayersBackend implements AudioBackend {
             source: AssetSource(sound.asset),
             maxPlayers: _voicesPerSfx,
             playerMode: PlayerMode.lowLatency,
-          audioContext: _sfxContext,
+            audioContext: _sfxContext,
           ));
       await pool.start(volume: volume);
     } on Object catch (e) {

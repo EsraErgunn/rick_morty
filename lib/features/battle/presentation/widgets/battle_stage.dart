@@ -10,6 +10,7 @@ import '../../../../core/game/battle_model.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../battle_feedback.dart';
 import '../bloc/battle_state.dart';
+import 'arena_background.dart';
 import 'battle_card_slot.dart';
 import 'battle_cues.dart';
 import 'event_band.dart';
@@ -158,7 +159,7 @@ class _BattleStageState extends State<BattleStage> {
       padding: const EdgeInsets.all(AppSpacing.gutter),
       child: Column(
         children: [
-          _row(Side.enemy),
+          ArenaPlatform(child: _row(Side.enemy)),
           Expanded(
             child: EventBand(
               label: label,
@@ -167,7 +168,7 @@ class _BattleStageState extends State<BattleStage> {
               speed: _speed,
             ),
           ),
-          _row(Side.player),
+          ArenaPlatform(child: _row(Side.player)),
         ],
       ),
     );

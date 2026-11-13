@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../app/theme/colors.dart';
 import '../../../../app/theme/spacing.dart';
 import '../../../../app/theme/typography.dart';
 import '../../../../core/game/battle_model.dart';
@@ -10,6 +11,7 @@ import '../bloc/battle_bloc.dart';
 import '../bloc/battle_event.dart';
 import '../bloc/battle_state.dart';
 import '../widgets/battle_result_view.dart';
+import '../widgets/arena_background.dart';
 import '../widgets/battle_stage.dart';
 import '../widgets/pre_battle_view.dart';
 import '../../../../core/widgets/app_back_button.dart';
@@ -97,7 +99,9 @@ class _BattlePageState extends State<BattlePage> {
           if (!didPop) _confirmLeave(context);
         },
         child: Scaffold(
+          backgroundColor: AppColors.arenaSpaceTop,
           appBar: AppBar(
+            backgroundColor: AppColors.arenaSpaceTop,
             title: Text(l10n.battleTitle),
             leading: AppBackButton(
               key: const ValueKey('battle-leave'),
@@ -118,60 +122,62 @@ class _BattlePageState extends State<BattlePage> {
                 ),
             ],
           ),
-          body: SafeArea(
-            top: false,
-            child: switch (state.phase) {
-              BattlePhase.loading => const SizedBox.shrink(),
-              BattlePhase.noDeck => Center(
-                child: Padding(
-                  padding: const EdgeInsets.all(AppSpacing.gutter),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        l10n.battleNoDeck,
-                        textAlign: TextAlign.center,
-                        style: AppTypography.body,
-                      ),
-                      const SizedBox(height: AppSpacing.md),
-                      FilledButton(
-                        onPressed: widget.onGoToDeck,
-                        child: Text(l10n.battleGoToDeck),
-                      ),
-                    ],
+          body: ArenaBackground(
+            child: SafeArea(
+              top: false,
+              child: switch (state.phase) {
+                BattlePhase.loading => const SizedBox.shrink(),
+                BattlePhase.noDeck => Center(
+                  child: Padding(
+                    padding: const EdgeInsets.all(AppSpacing.gutter),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          l10n.battleNoDeck,
+                          textAlign: TextAlign.center,
+                          style: AppTypography.body,
+                        ),
+                        const SizedBox(height: AppSpacing.md),
+                        FilledButton(
+                          onPressed: widget.onGoToDeck,
+                          child: Text(l10n.battleGoToDeck),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-              BattlePhase.preBattle => PreBattleView(
-                state: state,
-                onStart: () {
-                  widget.feedback.select();
-                  bloc.add(const BattleStartPressed());
-                },
-              ),
-              BattlePhase.choosing || BattlePhase.replaying => BattleStage(
-                state: state,
-                feedback: widget.feedback,
-                onAdvance: () => bloc.add(const BattleReplayAdvanced()),
-                onCardTap: (side, i) {
-                  if (state.inputBlocked) return;
-                  if (!state.view!.cards(side)[i].alive) return;
-                  if (side == Side.enemy && state.selected == null) return;
-                  widget.feedback.select();
-                  bloc.add(BattleCardTapped(side, i));
-                },
-              ),
-              BattlePhase.finished => BattleResultView(
-                result: state.result ?? BattleResult.defeat,
-                reward: state.reward,
-                onAgain: () {
-                  widget.feedback.select();
-                  bloc.add(const BattleOpened());
-                },
-                onExit: widget.onExit,
-                onCoinTick: widget.feedback.coinTick,
-              ),
-            },
+                BattlePhase.preBattle => PreBattleView(
+                  state: state,
+                  onStart: () {
+                    widget.feedback.select();
+                    bloc.add(const BattleStartPressed());
+                  },
+                ),
+                BattlePhase.choosing || BattlePhase.replaying => BattleStage(
+                  state: state,
+                  feedback: widget.feedback,
+                  onAdvance: () => bloc.add(const BattleReplayAdvanced()),
+                  onCardTap: (side, i) {
+                    if (state.inputBlocked) return;
+                    if (!state.view!.cards(side)[i].alive) return;
+                    if (side == Side.enemy && state.selected == null) return;
+                    widget.feedback.select();
+                    bloc.add(BattleCardTapped(side, i));
+                  },
+                ),
+                BattlePhase.finished => BattleResultView(
+                  result: state.result ?? BattleResult.defeat,
+                  reward: state.reward,
+                  onAgain: () {
+                    widget.feedback.select();
+                    bloc.add(const BattleOpened());
+                  },
+                  onExit: widget.onExit,
+                  onCoinTick: widget.feedback.coinTick,
+                ),
+              },
+            ),
           ),
         ),
       ),
