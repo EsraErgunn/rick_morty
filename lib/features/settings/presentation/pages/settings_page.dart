@@ -27,6 +27,7 @@ class SettingsPage extends StatelessWidget {
     required this.haptics,
     required this.feedback,
     required this.version,
+    this.onReplayIntro,
     this.extra,
     super.key,
   });
@@ -35,6 +36,9 @@ class SettingsPage extends StatelessWidget {
   final HapticsService haptics;
   final UiFeedback feedback;
   final String version;
+
+  /// Opens the first-launch intro again (demo).
+  final VoidCallback? onReplayIntro;
   final Widget? extra;
 
   Future<void> _confirmReset(BuildContext context) async {
@@ -151,6 +155,16 @@ class SettingsPage extends StatelessWidget {
                       bloc.add(SettingsChanged(s.copyWith(musicVolume: v))),
                 ),
                 ?extra,
+                if (onReplayIntro case final replay?)
+                  ListTile(
+                    key: const ValueKey('replay-intro'),
+                    leading: const Icon(Icons.slideshow),
+                    title: Text(l10n.settingsReplayIntro),
+                    onTap: () {
+                      feedback.tap();
+                      replay();
+                    },
+                  ),
                 const Divider(),
                 ListTile(
                   title: Text(
