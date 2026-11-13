@@ -74,7 +74,6 @@ class PlayerStateAdapter extends TypeAdapter<PlayerState> {
       portalsOpened: fields[4] == null ? 0 : (fields[4] as num).toInt(),
       shakeHintSeen: fields[5] == null ? false : fields[5] as bool,
       onboardingSeen: fields[15] == null ? false : fields[15] as bool,
-      starterChecked: fields[16] == null ? false : fields[16] as bool,
       completedAlbums: fields[6] == null
           ? const []
           : (fields[6] as List).cast<int>(),
@@ -98,7 +97,7 @@ class PlayerStateAdapter extends TypeAdapter<PlayerState> {
   @override
   void write(BinaryWriter writer, PlayerState obj) {
     writer
-      ..writeByte(17)
+      ..writeByte(16)
       ..writeByte(0)
       ..write(obj.coins)
       ..writeByte(1)
@@ -130,9 +129,7 @@ class PlayerStateAdapter extends TypeAdapter<PlayerState> {
       ..writeByte(14)
       ..write(obj.lastBattleId)
       ..writeByte(15)
-      ..write(obj.onboardingSeen)
-      ..writeByte(16)
-      ..write(obj.starterChecked);
+      ..write(obj.onboardingSeen);
   }
 
   @override

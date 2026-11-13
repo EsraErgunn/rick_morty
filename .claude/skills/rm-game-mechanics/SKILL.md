@@ -139,11 +139,10 @@ Difficulty tier = number of wins / 3 (max 4). Opponent rarities by tier:
 - Pity (stretch): no Epic+ in 10 pulls → next is Epic+. No Legendary in 50 pulls → next is Legendary.
 
 ### 7.1 First portals (no duplicates)
-- **Starter Rick (owner decision 2026-11-13):** the very first portal (`portalsOpened == 0`) gives Rick (id 1) if he is not owned, without a rarity roll, so every player sees his 2.5D card and battle reactions. It plays the legendary cinematic like any legendary. Players who opened portals before this rule and do not own Rick get one copy once at startup (`player.starterChecked`).
 - While `player.portalsOpened < 3`, a portal never gives a duplicate.
 - Rarity is rolled with the normal table above; the character is picked uniformly from the characters of that rarity the player does **not** own.
 - `portalsOpened` increases by 1 after every portal (all portals, not only the first 3).
-- Result: every new player owns 3 distinct cards (Rick + 2 rolled) after spending the starting 300 coins, so a deck can always be built.
+- Result: every new player owns 3 distinct cards after spending the starting 300 coins, so a deck can always be built.
 
 ### 7.2 Demo overrides (hidden demo mode)
 - Unlock: 7 taps on the version label in Settings within 3 s. Stored as `player.demoUnlocked`; "Demo modunu kapat" sets it back to false.
@@ -200,7 +199,7 @@ Coins can never go below 0. All coin changes go through one `Economy` class so t
 
 ## 12. Featured characters (MVP: 5) — added 2026-11-12
 
-Featured characters keep their normal **rarity, type, stats, passive and portal chances** (§2 to §5, §7), except the starter Rick rule (§7.1). They only add a special frame, a signature ability (battle, Week 3) and an entrance cinematic (portal, Week 2).
+Featured characters keep their normal **rarity, type, stats, passive and portal chances** (§2 to §5, §7). They only add a special frame, a signature ability (battle, Week 3) and an entrance cinematic (portal, Week 2).
 
 | id | Character | Rarity (episodes) | Type | Passive |
 |---|---|---|---|---|

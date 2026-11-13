@@ -38,10 +38,6 @@ abstract final class PortalRoll {
   /// Portals that never give a duplicate [GM §7.1].
   static const int guaranteedNewPortals = 3;
 
-  /// The very first portal gives Rick, so every player sees his 2.5D card
-  /// and battle reactions [GM §7.1, owner 2026-11-13].
-  static const int starterCharacterId = 1;
-
   /// Draws a rarity with [chances] (one `nextDouble`).
   static Rarity rollRarity(Random random) {
     final x = random.nextDouble();
@@ -55,8 +51,6 @@ abstract final class PortalRoll {
 
   /// Picks the character for one portal.
   ///
-  /// - The first portal ([portalsOpened] == 0) gives Rick if he is in the
-  ///   pool and not owned yet; no random draw is used [GM §7.1].
   /// - [forceLegendary] (demo, [GM §7.2]) skips the rarity roll.
   /// - While [portalsOpened] < 3 only unowned characters are given, stepping
   ///   down a rarity when one is used up [GM §7.1, §7.3]; if the player owns
@@ -70,18 +64,6 @@ abstract final class PortalRoll {
     required bool forceLegendary,
     required Random random,
   }) {
-    if (portalsOpened == 0 && !owned.contains(starterCharacterId)) {
-      for (final MapEntry(key: rarity, value: ids) in pool.entries) {
-        if (ids.contains(starterCharacterId)) {
-          return PortalPick(
-            rolled: rarity,
-            rarity: rarity,
-            characterId: starterCharacterId,
-            isDuplicate: false,
-          );
-        }
-      }
-    }
     final rolled = forceLegendary ? Rarity.legendary : rollRarity(random);
 
     if (portalsOpened < guaranteedNewPortals) {
