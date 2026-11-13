@@ -95,6 +95,8 @@ flutter:
     - assets/images/menu_bg.webp
     - assets/images/splash_bg.webp
     - assets/images/battle_bg.webp
+    # Rick's 2.5D card layers (tools/images/cutout.py).
+    - assets/featured/
 
   # Fragment shaders (animation rules).
   shaders:
