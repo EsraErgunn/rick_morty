@@ -3,15 +3,18 @@ import 'dart:async';
 import 'package:flutter/painting.dart';
 import 'package:sensors_plus/sensors_plus.dart';
 
+import 'sensor_support.dart';
+
 /// One accelerometer reading in m/s² (gravity included).
 typedef Gravity = ({double x, double y, double z});
 
 /// Opens a raw accelerometer stream. Injected so tests need no sensor.
 typedef GravitySource = Stream<Gravity> Function();
 
-Stream<Gravity> _deviceGravity() =>
-    accelerometerEventStream(samplingPeriod: SensorInterval.gameInterval)
-        .map((e) => (x: e.x, y: e.y, z: e.z));
+Stream<Gravity> _deviceGravity() => deviceHasMotionSensors
+    ? accelerometerEventStream(samplingPeriod: SensorInterval.gameInterval)
+          .map((e) => (x: e.x, y: e.y, z: e.z))
+    : const Stream.empty();
 
 /// Device tilt for the card 3D tilt and the holo (sensors rules): the
 /// **only** tilt sensor subscription in the app.

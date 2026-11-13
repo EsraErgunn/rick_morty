@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:sensors_plus/sensors_plus.dart';
 
+import 'sensor_support.dart';
 import 'tilt_stream.dart' show Gravity;
 
 /// Linear acceleration source (gravity removed), m/s².
@@ -11,9 +12,10 @@ typedef MotionSource = Stream<Gravity> Function();
 /// Monotonic clock, injected for tests.
 typedef Clock = Duration Function();
 
-Stream<Gravity> _deviceMotion() =>
-    userAccelerometerEventStream(samplingPeriod: SensorInterval.gameInterval)
-        .map((e) => (x: e.x, y: e.y, z: e.z));
+Stream<Gravity> _deviceMotion() => deviceHasMotionSensors
+    ? userAccelerometerEventStream(samplingPeriod: SensorInterval.gameInterval)
+          .map((e) => (x: e.x, y: e.y, z: e.z))
+    : const Stream.empty();
 
 final Stopwatch _stopwatch = Stopwatch()..start();
 Duration _monotonic() => _stopwatch.elapsed;
